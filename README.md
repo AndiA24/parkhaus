@@ -22,6 +22,21 @@ Team-Repository für den Programmentwurf "Parkhaus" zur Vorlesung Programmieren 
     - Auflösung der Simulationsschritte
     - Mindest Parkdauer
     - Max Parkdauer
+- Output / Stats
+    - Per Step
+        - rel occupancy
+		- cars in queue
+		- exits
+		- new arrivals
+    - End: 
+		- rel occupancy
+		- average waiting time
+		- step longest queue
+		- step highest occupancy
+		- time full occupancy
+		- revenue
+		- peak queue lenght
+		- cars queued percent
 
 ## Datenstruktur / Structs
 
