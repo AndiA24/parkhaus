@@ -13,6 +13,7 @@ Team-Repository für den Programmentwurf "Parkhaus" zur Vorlesung Programmieren 
 - Seed als Textdatei speichern
 - Pro Zeitschritte ein Auto rein aber unbegrenzt Autos raus
 - Parkkosten pro Stunde
+- Code must run under Codespaces / Run-File for Codespaces
 - User Inputs
     - Zu simulierende Zeitschritte
     - Parkplätze pro Stockwerk
@@ -127,5 +128,11 @@ Function to load simulation params from .json / .txt or generate if missed.
 ```
 
 ### load_seed
+```c
+
+```
 
 ### write_stats
+```c
+
+```
