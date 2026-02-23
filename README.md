@@ -38,9 +38,9 @@ Team-Repository für den Programmentwurf "Parkhaus" zur Vorlesung Programmieren 
 		- peak queue lenght
 		- cars queued percent
 
-## Datenstruktur / Structs
+## Datastructure / Structs
 
-### sim-config
+### SimConfig
 ```c
 typedef struct {
     unsigned int  num_decks;
@@ -53,7 +53,7 @@ typedef struct {
 } SimConfig;
 ```
 
-### parking
+### Parking
 ```c
 typedef struct {
     unsigned int  total_capacity;
@@ -62,7 +62,7 @@ typedef struct {
 } Parking;
 ```
 
-### parking deck
+### ParkingDeck
 ```c
 typedef struct {
     unsigned int  deck_id;
@@ -71,7 +71,7 @@ typedef struct {
 } ParkingDeck;
 ```
 
-### parking-spot
+### ParkingSpot
 ```c
 typedef struct {
     int      id;
@@ -80,7 +80,7 @@ typedef struct {
 } ParkingSpot;
 ```
 
-### vehicle
+### Vehicle
 ```c
 typedef struct {
     int id;
@@ -90,7 +90,7 @@ typedef struct {
 } Vehicle;
 ```
 
-### queueNode
+### QueueNode
 ```c
 typedef struct QueueNode {
     Vehicle          *vehicle;
@@ -99,7 +99,8 @@ typedef struct QueueNode {
 } QueueNode;
 ```
 
-### queue
+### Queue
+
 ```c
 typedef struct {
     QueueNode *head;
@@ -108,10 +109,23 @@ typedef struct {
 } Queue;
 ```
 
-### sim-stats (collect stats for current step before writing to disk)
+### SimStats
+Collect stats for current step before writing to disk.
 ```c
 typedef struct {
     unsigned int step_num;
     // stats ...
 } SimStats;
 ```
+
+## Functions
+
+### load_config
+Function to load simulation params from .json / .txt or generate if missed.
+```c
+
+```
+
+### load_seed
+
+### write_stats
