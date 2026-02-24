@@ -1,5 +1,9 @@
+#ifndef STATS_H
+#define STATS_H
+
 #include "queue.h"
-#include "parking.h"
+
+typedef struct Parking Parking;
 
 /**
  * @brief Holds the statistics collected during the simulation / one simulation step.
@@ -32,7 +36,7 @@ void init_simstats(SimStats *ptr_simstats){}
  * @param[in]     parking  Pointer to the current parking lot state
  * @param[in]     queue    Pointer to the current waiting queue state
  */
-void update_simstats(SimStats *ptr_simstats, Parking *ptr_parking, Queue *ptr_queue,){}
+void update_simstats(SimStats *ptr_simstats, Parking *ptr_parking, Queue *ptr_queue){}
 
 /**
  * @brief Logs the statistics of the current time step to console and file.
@@ -54,3 +58,5 @@ void log_step_stats(SimStats *ptr_simstats){}
  * @param[in] simstats Pointer to the SimStats structure containing all data
  */
 void log_final_stats(SimStats *ptr_simstats){}
+
+#endif // STATS_H
