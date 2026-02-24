@@ -1,23 +1,33 @@
 #include "vehicle.h"
 #include "stats.h"
 
+/**
+ * @brief Represents a single parking spot within a deck.
+ */
 typedef struct {
-    int      id;
-    char     occupied;
-    Vehicle *ptr_vehicle;
+    int         id;           /**< Unique identifier of the parking spot. */
+    char        occupied;     /**< Flag indicating whether the spot is occupied (1) or free (0). */
+    Vehicle     *ptr_vehicle;  /**< Pointer to the vehicle currently occupying the spot, or NULL if free. */
 } ParkingSpot;
 
+/**
+ * @brief Represents one deck (floor) of the parking garage.
+ */
 typedef struct {
-    unsigned int  deck_id;
-    unsigned int  capacity;
-    ParkingSpot  *ptr_spots;
+    unsigned int    deck_id;    /**< Unique identifier of this deck. */
+    unsigned int    capacity;   /**< Total number of parking spots on this deck. */
+    ParkingSpot     *ptr_spots;  /**< Pointer to the array of parking spots on this deck. */
 } ParkingDeck;
 
+/**
+ * @brief Represents the entire parking garage.
+ */
 typedef struct {
-    unsigned int  total_capacity;
-    unsigned int  occupied_count;
-    ParkingDeck  *ptr_decks;
+    unsigned int    total_capacity;  /**< Total number of parking spots across all decks. */
+    unsigned int    occupied_count;  /**< Number of spots currently occupied. */
+    ParkingDeck     *ptr_decks;       /**< Pointer to the array of decks in the garage. */
 } Parking;
+
 
 /**
  * @brief Parks a vehicle in the first available spot in the parking lot.
