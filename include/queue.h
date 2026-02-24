@@ -1,15 +1,21 @@
 #include "vehicle.h"
 
+/**
+ * @brief A node in the doubled-linked waiting queue.
+ */
 typedef struct QueueNode {
-    Vehicle             *ptr_ehicle;
-    struct QueueNode    *ptr_previous;
-    struct QueueNode    *ptr_next;
+    Vehicle             *ptr_ehicle;   /**< Pointer to the vehicle held by this node. */
+    struct QueueNode    *ptr_previous; /**< Pointer to the previous node in the queue, or NULL if this is the head. */
+    struct QueueNode    *ptr_next;     /**< Pointer to the next node in the queue, or NULL if this is the tail. */
 } QueueNode;
 
+/**
+ * @brief A doubled-linked FIFO queue of waiting vehicles.
+ */
 typedef struct {
-    QueueNode *ptr_head;
-    QueueNode *ptr_tail;
-    int        size;
+    QueueNode *ptr_head; /**< Pointer to the first node in the queue, or NULL if empty. */
+    QueueNode *ptr_tail; /**< Pointer to the last node in the queue, or NULL if empty. */
+    int        size;     /**< Current number of nodes (vehicles) in the queue. */
 } Queue;
 
 /**
