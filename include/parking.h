@@ -4,19 +4,19 @@
 typedef struct {
     int      id;
     char     occupied;
-    Vehicle *vehicle;
+    Vehicle *ptr_vehicle;
 } ParkingSpot;
 
 typedef struct {
     unsigned int  deck_id;
     unsigned int  capacity;
-    ParkingSpot  *spots;
+    ParkingSpot  *ptr_spots;
 } ParkingDeck;
 
 typedef struct {
     unsigned int  total_capacity;
     unsigned int  occupied_count;
-    ParkingDeck  *decks;
+    ParkingDeck  *ptr_decks;
 } Parking;
 
 /**
@@ -30,7 +30,7 @@ typedef struct {
  * @param[in]     vehicle  Pointer to the vehicle entering the parking lot
  * @param[in,out] simstats Pointer to the current simulation statistics
  */
-void entry_parking(Parking *parking, Vehicle *vehicle, SimStats *simstats) {}
+void entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_simstats) {}
 
 /**
  * @brief Checks all parking spots for vehicles that have exceeded their parking duration.
@@ -42,4 +42,4 @@ void entry_parking(Parking *parking, Vehicle *vehicle, SimStats *simstats) {}
  * @param[in,out] parking  Pointer to the parking lot structure
  * @param[in,out] simstats Pointer to the current simulation statistics
  */
-void check_exit(Parking *parking, SimStats *simstats){}
+void check_exit(Parking *ptr_parking, SimStats *ptr_simstats){}

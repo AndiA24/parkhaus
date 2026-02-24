@@ -5,4 +5,4 @@ typedef struct {
     unsigned int queue_time;
 } Vehicle;
 
-void init_vehicle(Vehicle *vehicle) {}
+void init_vehicle(Vehicle *ptr_vehicle) {}

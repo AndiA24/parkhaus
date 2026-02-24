@@ -27,7 +27,7 @@ void create_config(){}
  *
  * @param[out] config Pointer to the SimConfig structure to be populated
  */
-void get_config(SimConfig *config){}
+void get_config(SimConfig *ptr_config){}
 
 /**
  * @brief Saves the current simulation configuration to a file.
@@ -37,4 +37,4 @@ void get_config(SimConfig *config){}
  *
  * @param[in] config Pointer to the SimConfig structure to be saved
  */
-void save_config(SimConfig *config){}
+void save_config(SimConfig *ptr_config){}
