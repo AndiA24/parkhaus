@@ -4,3 +4,5 @@ typedef struct {
     unsigned int parking_duration; // number of steps parking
     unsigned int queue_time;
 } Vehicle;
+
+void init_vehicle(Vehicle *vehicle) {}
