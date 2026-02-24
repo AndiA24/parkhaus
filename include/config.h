@@ -1,12 +1,18 @@
 
+/**
+ * @brief Holds the configuration parameters for the parking simulation.
+ *
+ * This structure is populated from a configuration file or changed by user input and passed
+ * throughout the simulation to control its behaviour. Later the updated configs are saved in the config file.
+ */
 typedef struct {
-    unsigned int  num_decks;
-    unsigned int  spots_per_deck;
-    unsigned int  max_parking_duration_steps;
-    unsigned int  min_parking_duration_steps;
-    unsigned int  sim_duration_steps;
-    unsigned char arrival_probability_percent;
-    unsigned int  seed;
+    unsigned int  num_decks;                   /**< Number of decks (floors) in the parking garage. */
+    unsigned int  spots_per_deck;              /**< Number of parking spots on each deck. */
+    unsigned int  max_parking_duration_steps;  /**< Maximum number of simulation steps a vehicle may stay parked. */
+    unsigned int  min_parking_duration_steps;  /**< Minimum number of simulation steps a vehicle must stay parked. */
+    unsigned int  sim_duration_steps;          /**< Total number of steps the simulation runs. */
+    unsigned char arrival_probability_percent; /**< Probability in percent (0–100) that a vehicle arrives in a given step. */
+    unsigned int  seed;                        /**< Seed value for the random number generator. */
 } SimConfig;
 
 /**
