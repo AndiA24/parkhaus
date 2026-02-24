@@ -1,15 +1,21 @@
 #include "vehicle.h"
 
+/**
+ * @brief A node in the doubled-linked waiting queue.
+ */
 typedef struct QueueNode {
-    Vehicle          *vehicle;
-    struct QueueNode        *previous;
-    struct QueueNode        *next;
+    Vehicle             *ptr_ehicle;   /**< Pointer to the vehicle held by this node. */
+    struct QueueNode    *ptr_previous; /**< Pointer to the previous node in the queue, or NULL if this is the head. */
+    struct QueueNode    *ptr_next;     /**< Pointer to the next node in the queue, or NULL if this is the tail. */
 } QueueNode;
 
+/**
+ * @brief A doubled-linked FIFO queue of waiting vehicles.
+ */
 typedef struct {
-    QueueNode *head;
-    QueueNode *tail;
-    int        size;
+    QueueNode *ptr_head; /**< Pointer to the first node in the queue, or NULL if empty. */
+    QueueNode *ptr_tail; /**< Pointer to the last node in the queue, or NULL if empty. */
+    int        size;     /**< Current number of nodes (vehicles) in the queue. */
 } Queue;
 
 /**
@@ -20,7 +26,7 @@ typedef struct {
  *
  * @param[out] queue Pointer to the queue to be initialized
  */
-void init_queue(Queue *queue){}
+void init_queue(Queue *ptr_queue){}
 
 /**
  * @brief Adds a vehicle to the end of the waiting queue.
@@ -31,7 +37,7 @@ void init_queue(Queue *queue){}
  * @param[in,out] queue   Pointer to the waiting queue
  * @param[in]     vehicle Pointer to the vehicle to be enqueued
  */
-void enqueue(Queue *queue, Vehicle *vehicle){}
+void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle){}
 
 /**
  * @brief Removes and returns the first vehicle from the waiting queue.
@@ -45,7 +51,7 @@ void enqueue(Queue *queue, Vehicle *vehicle){}
  * @return Pointer to the next vehicle allowed to enter the parking lot,
  *         or NULL if the queue is empty
  */
-Vehicle *dequeue(Queue *queue){}
+Vehicle *dequeue(Queue *ptr_queue){}
 
 /**
  * @brief Frees all resources associated with the queue.
@@ -57,4 +63,4 @@ Vehicle *dequeue(Queue *queue){}
  *
  * @param[in,out] queue Pointer to the queue to be deleted
  */
-void delete_queue(Queue *queue){}
+void delete_queue(Queue *ptr_queue){}
