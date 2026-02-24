@@ -1,8 +1,14 @@
 #include "queue.h"
 #include "parking.h"
 
+/**
+ * @brief Holds the statistics collected during the simulation / one simulation step.
+ *
+ * Updated at each simulation step and used for writing the statistics of the simulation 
+ * step into the output File after each step / to create the final report at the end.
+ */
 typedef struct {
-    unsigned int step_num;
+    unsigned int step_num; /**< Current simulation step number. */
     // stats ...
 } SimStats;
 
