@@ -26,7 +26,7 @@ typedef struct {
  *
  * @param[out] queue Pointer to the queue to be initialized
  */
-void init_queue(Queue *ptr_queue){}
+void init_queue(Queue *ptr_queue);
 
 /**
  * @brief Adds a vehicle to the end of the waiting queue.
@@ -37,7 +37,7 @@ void init_queue(Queue *ptr_queue){}
  * @param[in,out] queue   Pointer to the waiting queue
  * @param[in]     vehicle Pointer to the vehicle to be enqueued
  */
-void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle){}
+void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle);
 
 /**
  * @brief Removes and returns the first vehicle from the waiting queue.
@@ -51,7 +51,7 @@ void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle){}
  * @return Pointer to the next vehicle allowed to enter the parking lot,
  *         or NULL if the queue is empty
  */
-Vehicle *dequeue(Queue *ptr_queue){}
+Vehicle *dequeue(Queue *ptr_queue);
 
 /**
  * @brief Frees all resources associated with the queue.
@@ -63,4 +63,4 @@ Vehicle *dequeue(Queue *ptr_queue){}
  *
  * @param[in,out] queue Pointer to the queue to be deleted
  */
-void delete_queue(Queue *ptr_queue){}
+void delete_queue(Queue *ptr_queue);
