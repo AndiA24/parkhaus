@@ -27,120 +27,124 @@ SimStats dummy = {
     .step_highest_occupancy  = 29,
 };
 
-void draw_hline(WINDOW *win, int y, int color_pair) {
-    int w = getmaxx(win);
-    wattron(win, COLOR_PAIR(color_pair) | A_BOLD);
-    mvwhline(win, y, 1, ACS_HLINE, w - 2);
-    mvwaddch(win, y, 0,     ACS_LTEE);
-    mvwaddch(win, y, w - 1, ACS_RTEE);
-    wattroff(win, COLOR_PAIR(color_pair) | A_BOLD);
+void draw_hline(WINDOW *p_win, int y, int color_pair) {
+    int w = getmaxx(p_win);
+    wattron(p_win, COLOR_PAIR(color_pair) | A_BOLD);
+    mvwhline(p_win, y, 1, ACS_HLINE, w - 2);
+    mvwaddch(p_win, y, 0,     ACS_LTEE);
+    mvwaddch(p_win, y, w - 1, ACS_RTEE);
+    wattroff(p_win, COLOR_PAIR(color_pair) | A_BOLD);
 }
 
-void stat_row(WINDOW *win, int y, int label_pair, int val_pair,
+void stat_row(WINDOW *p_win, int y, int label_pair, int val_pair,
               const char *label, const char *val) {
-    wattron(win, COLOR_PAIR(label_pair));
-    mvwprintw(win, y, 2, "%-26s:", label);
-    wattroff(win, COLOR_PAIR(label_pair));
-    wattron(win, COLOR_PAIR(val_pair) | A_BOLD);
-    mvwprintw(win, y, 30, "%s", val);
-    wattroff(win, COLOR_PAIR(val_pair) | A_BOLD);
+    wattron(p_win, COLOR_PAIR(label_pair));
+    mvwprintw(p_win, y, 2, "%-26s:", label);
+    wattroff(p_win, COLOR_PAIR(label_pair));
+    wattron(p_win, COLOR_PAIR(val_pair) | A_BOLD);
+    mvwprintw(p_win, y, 30, "%s", val);
+    wattroff(p_win, COLOR_PAIR(val_pair) | A_BOLD);
 }
 
-void draw_bar(WINDOW *win, int y, float percent, int filled_pair, int empty_pair) {
-    int w      = getmaxx(win);
+void draw_bar(WINDOW *p_win, int y, float percent, int filled_pair, int empty_pair) {
+    int w      = getmaxx(p_win);
     int bar_w  = w - 6;
     int filled = (int)(percent / 100.0f * bar_w);
 
-    mvwaddch(win, y, 2, '[');
-    wattron(win, COLOR_PAIR(filled_pair) | A_BOLD);
-    for (int i = 0; i < filled; i++)     waddch(win, '|');
-    wattroff(win, COLOR_PAIR(filled_pair) | A_BOLD);
-    wattron(win, COLOR_PAIR(empty_pair));
-    for (int i = filled; i < bar_w; i++) waddch(win, '-');
-    wattroff(win, COLOR_PAIR(empty_pair));
-    waddch(win, ']');
+    mvwaddch(p_win, y, 2, '[');
+    wattron(p_win, COLOR_PAIR(filled_pair) | A_BOLD);
+    for (int i = 0; i < filled; i++) {
+        waddch(p_win, '|');
+    }
+    wattroff(p_win, COLOR_PAIR(filled_pair) | A_BOLD);
+    wattron(p_win, COLOR_PAIR(empty_pair));
+    for (int i = filled; i < bar_w; i++) {
+        waddch(p_win, '-');
+    }
+    wattroff(p_win, COLOR_PAIR(empty_pair));
+    waddch(p_win, ']');
 }
 
-void section_header(WINDOW *win, int y, const char *title) {
-    wattron(win, COLOR_PAIR(1) | A_BOLD);
-    mvwprintw(win, y, 2, "%s", title);
-    wattroff(win, COLOR_PAIR(1) | A_BOLD);
+void section_header(WINDOW *p_win, int y, const char *title) {
+    wattron(p_win, COLOR_PAIR(1) | A_BOLD);
+    mvwprintw(p_win, y, 2, "%s", title);
+    wattroff(p_win, COLOR_PAIR(1) | A_BOLD);
 }
 
-void draw_stats(WINDOW *win, SimStats *s) {
-    werase(win);
+void draw_stats(WINDOW *p_win, SimStats *s) {
+    werase(p_win);
 
-    int w = getmaxx(win);
+    int w = getmaxx(p_win);
 
-    wattron(win, COLOR_PAIR(1) | A_BOLD);
-    box(win, 0, 0);
-    wattroff(win, COLOR_PAIR(1) | A_BOLD);
+    wattron(p_win, COLOR_PAIR(1) | A_BOLD);
+    box(p_win, 0, 0);
+    wattroff(p_win, COLOR_PAIR(1) | A_BOLD);
 
     const char *title = "PARKING GARAGE - SIMULATION RESULTS";
-    wattron(win, COLOR_PAIR(2) | A_BOLD);
-    mvwprintw(win, 1, (w - (int)strlen(title)) / 2, "%s", title);
-    wattroff(win, COLOR_PAIR(2) | A_BOLD);
-    draw_hline(win, 2, 1);
+    wattron(p_win, COLOR_PAIR(2) | A_BOLD);
+    mvwprintw(p_win, 1, (w - (int)strlen(title)) / 2, "%s", title);
+    wattroff(p_win, COLOR_PAIR(2) | A_BOLD);
+    draw_hline(p_win, 2, 1);
 
     char buf[32];
 
-    section_header(win, 3, "TRAFFIC");
+    section_header(p_win, 3, "TRAFFIC");
 
     snprintf(buf, sizeof(buf), "%u", s->total_entrys);
-    stat_row(win, 4, 3, 4, "Total Arrivals", buf);
+    stat_row(p_win, 4, 2, 4, "Total Arrivals", buf);
 
     snprintf(buf, sizeof(buf), "%u", s->total_exits);
-    stat_row(win, 5, 3, 4, "Total Exits", buf);
+    stat_row(p_win, 5, 2, 4, "Total Exits", buf);
 
     snprintf(buf, sizeof(buf), "%u", s->total_queued);
-    stat_row(win, 6, 3, 5, "Total Cars Queued", buf);
+    stat_row(p_win, 6, 2, 5, "Total Cars Queued", buf);
 
     snprintf(buf, sizeof(buf), "%u steps", s->total_queue_time);
-    stat_row(win, 7, 3, 5, "Total Queue Time", buf);
+    stat_row(p_win, 7, 2, 5, "Total Queue Time", buf);
 
     snprintf(buf, sizeof(buf), "%u steps", s->total_parking_time);
-    stat_row(win, 8, 3, 4, "Total Parking Time", buf);
+    stat_row(p_win, 8, 2, 4, "Total Parking Time", buf);
 
-    draw_hline(win, 9, 1);
+    draw_hline(p_win, 9, 1);
 
-    section_header(win, 10, "OCCUPANCY");
+    section_header(p_win, 10, "OCCUPANCY");
 
     snprintf(buf, sizeof(buf), "%.1f%%", s->peak_rel_occupancy);
     if(s->peak_rel_occupancy < 85.0) {
-        stat_row(win, 11, 3, 6, "Peak Relative Occupancy", buf);
-        draw_bar(win, 12, s->peak_rel_occupancy, 6, 3);
+        stat_row(p_win, 11, 2, 6, "Peak Relative Occupancy", buf);
+        draw_bar(p_win, 12, s->peak_rel_occupancy, 6, 2);
     }
     else {
-        stat_row(win, 11, 3, 5, "Peak Relative Occupancy", buf);
-        draw_bar(win, 12, s->peak_rel_occupancy, 5, 3);
+        stat_row(p_win, 11, 2, 5, "Peak Relative Occupancy", buf);
+        draw_bar(p_win, 12, s->peak_rel_occupancy, 5, 2);
     }
     
 
     
 
     snprintf(buf, sizeof(buf), "Step %u", s->step_highest_occupancy);
-    stat_row(win, 13, 3, 4, "Peak Occupancy at Step", buf);
+    stat_row(p_win, 13, 2, 4, "Peak Occupancy at Step", buf);
 
     snprintf(buf, sizeof(buf), "%u steps", s->time_full_occupancy);
-    stat_row(win, 14, 3, 5, "Time at Full Occupancy", buf);
+    stat_row(p_win, 14, 2, 5, "Time at Full Occupancy", buf);
 
-    draw_hline(win, 15, 1);
+    draw_hline(p_win, 15, 1);
 
-    section_header(win, 16, "QUEUE");
+    section_header(p_win, 16, "QUEUE");
 
     snprintf(buf, sizeof(buf), "%u cars", s->peak_queue_length);
-    stat_row(win, 17, 3, 4, "Peak Queue Length", buf);
+    stat_row(p_win, 17, 2, 4, "Peak Queue Length", buf);
 
     snprintf(buf, sizeof(buf), "Step %u", s->step_longest_queue);
-    stat_row(win, 18, 3, 5, "Longest Queue at Step", buf);
+    stat_row(p_win, 18, 2, 5, "Longest Queue at Step", buf);
 
-    draw_hline(win, 19, 1);
+    draw_hline(p_win, 19, 1);
 
-    wattron(win, COLOR_PAIR(3));
-    mvwprintw(win, 20, 2, "Press any key to exit...");
-    wattroff(win, COLOR_PAIR(3));
+    wattron(p_win, COLOR_PAIR(2));
+    mvwprintw(p_win, 20, 2, "Press any key to exit...");
+    wattroff(p_win, COLOR_PAIR(2));
 
-    wrefresh(win);
+    wrefresh(p_win);
 }
 
 int main() {
@@ -159,14 +163,14 @@ int main() {
     int sh, sw;
     getmaxyx(stdscr, sh, sw);
 
-    int win_h = 22;
-    int win_w = 52;
-    WINDOW *win = newwin(win_h, win_w, (sh - win_h) / 2, (sw - win_w) / 2);
+    int p_win_h = 22;
+    int p_win_w = 52;
+    WINDOW *p_win = newwin(p_win_h, p_win_w, (sh - p_win_h) / 2, (sw - p_win_w) / 2);
 
-    draw_stats(win, &dummy);
-    wgetch(win);
+    draw_stats(p_win, &dummy);
+    wgetch(p_win);
 
-    delwin(win);
+    delwin(p_win);
     endwin();
     return 0;
 }
