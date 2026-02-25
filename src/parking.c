@@ -56,6 +56,19 @@ FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simst
                 ptr_parking->ptr_decks[deck].ptr_spots[spot].ptr_vehicle = ptr_vehicle
                 ptr_parking->ptr_decks[deck].ptr_spots[spot].occupied = 1
                 ptr_parking->occupied_count = ptr_parking->occupied_count + 1
+
+                // --- Update stats ---
+                ptr_simstats->temp_entrys = ptr_simstats->temp_entrys + 1
+                ptr_simstats->total_entrys = ptr_simstats->total_entrys + 1
+
+                ptr_simstats->temp_rel_occupancy_precent = 
+                    (ptr_parking->occupied_count / ptr_parking->total_capacity) * 100.0
+
+                IF ptr_simstats->temp_rel_occupancy_precent > ptr_simstats->peak_rel_occupancy THEN
+                    ptr_simstats->peak_rel_occupancy = ptr_simstats->temp_rel_occupancy_precent
+                    ptr_simstats->step_highest_occupancy = ptr_simstats->step_num
+                ENDIF
+
                 RETURN                                           // vehicle parked, exit
             ENDIF
         ENDFOR
