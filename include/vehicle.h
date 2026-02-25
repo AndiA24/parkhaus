@@ -8,4 +8,4 @@ typedef struct {
     unsigned int queue_time;       /**< Number of simulation steps the vehicle spent waiting in the queue. */
 } Vehicle;
 
-void init_vehicle(Vehicle *ptr_vehicle) {}
+void init_vehicle(Vehicle *ptr_vehicle);

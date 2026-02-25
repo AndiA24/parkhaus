@@ -24,7 +24,7 @@ typedef struct {
  *
  * @param[out] simstats Pointer to the SimStats structure to be initialized
  */
-void init_simstats(SimStats *ptr_simstats){}
+void init_simstats(SimStats *ptr_simstats);
 
 /**
  * @brief Updates the simulation statistics for the current time step.
@@ -36,7 +36,7 @@ void init_simstats(SimStats *ptr_simstats){}
  * @param[in]     parking  Pointer to the current parking lot state
  * @param[in]     queue    Pointer to the current waiting queue state
  */
-void update_simstats(SimStats *ptr_simstats, Parking *ptr_parking, Queue *ptr_queue){}
+void update_simstats(SimStats *ptr_simstats, Parking *ptr_parking, Queue *ptr_queue);
 
 /**
  * @brief Logs the statistics of the current time step to console and file.
@@ -47,7 +47,7 @@ void update_simstats(SimStats *ptr_simstats, Parking *ptr_parking, Queue *ptr_qu
  *
  * @param[in] simstats Pointer to the SimStats structure of the current step
  */
-void log_step_stats(SimStats *ptr_simstats){}
+void log_step_stats(SimStats *ptr_simstats);
 
 /**
  * @brief Logs the overall simulation statistics to console and file.
@@ -57,6 +57,6 @@ void log_step_stats(SimStats *ptr_simstats){}
  *
  * @param[in] simstats Pointer to the SimStats structure containing all data
  */
-void log_final_stats(SimStats *ptr_simstats){}
+void log_final_stats(SimStats *ptr_simstats);
 
 #endif // STATS_H
