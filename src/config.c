@@ -163,9 +163,9 @@ int main() {
     int sh, sw;
     getmaxyx(stdscr, sh, sw);
 
-    int p_win_h = 22;
-    int p_win_w = 52;
-    WINDOW *p_win = newwin(p_win_h, p_win_w, (sh - p_win_h) / 2, (sw - p_win_w) / 2);
+    int win_h = 22;
+    int win_w = 52;
+    WINDOW *p_win = newwin(win_h, win_w, (sh - win_h) / 2, (sw - win_w) / 2);
 
     draw_stats(p_win, &dummy);
     wgetch(p_win);
