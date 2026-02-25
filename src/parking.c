@@ -1,4 +1,6 @@
 #include "../include/parking.h"
+#include "../include/vehicle.h"
+#include "../include/stats.h"
 
 FUNCTION check_exit(ptr_parking, ptr_simstats)
 
@@ -36,3 +38,27 @@ FUNCTION check_exit(ptr_parking, ptr_simstats)
     END FOR
 
 END FUNCTION
+
+
+/* 
+FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simstats : SimStats*)
+    IF !ptr_parking OR !ptr_parking->ptr_decks OR !ptr_vehicle THEN
+        RETURN                                                   // invalid input, do nothing
+    ENDIF
+
+    IF ptr_parking->occupied_count == ptr_parking->total_capacity THEN
+        RETURN                                                   // parking full
+    ENDIF
+
+    FOR deck = 0 TO ptr_parking->deck_count - 1
+        FOR spot = 0 TO ptr_parking->ptr_decks[deck].capacity - 1
+            IF !ptr_parking->ptr_decks[deck].ptr_spots[spot].occupied THEN
+                ptr_parking->ptr_decks[deck].ptr_spots[spot].ptr_vehicle = ptr_vehicle
+                ptr_parking->ptr_decks[deck].ptr_spots[spot].occupied = 1
+                ptr_parking->occupied_count = ptr_parking->occupied_count + 1
+                RETURN                                           // vehicle parked, exit
+            ENDIF
+        ENDFOR
+    ENDFOR
+ENDFUNCTION
+*/

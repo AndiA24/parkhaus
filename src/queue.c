@@ -2,7 +2,7 @@
 #include "../include/vehicle.h"
 
 /* 
-FUNCTION init_queue(*ptr_queue : Queue)
+FUNCTION init_queue(ptr_queue : Queue*)
     ptr_queue->ptr_head = NULL                                  // initialize head to NULL
     ptr_queue->ptr_tail = NULL                                  // initialize tail to NULL
     ptr_queue->size = 0                                         // set size to 0
