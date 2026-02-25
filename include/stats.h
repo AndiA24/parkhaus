@@ -13,7 +13,11 @@ typedef struct Parking Parking;
  */
 typedef struct {
     unsigned int step_num; /**< Current simulation step number. */
-    // stats ...
+        unsigned int temp_exits;
+        unsigned int temp_entrys;
+
+        unsigned int total_exits;
+        unsigned int total_entrys;
 } SimStats;
 
 /**
