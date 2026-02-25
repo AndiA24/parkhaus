@@ -16,7 +16,7 @@ typedef struct {
 void init_vehicle(Vehicle *ptr_vehicle);
 
 /**
- * @brief Frees any resources associated with a Vehicle.
+ * @brief Frees the memory of a Vehicle struct after exit.
  *
  * @param ptr_vehicle Pointer to the Vehicle to free.
  */
