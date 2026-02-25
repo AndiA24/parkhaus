@@ -9,3 +9,5 @@ typedef struct {
 } Vehicle;
 
 void init_vehicle(Vehicle *ptr_vehicle) {}
+
+void free_vehicle(Vehicle *ptr_vehicle) {}
