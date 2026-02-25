@@ -8,4 +8,16 @@ typedef struct {
     unsigned int queue_time;       /**< Number of simulation steps the vehicle spent waiting in the queue. */
 } Vehicle;
 
+/**
+ * @brief Initializes a Vehicle with default values.
+ *
+ * @param ptr_vehicle Pointer to the Vehicle to initialize.
+ */
 void init_vehicle(Vehicle *ptr_vehicle);
+
+/**
+ * @brief Frees any resources associated with a Vehicle.
+ *
+ * @param ptr_vehicle Pointer to the Vehicle to free.
+ */
+void free_vehicle(Vehicle *ptr_vehicle);
