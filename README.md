@@ -34,8 +34,8 @@ Team-Repository für den Programmentwurf "Parkhaus" zur Vorlesung Programmieren 
 		- average waiting time
 		- step longest queue
 		- step highest occupancy
-		- time full occupancy
-		- revenue
+		- time full occupancy (sum of steps with total occupancy)
+		- (revenue)
 		- peak queue lenght
 		- cars queued percent
 
