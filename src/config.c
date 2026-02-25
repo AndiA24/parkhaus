@@ -87,19 +87,19 @@ void draw_stats(WINDOW *win, SimStats *s) {
     section_header(win, 3, "TRAFFIC");
 
     snprintf(buf, sizeof(buf), "%u", s->total_entrys);
-    stat_row(win, 4, 3, 4, "Total Arrivals",          buf);
+    stat_row(win, 4, 3, 4, "Total Arrivals", buf);
 
     snprintf(buf, sizeof(buf), "%u", s->total_exits);
-    stat_row(win, 5, 3, 4, "Total Exits",             buf);
+    stat_row(win, 5, 3, 4, "Total Exits", buf);
 
     snprintf(buf, sizeof(buf), "%u", s->total_queued);
-    stat_row(win, 6, 3, 5, "Total Cars Queued",       buf);
+    stat_row(win, 6, 3, 5, "Total Cars Queued", buf);
 
     snprintf(buf, sizeof(buf), "%u steps", s->total_queue_time);
-    stat_row(win, 7, 3, 5, "Total Queue Time",        buf);
+    stat_row(win, 7, 3, 5, "Total Queue Time", buf);
 
     snprintf(buf, sizeof(buf), "%u steps", s->total_parking_time);
-    stat_row(win, 8, 3, 4, "Total Parking Time",      buf);
+    stat_row(win, 8, 3, 4, "Total Parking Time", buf);
 
     draw_hline(win, 9, 1);
 
@@ -107,11 +107,11 @@ void draw_stats(WINDOW *win, SimStats *s) {
 
     snprintf(buf, sizeof(buf), "%.1f%%", s->peak_rel_occupancy);
     if(s->peak_rel_occupancy < 85.0) {
-        stat_row(win, 11, 3, 6, "Peak Relative Occupancy",  buf);
+        stat_row(win, 11, 3, 6, "Peak Relative Occupancy", buf);
         draw_bar(win, 12, s->peak_rel_occupancy, 6, 3);
     }
     else {
-        stat_row(win, 11, 3, 5, "Peak Relative Occupancy",  buf);
+        stat_row(win, 11, 3, 5, "Peak Relative Occupancy", buf);
         draw_bar(win, 12, s->peak_rel_occupancy, 5, 3);
     }
     
@@ -119,20 +119,20 @@ void draw_stats(WINDOW *win, SimStats *s) {
     
 
     snprintf(buf, sizeof(buf), "Step %u", s->step_highest_occupancy);
-    stat_row(win, 13, 3, 4, "Peak Occupancy at Step",   buf);
+    stat_row(win, 13, 3, 4, "Peak Occupancy at Step", buf);
 
     snprintf(buf, sizeof(buf), "%u steps", s->time_full_occupancy);
-    stat_row(win, 14, 3, 5, "Time at Full Occupancy",   buf);
+    stat_row(win, 14, 3, 5, "Time at Full Occupancy", buf);
 
     draw_hline(win, 15, 1);
 
     section_header(win, 16, "QUEUE");
 
     snprintf(buf, sizeof(buf), "%u cars", s->peak_queue_length);
-    stat_row(win, 17, 3, 4, "Peak Queue Length",        buf);
+    stat_row(win, 17, 3, 4, "Peak Queue Length", buf);
 
     snprintf(buf, sizeof(buf), "Step %u", s->step_longest_queue);
-    stat_row(win, 18, 3, 5, "Longest Queue at Step",    buf);
+    stat_row(win, 18, 3, 5, "Longest Queue at Step", buf);
 
     draw_hline(win, 19, 1);
 
@@ -150,12 +150,11 @@ int main() {
     noecho();
     curs_set(0);
 
-    init_pair(1, COLOR_CYAN,   COLOR_BLACK);
-    init_pair(2, COLOR_WHITE,  COLOR_BLACK);
-    init_pair(3, COLOR_WHITE,  COLOR_BLACK);
-    init_pair(4, COLOR_YELLOW, COLOR_BLACK);
-    init_pair(5, COLOR_RED,    COLOR_BLACK);
-    init_pair(6, COLOR_GREEN,  COLOR_BLACK);
+    init_pair(1, COLOR_CYAN,   COLOR_BLACK); // borders & section headers
+    init_pair(2, COLOR_WHITE,  COLOR_BLACK); // title & lables 
+    init_pair(4, COLOR_YELLOW, COLOR_BLACK); // normal values
+    init_pair(5, COLOR_RED,    COLOR_BLACK); // peak/warning values
+    init_pair(6, COLOR_GREEN,  COLOR_BLACK); // positive values
 
     int sh, sw;
     getmaxyx(stdscr, sh, sw);
