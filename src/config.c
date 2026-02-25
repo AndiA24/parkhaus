@@ -99,6 +99,9 @@ void draw_stats(WINDOW *win, SimStats *s) {
 
     section_header(win, 9, "QUEUE");
 
+    snprintf(buf, sizeof(buf), "%.2f steps", s->avg_waiting_time);
+    stat_row(win, 16, 3, 4, "Avg Waiting Time",         buf);
+
     snprintf(buf, sizeof(buf), "%u cars", s->peak_queue_length);
     stat_row(win, 10, 3, 4, "Peak Queue Length",        buf);
 
@@ -108,14 +111,8 @@ void draw_stats(WINDOW *win, SimStats *s) {
     snprintf(buf, sizeof(buf), "%.1f%%", s->cars_queued_percent);
     stat_row(win, 12, 3, 4, "Cars Queued",              buf);
 
-    draw_bar(win, 13, s->cars_queued_percent, 6, 3);
-    draw_hline(win, 14, 1);
-
 
     section_header(win, 15, "PERFORMANCE");
-
-    snprintf(buf, sizeof(buf), "%.2f steps", s->avg_waiting_time);
-    stat_row(win, 16, 3, 4, "Avg Waiting Time",         buf);
 
     snprintf(buf, sizeof(buf), "EUR %.2f", s->revenue);
     stat_row(win, 17, 3, 6, "Total Revenue",            buf);
