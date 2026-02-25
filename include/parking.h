@@ -24,6 +24,7 @@ typedef struct {
  */
 typedef struct {
     unsigned int    total_capacity;  /**< Total number of parking spots across all decks. */
+    unsigned int    decks;
     unsigned int    occupied_count;  /**< Number of spots currently occupied. */
     ParkingDeck     *ptr_decks;       /**< Pointer to the array of decks in the garage. */
 } Parking;
@@ -52,6 +53,4 @@ void entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sim
  * @param[in,out] parking  Pointer to the parking lot structure
  * @param[in,out] simstats Pointer to the current simulation statistics
  */
-void check_exit(Parking *ptr_parking, SimStats *ptr_simstats){
-    
-}
+void check_exit(Parking *ptr_parking, SimStats *ptr_simstats){}
