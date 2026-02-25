@@ -24,7 +24,7 @@ typedef struct {
  */
 typedef struct {
     unsigned int    total_capacity;  /**< Total number of parking spots across all decks. */
-    unsigned int    decks;
+    unsigned int    decks;           /**< Total number of parking decks in the parking. */
     unsigned int    occupied_count;  /**< Number of spots currently occupied. */
     ParkingDeck     *ptr_decks;       /**< Pointer to the array of decks in the garage. */
 } Parking;
