@@ -1,4 +1,6 @@
 #include "../include/parking.h"
+#include "../include/vehicle.h"
+#include "../include/stats.h"
 
 FUNCTION check_exit(ptr_parking, ptr_simstats)
 
@@ -36,3 +38,39 @@ FUNCTION check_exit(ptr_parking, ptr_simstats)
     END FOR
 
 END FUNCTION
+
+
+/* 
+FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simstats : SimStats*)
+    IF !ptr_parking OR !ptr_parking->ptr_decks OR !ptr_vehicle THEN     // check for invalid input pointers
+        RETURN                                                   
+    ENDIF
+
+    IF ptr_parking->occupied_count == ptr_parking->total_capacity THEN      // check if parking is full
+        RETURN                                                   
+    ENDIF
+
+    FOR deck = 0 TO ptr_parking->deck_count - 1                // iterate over each deck
+        FOR spot = 0 TO ptr_parking->ptr_decks[deck].capacity - 1       // iterate over each spot in current deck
+            IF !ptr_parking->ptr_decks[deck].ptr_spots[spot].occupied THEN      // check if spot is occupied
+                ptr_parking->ptr_decks[deck].ptr_spots[spot].ptr_vehicle = ptr_vehicle      // assign vehicle to free spot
+                ptr_parking->ptr_decks[deck].ptr_spots[spot].occupied = 1       // set occupied flag
+                ptr_parking->occupied_count = ptr_parking->occupied_count + 1       // increment occupied count
+
+                // --- Update stats ---
+                ptr_simstats->temp_entrys = ptr_simstats->temp_entrys + 1   // increment step entries
+                ptr_simstats->total_entrys = ptr_simstats->total_entrys + 1 // increment total entries
+                ptr_simstats->temp_rel_occupancy_precent = 
+                    (ptr_parking->occupied_count / ptr_parking->total_capacity) * 100.0 // compute step occupancy %
+                
+                IF ptr_simstats->temp_rel_occupancy_precent > ptr_simstats->peak_rel_occupancy THEN
+                    ptr_simstats->peak_rel_occupancy = ptr_simstats->temp_rel_occupancy_precent
+                    ptr_simstats->step_highest_occupancy = ptr_simstats->step_num // update peak occupancy if new high
+                ENDIF
+
+                RETURN                                           // vehicle parked, exit
+            ENDIF
+        ENDFOR
+    ENDFOR
+ENDFUNCTION
+*/
