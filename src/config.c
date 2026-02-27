@@ -22,13 +22,11 @@ END FUNCTION
 
 FUNCTION show_settings(struct settings)
     active <- true
-    render_settings()
+    render_settings(settings)
 
     WHILE active
         key <- get_input()
         
-        IF key = ESC
-            active <- false
         ELSE IF key = '1'
             settings.num_decks <- prompt_input("Number of Decks", settings.num_decks, 1, 99)
         ELSE IF key = '2'
@@ -70,7 +68,7 @@ FUNCTION prompt_input(name, current_value, min, max)
     RETURN input
 END FUNCTION
 
-FUNCTION render_settings()
+FUNCTION render_settings(struct settings)
     print(""Number of Decks", settings.num_decks)
     print("Spots per Deck", settings.spots_per_deck)
     print("Initial Occupancy", settings.initial_occupancy)
