@@ -29,6 +29,9 @@ FUNCTION check_exit(ptr_parking, ptr_simstats)
 
                 END IF
 
+                ptr_spot = NULL
+                ptr_spot = NULL
+
             END IF
 
         END FOR
