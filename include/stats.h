@@ -2,6 +2,7 @@
 #define STATS_H
 
 #include "queue.h"
+#include "config.h"
 
 typedef struct Parking Parking;
 
@@ -43,7 +44,21 @@ typedef struct {
  *
  * @param[out] simstats Pointer to the SimStats structure to be initialized
  */
-void init_simstats(SimStats *ptr_simstats);
+SimStats *init_simstats(SimStats *ptr_simstats);
+
+/**
+ * @brief Creates the CSV output file using the filename specified in the config.
+ *
+ * Opens (or creates) a CSV file whose name is taken from SimConfig struct. If a file
+ * with that name already exists, the user is prompted to either supply an
+ * alternative filename or confirm overwriting the existing file. Once the file
+ * is successfully created, the simulation configuration is written
+ * at the top of the CSV so that every output file is self-documenting.
+ *
+ * @param[in] config Pointer to the SimConfig structure containing the output
+ *                   filename and all configuration values written to the header.
+ */
+void create_output_file(SimConfig *config);
 
 /**
  * @brief Updates the simulation statistics for the current time step.
