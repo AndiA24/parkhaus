@@ -12,7 +12,7 @@ FUNCTION show_welcome(settings)
         IF key = 'Q'
             RETURN quit
         ELSE IF key = 'S'
-            show_settings()
+            show_settings(settings)
         ELSE IF key = 'Enter'
             RETURN simulation_go
         END IF
@@ -27,7 +27,7 @@ FUNCTION show_settings(struct settings)
     WHILE active
         key <- get_input()
         
-        ELSE IF key = '1'
+        IF key = '1'
             settings.num_decks <- prompt_input("Number of Decks", settings.num_decks, 1, 99)
         ELSE IF key = '2'
             settings.spots_per_deck <- prompt_input("Spots per Deck", settings.spots_per_deck, 1, 999)
@@ -44,7 +44,7 @@ FUNCTION show_settings(struct settings)
         ELSE IF key = '8'
             settings.seed <- prompt_input("RNG Seed", settings.seed, 0, 9999)
         ELSE IF key = 'ESC' || 'Enter' || 'Q'
-            acive <- false
+            active <- false
         END IF
     END WHILE
 END FUNCTION
