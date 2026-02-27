@@ -16,3 +16,15 @@ FUNCTION create_vehicle(id : int, entry_time : int, duration : int) RETURNS Vehi
     RETURN ptr_vehicle
 END FUNCTION
 */
+
+/*
+FUNCTION free_vehicle(ptr_vehicle : Vehicle*)
+
+    IF ptr_vehicle == NULL
+        RETURN
+    ENDIF
+
+    free(ptr_vehicle)
+
+END FUNCTION
+*/
