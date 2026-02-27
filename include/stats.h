@@ -73,6 +73,20 @@ void create_output_file(SimConfig *config);
 void update_simstats(SimStats *ptr_simstats, Parking *ptr_parking, Queue *ptr_queue);
 
 /**
+ * @brief Checks temporary values against current peaks and updates them if exceeded.
+ *
+ * Compares temp_queue_length and temp_rel_occupancy_precent in the SimStats
+ * structure against the stored peak values. If a new maximum is detected, the
+ * corresponding peak field is overwritten and the current step_num is saved
+ * in the matching step-tracking field step_longest_queue or
+ * step_highest_occupancy.
+ *
+ * @param[in,out] ptr_simstats Pointer to the SimStats structure whose peak fields
+ *                             and step markers may be updated.
+ */
+void update_peak(SimStats *ptr_simstats);
+
+/**
  * @brief Logs the statistics of the current time step to console and file.
  *
  * Outputs all metrics stored in the SimStats structure for the current
@@ -81,7 +95,18 @@ void update_simstats(SimStats *ptr_simstats, Parking *ptr_parking, Queue *ptr_qu
  *
  * @param[in] simstats Pointer to the SimStats structure of the current step
  */
-void log_step_stats(SimStats *ptr_simstats);
+void save_temp_dataset(SimStats *ptr_simstats);
+
+/**
+ * @brief Resets all per-step (temporary) fields in the SimStats structure to zero.
+ *
+ * Clears all temp stats so they are ready to be filled in the next
+ * simulation step.
+ *
+ * @param[in,out] ptr_simstats Pointer to the SimStats structure whose temporary
+ *                             fields are to be reset.
+ */
+void reset_temp_stats(SimStats *ptr_simstats);
 
 /**
  * @brief Logs the overall simulation statistics to console and file.
@@ -91,6 +116,24 @@ void log_step_stats(SimStats *ptr_simstats);
  *
  * @param[in] simstats Pointer to the SimStats structure containing all data
  */
-void log_final_stats(SimStats *ptr_simstats);
+void save_final_dataset(SimStats *ptr_simstats);
+
+/**
+ * @brief Resets all fields in the SimStats structure to zero.
+ *
+ * Clears every field.
+ *
+ * @param[in,out] ptr_simstats Pointer to the SimStats structure to be fully reset.
+ */
+void reset_all_stats(SimStats *ptr_simstats);
+
+/**
+ * @brief Frees all dynamically allocated memory associated with a SimStats structure.
+ *
+ * Releases any heap memory owned by the SimStats structure.
+ *
+ * @param[in] ptr_simstats Pointer to the SimStats structure to be freed.
+ */
+void free_stats(SimStats *ptr_simstats);
 
 #endif // STATS_H
