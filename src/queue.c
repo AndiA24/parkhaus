@@ -1,7 +1,6 @@
 #include "../include/queue.h"
 #include "../include/vehicle.h"
 
-
 /* 
 FUNCTION init_queue(ptr_queue : Queue*)
     ptr_queue->ptr_head = NULL                                  // initialize head to NULL
@@ -9,7 +8,6 @@ FUNCTION init_queue(ptr_queue : Queue*)
     ptr_queue->size = 0                                         // set size to 0
 ENDFUNCTION
 */
-
 
 /*
 FUNCTION enqueue(ptr_queue : Queue*, ptr_vehicle : Vehicle*)
@@ -34,7 +32,6 @@ FUNCTION enqueue(ptr_queue : Queue*, ptr_vehicle : Vehicle*)
 ENDFUNCTION
 */
 
-
 /*
 FUNCTION dequeue(ptr_queue : Queue*) RETURNS Vehicle*
     IF ptr_queue->ptr_head == NULL THEN
@@ -58,7 +55,6 @@ FUNCTION dequeue(ptr_queue : Queue*) RETURNS Vehicle*
     RETURN ptr_vehicle                                          // return dequeued vehicle
 ENDFUNCTION
 */
-
 
 /*
 FUNCTION delete_queue(ptr_queue : Queue*)
