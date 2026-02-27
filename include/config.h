@@ -13,6 +13,7 @@ typedef struct {
     unsigned int min_parking_duration_steps;  /**< Minimum number of simulation steps a vehicle must stay parked. */
     unsigned int sim_duration_steps;          /**< Total number of steps the simulation runs. */
     unsigned char arrival_probability_percent; /**< Probability in percent (0–100) that a vehicle arrives in a given step. */
+    char output_file_name[70];                /**< Name of the Stats-output File */
     unsigned int seed;                        /**< Seed value for the random number generator. */
 } SimConfig;
 
