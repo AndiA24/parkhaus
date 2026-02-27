@@ -28,21 +28,21 @@ FUNCTION show_settings(Struct SimConfig)
         key <- get_input()
         
         IF key = '1'
-            SimConfig.num_decks <- prompt_input("Number of Decks", SimConfig.num_decks, 1, 99)
+            SimConfig->num_decks <- prompt_input("Number of Decks", SimConfig->num_decks, 1, 99)
         ELSE IF key = '2'
-            SimConfig.spots_per_deck <- prompt_input("Spots per Deck", SimConfig.spots_per_deck, 1, 999)
+            SimConfig->spots_per_deck <- prompt_input("Spots per Deck", SimConfig->spots_per_deck, 1, 999)
         ELSE IF key = '3'
-            SimConfig.initial_occupancy <- prompt_input("Initial Occupancy", SimConfig.initial_occupancy, 0, 999)
+            SimConfig->initial_occupancy <- prompt_input("Initial Occupancy", SimConfig->initial_occupancy, 0, 999)
         ELSE IF key = '4'
-            SimConfig.max_parking_duration_steps <- prompt_input("Max Parking Duration", SimConfig.max_parking_duration_steps, 1, 9999)
+            SimConfig->max_parking_duration_steps <- prompt_input("Max Parking Duration", SimConfig->max_parking_duration_steps, 1, 9999)
         ELSE IF key = '5'
-            SimConfig.min_parking_duration_steps <- prompt_input("Min Parking Duration", SimConfig.min_parking_duration_steps, 1, 9999)
+            SimConfig->min_parking_duration_steps <- prompt_input("Min Parking Duration", SimConfig->min_parking_duration_steps, 1, 9999)
         ELSE IF key = '6'
-            SimConfig.sim_duration_steps <- prompt_input("Simulation Duration", SimConfig.sim_duration_steps, 1, 9999)
+            SimConfig->sim_duration_steps <- prompt_input("Simulation Duration", SimConfig->sim_duration_steps, 1, 9999)
         ELSE IF key = '7'
-            SimConfig.arrival_probability_percent <- prompt_input("Arrival Probability %", SimConfig.arrival_probability_percent, 0, 100)
+            SimConfig->arrival_probability_percent <- prompt_input("Arrival Probability %", SimConfig->arrival_probability_percent, 0, 100)
         ELSE IF key = '8'
-            SimConfig.seed <- prompt_input("RNG Seed", SimConfig.seed, 0, 9999)
+            SimConfig->seed <- prompt_input("RNG Seed", SimConfig->seed, 0, 9999)
         ELSE IF key = 'ESC' || 'Enter' || 'Q'
             active <- false
         END IF
@@ -69,21 +69,21 @@ FUNCTION prompt_input(name, current_value, min, max)
 END FUNCTION
 
 FUNCTION render_settings(Struct SimConfig)
-    print("Number of Decks", SimConfig.num_decks)
-    print("Spots per Deck", SimConfig.spots_per_deck)
-    print("Initial Occupancy", SimConfig.initial_occupancy)
-    print("Max Parking Duration", SimConfig.max_parking_duration_steps)
-    print("Min Parking Duration", SimConfig.min_parking_duration_steps)
-    print("Simulation Duration", SimConfig.sim_duration_steps)
-    print("Arrival Probability %", SimConfig.arrival_probability_percent)
-    print("RNG Seed", SimConfig.seed)
+    print("Number of Decks", SimConfig->num_decks)
+    print("Spots per Deck", SimConfig->spots_per_deck)
+    print("Initial Occupancy", SimConfig->initial_occupancy)
+    print("Max Parking Duration", SimConfig->max_parking_duration_steps)
+    print("Min Parking Duration", SimConfig->min_parking_duration_steps)
+    print("Simulation Duration", SimConfig->sim_duration_steps)
+    print("Arrival Probability %", SimConfig->arrival_probability_percent)
+    print("RNG Seed", SimConfig->seed)
 END FUNCTION
 
 FUNCTION show_running(Struct ptr_SimStats)
-    print("Exists this time step", ptr_SimStats-> temp_exits)
-    print("Entrys this time step", ptr_SimStats-> temp_entrys)
-    print("Relative Occupancy this time step", ptr_SimStats-> temp_rel_occupancy_precent)
-    print("Current queue length", ptr_SimStats-> temp_queue_length)
+    print("Exists this time step", ptr_SimStats->temp_exits)
+    print("Entrys this time step", ptr_SimStats->temp_entrys)
+    print("Relative Occupancy this time step", ptr_SimStats->temp_rel_occupancy_precent)
+    print("Current queue length", ptr_SimStats->temp_queue_length)
 END FUNCTION
 
 FUNCTION show_results(Struct ptr_SimStats)
