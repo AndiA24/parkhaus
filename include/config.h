@@ -22,8 +22,11 @@ typedef struct {
  * Initializes the SimConfig structure with predefined default values
  * and writes them to a configuration file. This function is called
  * by get_config if no existing configuration file is found.
+ *
+ * @return Pointer to a newly allocated SimConfig with default values,
+ *         or NULL on failure.
  */
-void create_config();
+SimConfig *create_config();
 
 /**
  * @brief Reads simulation parameters from the configuration file.
