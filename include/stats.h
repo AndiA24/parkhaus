@@ -105,8 +105,9 @@ void save_temp_dataset(SimStats *ptr_simstats);
  *
  * @param[in,out] ptr_simstats Pointer to the SimStats structure whose temporary
  *                             fields are to be reset.
+ * @param[in]     ptr_config   Pointer to the simulation configuration.
  */
-void reset_temp_stats(SimStats *ptr_simstats);
+void reset_temp_stats(SimStats *ptr_simstats, SimConfig *ptr_config);
 
 /**
  * @brief Logs the overall simulation statistics to console and file.
@@ -114,9 +115,10 @@ void reset_temp_stats(SimStats *ptr_simstats);
  * Outputs a final summary of all accumulated metrics after the simulation
  * has completed. Writes the summary to stdout and to the simulation log file.
  *
- * @param[in] simstats Pointer to the SimStats structure containing all data
+ * @param[in] ptr_simstats Pointer to the SimStats structure containing all data.
+ * @param[in] ptr_config   Pointer to the simulation configuration.
  */
-void save_final_dataset(SimStats *ptr_simstats);
+void save_final_dataset(SimStats *ptr_simstats, SimConfig *ptr_config);
 
 /**
  * @brief Resets all fields in the SimStats structure to zero.
@@ -130,7 +132,7 @@ void reset_all_stats(SimStats *ptr_simstats);
 /**
  * @brief Frees all dynamically allocated memory associated with a SimStats structure.
  *
- * Releases any heap memory owned by the SimStats structure.
+ * Frees the SimStats structure that was allocated by init_simstats
  *
  * @param[in] ptr_simstats Pointer to the SimStats structure to be freed.
  */
