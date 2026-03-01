@@ -4,7 +4,7 @@
  * @brief A node in the doubled-linked waiting queue.
  */
 typedef struct QueueNode {
-    Vehicle             *ptr_ehicle;   /**< Pointer to the vehicle held by this node. */
+    Vehicle             *ptr_vehicle;   /**< Pointer to the vehicle held by this node. */
     struct QueueNode    *ptr_previous; /**< Pointer to the previous node in the queue, or NULL if this is the head. */
     struct QueueNode    *ptr_next;     /**< Pointer to the next node in the queue, or NULL if this is the tail. */
 } QueueNode;
