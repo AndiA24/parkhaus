@@ -38,14 +38,15 @@ typedef struct {
 } SimStats;
 
 /**
- * @brief Initializes the simulation statistics structure with default values.
+ * @brief Allocates and initializes the simulation statistics structure.
  *
- * Sets all fields of the SimStats structure to zero before the
- * simulation starts. Must be called before any other stats function.
+ * Allocates memory for a SimStats structure and sets all fields to zero
+ * before the simulation starts. 
  *
- * @param[out] simstats Pointer to the SimStats structure to be initialized
+ * @return Pointer to the newly allocated and initialized SimStats structure,
+ *         or NULL if memory allocation fails.
  */
-SimStats *init_simstats(SimStats *ptr_simstats);
+SimStats *init_simstats();
 
 /**
  * @brief Creates the CSV output file using the filename specified in the config.
