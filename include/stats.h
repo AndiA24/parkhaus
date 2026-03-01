@@ -114,8 +114,8 @@ void reset_temp_stats(SimStats *ptr_simstats, SimConfig *ptr_config);
  * @brief Logs the overall simulation statistics to console and file.
  *
  * Outputs a final summary of all accumulated metrics after the simulation
- * 
  * has completed. Writes the summary to stdout and to the simulation log file.
+ * Closes the output File after writing the final data.
  *
  * @param[in] ptr_simstats Pointer to the SimStats structure containing all data.
  * @param[in] ptr_config   Pointer to the simulation configuration.
