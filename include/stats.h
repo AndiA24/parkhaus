@@ -1,6 +1,7 @@
 #ifndef STATS_H
 #define STATS_H
 
+#include <stdio.h>
 #include "queue.h"
 #include "config.h"
 
@@ -58,7 +59,7 @@ SimStats *init_simstats(SimStats *ptr_simstats);
  * @param[in] config Pointer to the SimConfig structure containing the output
  *                   filename and all configuration values written to the header.
  */
-void create_output_file(SimConfig *config);
+FILE *create_output_file(SimConfig *config);
 
 /**
  * @brief Updates the simulation statistics for the current time step.
@@ -95,7 +96,7 @@ void update_peak(SimStats *ptr_simstats);
  *
  * @param[in] simstats Pointer to the SimStats structure of the current step
  */
-void save_temp_dataset(SimStats *ptr_simstats);
+void save_temp_dataset(SimStats *ptr_simstats, FILE *ptr_output_file);
 
 /**
  * @brief Resets all per-step (temporary) fields in the SimStats structure to zero.
@@ -113,12 +114,13 @@ void reset_temp_stats(SimStats *ptr_simstats, SimConfig *ptr_config);
  * @brief Logs the overall simulation statistics to console and file.
  *
  * Outputs a final summary of all accumulated metrics after the simulation
+ * 
  * has completed. Writes the summary to stdout and to the simulation log file.
  *
  * @param[in] ptr_simstats Pointer to the SimStats structure containing all data.
  * @param[in] ptr_config   Pointer to the simulation configuration.
  */
-void save_final_dataset(SimStats *ptr_simstats, SimConfig *ptr_config);
+void save_final_dataset(SimStats *ptr_simstats, SimConfig *ptr_config, FILE *ptr_output_file);
 
 /**
  * @brief Resets all fields in the SimStats structure to zero.
