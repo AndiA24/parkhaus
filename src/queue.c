@@ -61,12 +61,11 @@ ENDFUNCTION
 /* 
 FUNCTION increment_queue_time(ptr_queue : Queue*)      
     ptr_temp_node : QueueNode*          
-    ptr_temp_node = ptr_queue->ptr_head      
+    ptr_temp_node = ptr_queue->ptr_head                         // temporary pointer
     
-    WHILE ptr_temp_node != NULL         
-        ptr_temp_node->ptr_vehicle->queue_time++         
-        ptr_temp_node = ptr_temp_node->ptr_next 
-
+    WHILE ptr_temp_node != NULL                                 // iterate through all queue nodes
+        ptr_temp_node->ptr_vehicle->queue_time++                // increment queue time
+        ptr_temp_node = ptr_temp_node->ptr_next                 // move to next node in queue
 ENDFUNCTION
 */ 
 
