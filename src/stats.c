@@ -23,10 +23,17 @@ FUNCTION create_output_file(config)
 
 END FUNCTION
 
-FUNCTION update_simstats()
+FUNCTION update_simstats(SimStats (Adress)ptr_stats, Parking (Adress)ptr_parking, Queue (Adress)ptr_queue)
     
-    
+    // calculate rel occupancy
+    ptr_stats->temp_rel_occupancy_precent = (ptr_parking->occupied_count / ptr_parking->total_capacity) * 100
 
+    IF ptr_stats->temp_rel_occupancy_precent == 100 THEN
+        ptr_stats->time_full_occupancy = ptr_stats->time_full_occupancy + 1
+    END IF
+
+    // update queue length
+    ptr_stats->temp_queue_lenght = ptr_queue->size
     return ptr_output_file
 
 END FUNCTION
