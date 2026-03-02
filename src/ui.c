@@ -45,6 +45,8 @@ FUNCTION show_settings(Struct SimConfig)
             SimConfig->arrival_probability_percent <- prompt_input("Arrival Probability %", SimConfig->arrival_probability_percent, 0, 100)
         ELSE IF key = '8'
             SimConfig->seed <- prompt_input("RNG Seed", SimConfig->seed, 0, 9999)
+        ELSE IF key = '9'
+            SimConfig->config_file_name <- prompt_input("The file name to store the config inside of", SimConfig->config_file_name)
         ELSE IF key = 'ESC' || 'Enter' || 'Q'
             active <- false
         END IF
@@ -60,7 +62,9 @@ FUNCTION prompt_input(name, current_value, min, max)
     WHILE NOT valid
         input <- get_text_input()
         
-        IF input is a valid number AND input >= min AND input <= max
+        IF current_value is not config_file_name AND input is a valid number AND input >= min AND input <= max
+            valid <- true
+        ELSE IF current_value is config_file_name AND input is a valid string AND input length < 69
             valid <- true
         ELSE
             render_error("Please enter a correct value between min and max")
