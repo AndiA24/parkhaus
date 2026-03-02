@@ -8,7 +8,7 @@ FUNCTION rand_arrival(ptr_config : SimConfig*) RETURNS int
     CALL srand(ptr_config->seed)
     rand_i = (CALL rand() % 100) + 1
     
-    IF rand_i > config->arrival_probability_percent DO
+    IF rand_i <= config->arrival_probability_percent DO
         RETURN 1
     ENDIF
 
