@@ -3,13 +3,24 @@
 /*
 PSEUDOCODE
 
-FUNCTION run_simulation
+FUNCTION run_simulation(config, stats)
     parking = CALL init_parking
     queue = CALL init_queue
     output_file = CALL create_output_file
     total_steps = config.total_steps
 
     FOR i = 0, i < total_steps, i++ DO
+        IF CALL rand_arrival((Adress)config) DO
+            new_vehicle = CALL create_vehicle
+            CALL enqueue(queue, vehicle)
+        END IF
+        
+        CALL check_exits(parking, stats)
+
+        IF CALL get_free_spots DO
+            vehicle = CALL dequeue(queue, stats)
+            CALL entry_parking(parking, vehicle, stats)
+        END IF
 
         CALL update_simstats
         CALL update_peak
