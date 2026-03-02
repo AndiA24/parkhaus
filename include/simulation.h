@@ -17,7 +17,6 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats);
 /**
  * @brief Decides random whether a car arrives or not
  *
- * Calls all functions necessary for an simulation step, as often given in the config
  * 
  * @param[in]       config  Pointer to the SimConfig structure containing the number of stats
  *                          and configurations for the simulation (number of spots, decks...)
