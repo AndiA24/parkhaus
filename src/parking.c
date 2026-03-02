@@ -53,10 +53,6 @@ FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simst
         RETURN                                                   
     ENDIF
 
-    IF ptr_parking->occupied_count == ptr_parking->total_capacity THEN                      // check if parking is full
-        RETURN                                                   
-    ENDIF
-
     FOR deck = 0 TO ptr_parking->deck_count - 1                                             // iterate over each deck
         FOR spot = 0 TO ptr_parking->ptr_decks[deck].capacity - 1                           // iterate over each spot in current deck
             IF !ptr_parking->ptr_decks[deck].ptr_spots[spot].occupied THEN                  // check if spot is occupied
@@ -79,5 +75,13 @@ FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simst
             ENDIF
         ENDFOR
     ENDFOR
+ENDFUNCTION
+
+FUNCTION get_free_spots(ptr_parking : Parking*) RETURNS int
+    IF ptr_parking->occupied_count == ptr_parking->total_capacity THEN                      // check if parking is full
+        RETURN 0                                                   
+    ENDIF
+
+    RETURN ptr_parking->total_capacity - ptr_parking->occupied_count                        // return free parking spots 
 ENDFUNCTION
 */
