@@ -31,6 +31,17 @@ FUNCTION update_simstats()
 
 END FUNCTION
 
+FUNCTION update_peak((Adress)ptr_simstats)
+    IF ptr_simstats->temp_rel_occupancy_precent > ptr_simstats->peak_rel_occupancy THEN // check whether current occupancy is higher then saved peak
+        ptr_simstats->peak_rel_occupancy = ptr_simstats->temp_rel_occupancy_precent
+        ptr_simstats->step_highest_occupancy = ptr_simstats->step_num
+    END IF
+    IF ptr_simstats->temp_queue_lenghth > ptr_simstats->peak_queue_lenght THEN // check wheather current queue lenght is higher than saved peak
+        ptr_simstats->peak_queue_lenght = ptr_simstats->temp_queue_lenghth
+        ptr_simstats->step_longest_queue = ptr_simstats->step_num
+    END IF
+END FUNCTION
+
 FUNCTION save_temp_dataset()
 
 END FUNCTION
