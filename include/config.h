@@ -49,3 +49,12 @@ void get_config(SimConfig *ptr_config);
  * @param[in] config Pointer to the SimConfig structure to be saved
  */
 void save_config(SimConfig *ptr_config);
+
+/**
+ * @brief Frees all dynamically allocated memory associated with the config structure.
+ *
+ * Frees the SimConfig structure that was allocated by create_config
+ *
+ * @param[in] ptr_config Pointer to the SimConfig structure to be freed.
+ */
+void free_config(SimConfig *ptr_config);

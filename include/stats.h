@@ -124,6 +124,18 @@ void reset_temp_stats(SimStats *ptr_simstats, SimConfig *ptr_config);
 void save_final_dataset(SimStats *ptr_simstats, SimConfig *ptr_config, FILE *ptr_output_file);
 
 /**
+ * @brief Closes the open Output-File 
+ *
+ * Closes the open Output-File after succesful finish of the simulation and writing
+ * final dataset or after an abort of simulation.
+ *
+ * @param[in] ptr_output_file Pointer to the opened Report / Output-File
+ * 
+ * @return Returns 1 for success or -1 for fail
+ */
+int close_output_file(FILE *ptr_output_file)
+
+/**
  * @brief Resets all fields in the SimStats structure to zero.
  *
  * Clears every field.
