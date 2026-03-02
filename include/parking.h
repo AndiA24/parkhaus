@@ -32,10 +32,20 @@ typedef struct {
 
 
 /**
+ * @brief Create Parking Struct containing Parking decks and spots
+ *
+ * 
+ *
+ * @param[in]   config  Config struct containing number of decks and spots
+ * @return      Pointer to the created parking structure
+ */
+Parking *init_parking(SimConfig *ptr_config);
+
+/**
  * @brief Parks a vehicle in the first available spot in the parking lot.
  *
  * Searches all decks and spots for a free parking spot and assigns
- * the given vehicle to it. Updates the occupied count and records
+ * the given vehicle to it. Updates the ocipacupied count and records
  * the entry in the simulation statistics.
  *
  * @param[in,out] parking  Pointer to the parking lot structure
@@ -55,3 +65,12 @@ void entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sim
  * @param[in,out] simstats Pointer to the current simulation statistics
  */
 void check_exit(Parking *ptr_parking, SimStats *ptr_simstats);
+
+/**
+ * @brief Frees all dynamically allocated memory associated with the Parking structure.
+ *
+ * Frees the Parking structure that was allocated by init_parking
+ *
+ * @param[in] ptr_parking Pointer to the Parking structure to be freed.
+ */
+void free_parking(Parking *ptr_parking);
