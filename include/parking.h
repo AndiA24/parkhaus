@@ -1,5 +1,6 @@
 #include "vehicle.h"
 #include "stats.h"
+#include "config.h"
 
 /**
  * @brief Represents a single parking spot within a deck.
