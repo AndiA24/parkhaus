@@ -1,4 +1,9 @@
-/*
+#include "../include/parking.h"
+#include "../include/vehicle.h"
+#include "../include/stats.h"
+/* 
+PSEUDOCODE
+
 FUNCTION check_exit(ptr_parking, ptr_simstats)
 
     sim_step <- ptr_simstats->step_num // Get the current sim step / time
@@ -43,7 +48,6 @@ FUNCTION check_exit(ptr_parking, ptr_simstats)
 END FUNCTION
 
 
-/* 
 FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simstats : SimStats*)
     IF !ptr_parking OR !ptr_parking->ptr_decks OR !ptr_vehicle THEN     // check for invalid input pointers
         RETURN                                                   
