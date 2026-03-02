@@ -17,6 +17,7 @@ END FUNCTION
 
 FUNCTION create_output_file(ptr_config : SimConfig*) RETURNS FILE*
     user_input : char
+    output_file : FILE*
 
     DO
         output_file = fopen(ptr_config->output_file_name, "r")
@@ -42,6 +43,17 @@ FUNCTION create_output_file(ptr_config : SimConfig*) RETURNS FILE*
     IF output_file == NULL
         RETURN NULL
     ENDIF
+
+    // Write configuration values
+    CALL fprintf(output_file, "%u\n", ptr_config->num_decks)
+    CALL fprintf(output_file, "%u\n", ptr_config->spots_per_deck)
+    CALL fprintf(output_file, "%u\n", ptr_config->initial_occupancy)
+    CALL fprintf(output_file, "%u\n", ptr_config->max_parking_duration_steps)
+    CALL fprintf(output_file, "%u\n", ptr_config->min_parking_duration_steps)
+    CALL fprintf(output_file, "%u\n", ptr_config->sim_duration_steps)
+    CALL fprintf(output_file, "%u\n", ptr_config->arrival_probability_percent)
+    CALL fprintf(output_file, "%s\n", ptr_config->output_file_name)
+    CALL fprintf(output_file, "%u\n", ptr_config->seed)
 
     RETURN output_file
 END FUNCTION
