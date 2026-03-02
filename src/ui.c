@@ -91,11 +91,13 @@ FUNCTION show_running(Struct ptr_SimStats)
     CALL print("Entrys this time step", ptr_SimStats->temp_entrys)
     CALL print("Relative Occupancy this time step", ptr_SimStats->temp_rel_occupancy_precent)
     CALL print("Current queue length", ptr_SimStats->temp_queue_length)
+    CALL print("Free spots this timestep", ptr_SimStats->temp_free_spots)
+    CALL print("Average remaining parking duration of vehicles", ptr_SimStats->temp_time_left)
 END FUNCTION
 
 FUNCTION show_results(Struct ptr_SimStats)
     CALL print("Total cars that left the car park", ptr_SimStats->temp_exits)
-    CALL print("Total cars that entered the car park", ptr_SimStats->total_entrys)
+    CALL print("Total cars that entered the car park", ptr_SimStats->total_entries)
     CALL print("Total cars that had to wait in queue", ptr_SimStats->total_queued)
     CALL print("Sum of all queue steps", ptr_SimStats->total_queue_time)
     CALL print("Steps cars spent in the car park", ptr_SimStats->total_parking_time)
@@ -104,6 +106,8 @@ FUNCTION show_results(Struct ptr_SimStats)
     CALL print("Step at which the queue was the longest", ptr_SimStats->step_longest_queue)
     CALL print("Peak relative occupany during the simulation", ptr_SimStats->peak_rel_occupancy)
     CALL print("Step at which the highest occupancy occured", ptr_SimStats->step_highest_occupancy)
+    CALL print("Avarage wait time in queue", ptr_SimStats->total_queue_time/ptr_SimStats->total_queued)
+    CALL print("Percentage of vehicles that had to wait", ptr_SimStats->total-entries/ptr_SimStats->total_queued)
 END FUNCTION
 
 
