@@ -23,7 +23,6 @@ FUNCTION check_exit(ptr_parking, ptr_simstats)
                     // save the values of the leaving car in the stats struct
                     ptr_simstats->temp_exits         <- ptr_simstats->temp_exits + 1
                     ptr_simstats->total_exits        <- ptr_simstats->total_exits + 1
-                    ptr_simstats->total_queue_time   <- ptr_simstats->total_queue_time + ptr_vehicle->queue_time
                     ptr_simstats->total_parking_time <- ptr_simstats->total_parking_time + ptr_vehicle->parking_duration
 
                     CALL free_vehicle(ptr_vehicle) // free the memory of the vehicle
