@@ -64,3 +64,12 @@ Vehicle *dequeue(Queue *ptr_queue);
  * @param[in,out] queue Pointer to the queue to be deleted
  */
 void delete_queue(Queue *ptr_queue);
+
+/**
+ * @brief Frees all dynamically allocated memory associated with the Queue structure.
+ *
+ * Frees the Queue structure that was allocated by init_queue
+ *
+ * @param[in] ptr_queue Pointer to the Queue structure to be freed.
+ */
+void free_queue(Queue *ptr_queue);
