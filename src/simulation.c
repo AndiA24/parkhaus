@@ -3,6 +3,18 @@
 /*
 PSEUDOCODE
 
+/*
+FUNCTION rand_arrival(ptr_config : SimConfig*) RETURNS int
+    CALL srand(ptr_config->seed)
+    rand_i = (CALL rand() % 100) + 1
+    
+    IF rand_i > config->arrival_probability_percent DO
+        RETURN 1
+    ENDIF
+
+    RETURN 0
+ENDFUNCTION
+
 FUNCTION run_simulation(config, stats)
     parking = CALL init_parking
     queue = CALL init_queue
