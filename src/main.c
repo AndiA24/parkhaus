@@ -1,7 +1,7 @@
 /*
 PSEUDOCODE
 
-main(){
+FUNCTION MAIN
 
     config = CALL create_config() // create config-struct
     CALL get_config((Adress)config) // read config from config file
@@ -19,6 +19,6 @@ main(){
     CALL free_stats()
     CALL free_config()
 
-}
+END FUNCTION
 
 */
