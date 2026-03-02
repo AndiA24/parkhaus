@@ -33,7 +33,7 @@ ENDFUNCTION
 */
 
 /*
-FUNCTION dequeue(ptr_queue : Queue*) RETURNS Vehicle*
+FUNCTION dequeue(ptr_queue : Queue*, ptr_simstats : SimStats*) RETURNS Vehicle*
     IF ptr_queue->ptr_head == NULL THEN
         RETURN NULL                                             // queue is empty, nothing to dequeue
     ENDIF
@@ -42,6 +42,8 @@ FUNCTION dequeue(ptr_queue : Queue*) RETURNS Vehicle*
     ptr_prev_head = ptr_queue->ptr_head                         // pointer to current head node
     ptr_vehicle : Vehicle*
     ptr_vehicle = ptr_prev_head->ptr_vehicle                    // store vehicle to return
+
+    ptr_simstats->total_queue_time += ptr_vehicle->queue_time   // add dequeued vehicle’s queue time to total queue time
 
     ptr_queue->ptr_head = ptr_prev_head->ptr_next               // move head to next node
 
