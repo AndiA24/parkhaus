@@ -58,6 +58,18 @@ FUNCTION dequeue(ptr_queue : Queue*, ptr_simstats : SimStats*) RETURNS Vehicle*
 ENDFUNCTION
 */
 
+/* 
+FUNCTION increment_queue_time(ptr_queue : Queue*)      
+    ptr_temp_node : QueueNode*          
+    ptr_temp_node = ptr_queue->ptr_head      
+    
+    WHILE ptr_temp_node != NULL         
+        ptr_temp_node->ptr_vehicle->queue_time++         
+        ptr_temp_node = ptr_temp_node->ptr_next 
+
+ENDFUNCTION
+*/ 
+
 /*
 FUNCTION delete_queue(ptr_queue : Queue*)
     WHILE ptr_queue->ptr_head != NULL
