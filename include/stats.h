@@ -93,7 +93,7 @@ void update_peak(SimStats *ptr_simstats);
  *
  * Outputs all metrics stored in the SimStats structure for the current
  * time step in a readable format to stdout and appends them to the
- * simulation log file.
+ * simulation log file and outputs in console.
  *
  * @param[in] simstats Pointer to the SimStats structure of the current step
  */
