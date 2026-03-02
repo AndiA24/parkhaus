@@ -45,7 +45,7 @@ Parking *init_parking(SimConfig *ptr_config);
  * @brief Parks a vehicle in the first available spot in the parking lot.
  *
  * Searches all decks and spots for a free parking spot and assigns
- * the given vehicle to it. Updates the ocipacupied count and records
+ * the given vehicle to it. Updates the occupied count and records
  * the entry in the simulation statistics.
  *
  * @param[in,out] parking  Pointer to the parking lot structure
