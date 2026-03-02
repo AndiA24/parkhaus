@@ -1,3 +1,5 @@
+#include "../include/vehicle.h"
+
 /*
 FUNCTION create_vehicle(id : int, entry_time : int, duration : int) RETURNS Vehicle*
 
