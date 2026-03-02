@@ -60,7 +60,7 @@ SimStats *init_simstats();
  * @param[in] config Pointer to the SimConfig structure containing the output
  *                   filename and all configuration values written to the header.
  */
-FILE *create_output_file(SimConfig *config);
+FILE *create_output_file(SimConfig *ptr_config);
 
 /**
  * @brief Updates the simulation statistics for the current time step.
