@@ -16,6 +16,7 @@ typedef struct {
 typedef struct {
     unsigned int    deck_id;    /**< Unique identifier of this deck. */
     unsigned int    capacity;   /**< Total number of parking spots on this deck. */
+    unsigned int    occupied_count;  /**< Number of spots currently occupied. */
     ParkingSpot     *ptr_spots;  /**< Pointer to the array of parking spots on this deck. */
 } ParkingDeck;
 

@@ -13,6 +13,7 @@ typedef struct {
     unsigned int min_parking_duration_steps;  /**< Minimum number of simulation steps a vehicle must stay parked. */
     unsigned int sim_duration_steps;          /**< Total number of steps the simulation runs. */
     unsigned char arrival_probability_percent; /**< Probability in percent (0–100) that a vehicle arrives in a given step. */
+    char output_file_name[70];                /**< Name of the Stats-output File */
     unsigned int seed;                        /**< Seed value for the random number generator. */
 } SimConfig;
 
@@ -22,8 +23,11 @@ typedef struct {
  * Initializes the SimConfig structure with predefined default values
  * and writes them to a configuration file. This function is called
  * by get_config if no existing configuration file is found.
+ *
+ * @return Pointer to a newly allocated SimConfig with default values,
+ *         or NULL on failure.
  */
-void create_config();
+SimConfig *create_config();
 
 /**
  * @brief Reads simulation parameters from the configuration file.
