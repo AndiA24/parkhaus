@@ -1,3 +1,5 @@
+#ifndef CONFIG_H
+#define CONFIG_H
 
 /**
  * @brief Holds the configuration parameters for the parking simulation.
@@ -58,3 +60,5 @@ void save_config(SimConfig *ptr_config);
  * @param[in] ptr_config Pointer to the SimConfig structure to be freed.
  */
 void free_config(SimConfig *ptr_config);
+
+#endif

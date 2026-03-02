@@ -1,3 +1,6 @@
+#ifndef PARKING_H
+#define PARKING_H
+
 #include "vehicle.h"
 #include "stats.h"
 #include "config.h"
@@ -75,3 +78,5 @@ void check_exit(Parking *ptr_parking, SimStats *ptr_simstats);
  * @param[in] ptr_parking Pointer to the Parking structure to be freed.
  */
 void free_parking(Parking *ptr_parking);
+
+#endif

@@ -133,7 +133,7 @@ void save_final_dataset(SimStats *ptr_simstats, SimConfig *ptr_config, FILE *ptr
  * 
  * @return Returns 1 for success or -1 for fail
  */
-int close_output_file(FILE *ptr_output_file)
+int close_output_file(FILE *ptr_output_file);
 
 /**
  * @brief Resets all fields in the SimStats structure to zero.
