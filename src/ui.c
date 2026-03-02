@@ -65,7 +65,7 @@ FUNCTION prompt_input(name, current_value, min, max)
         
         IF current_value is not config_file_name AND input is a valid number AND input >= min AND input <= max
             valid <- true
-        ELSE IF current_value is config_file_name AND input is a valid string AND input length < 69
+        ELSE IF current_value is config_file_name AND input is a valid string AND input length < array length
             valid <- true
         ELSE
             CALL print("Please enter a correct value between min and max")
