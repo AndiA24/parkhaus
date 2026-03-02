@@ -12,7 +12,7 @@ ENDFUNCTION
 /*
 FUNCTION enqueue(ptr_queue : Queue*, ptr_vehicle : Vehicle*)
     ptr_new_node : QueueNode*                                   // temporary pointer for new node
-    ptr_new_node = malloc(sizeof *ptr_new_node)                 // allocate memory for new node
+    ptr_new_node = CALL malloc(sizeof *ptr_new_node)            // allocate memory for new node
 
     IF !ptr_new_node THEN
         RETURN ERROR                                            // return error if allocation fails
@@ -66,6 +66,7 @@ FUNCTION increment_queue_time(ptr_queue : Queue*)
     WHILE ptr_temp_node != NULL                                 // iterate through all queue nodes
         ptr_temp_node->ptr_vehicle->queue_time++                // increment queue time
         ptr_temp_node = ptr_temp_node->ptr_next                 // move to next node in queue
+    ENDWHILE
 ENDFUNCTION
 */ 
 
@@ -73,8 +74,8 @@ ENDFUNCTION
 FUNCTION delete_queue(ptr_queue : Queue*)
     WHILE ptr_queue->ptr_head != NULL
         ptr_vehicle : Vehicle*
-        ptr_vehicle = dequeue(ptr_queue)                        // dequeue each node until queue is empty
-        free(ptr_vehicle)                                       // free vehicle memory
+        ptr_vehicle = CALL dequeue(ptr_queue)                        // dequeue each node until queue is empty
+        CALL free(ptr_vehicle)                                       // free vehicle memory
     ENDWHILE
 ENDFUNCTION
 */
