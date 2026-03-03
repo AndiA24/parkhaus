@@ -28,7 +28,7 @@ typedef struct {
  * Sets all fields of the Queue structure to their initial values
  * (head and tail to NULL, size to 0).
  *
- *
+ *  @return Pointer of the initialized queue 
  */
 Queue *init_queue();
 
@@ -38,7 +38,7 @@ Queue *init_queue();
  * Creates a new QueueNode for the given vehicle and appends it
  * to the tail of the queue. Increments size by 1.
  *
- * @param[in,out] queue   Pointer to the waiting queue
+ * @param[in,out] ptr_queue   Pointer to the waiting queue
  * @param[in]     vehicle Pointer to the vehicle to be enqueued
  */
 void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle);
@@ -50,7 +50,8 @@ void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle);
  * and returns the pointer to the vehicle it contained.
  * Returns NULL if the queue is empty.
  *
- * @param[in,out] queue Pointer to the waiting queue
+ * @param[in,out] ptr_queue Pointer to the waiting queue
+ * @param[in,out] ptr_stats Pointer to the simulation stats
  *
  * @return Pointer to the next vehicle allowed to enter the parking lot,
  *         or NULL if the queue is empty
@@ -74,11 +75,12 @@ void increment_queue_time(Queue *ptr_queue);
  * Traverses all remaining nodes in the queue and releases their
  * allocated memory. 
  * The queue itself is reset to its initial state, size is reset to 0.
- * The contained Vehicle objects are not freed.
+ * The contained Vehicle objects are also freed.
  *
- * @param[in,out] queue Pointer to the queue to be deleted
+ * @param[in,out] ptr_queue Pointer to the queue to be deleted
+ * @param[in,out] ptr_stats Pointer to the stats to have the data from the vehicles safed inside of
  */
-void delete_queue(Queue *ptr_queue);
+void delete_queue(Queue *ptr_queue, SimStats *ptr_stats);
 
 /**
  * @brief Frees all dynamically allocated memory associated with the Queue structure.

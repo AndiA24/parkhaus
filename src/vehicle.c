@@ -13,8 +13,13 @@ FUNCTION create_vehicle(SimStats ptr_stats, SimConfig ptr_config) RETURNS Vehicl
     ptr_vehicle->id = ptr_stats->id_count                                                       // assign unique vehicle ID
     ptr_stats->id_count = ptr_stats->id_count + 1
     ptr_vehicle->entry_time = ptr_stats->step_num                                               // set simulation entry time
-    ptr_vehicle->parking_duration = rand() % (ptr_config->max_parking_duration_steps - 
-    ptr_config->min_parking_duration_steps + 1) + ptr_config->min_parking_duration_steps + 1    // set total parking duration
+    
+    This next calculation determines a random parking duration value between the minimum and maximum
+    parking duration set in the config struct.
+
+    ptr_vehicle->parking_duration = CALL rand() % (ptr_config->max_parking_duration_steps - 
+    ptr_config->min_parking_duration_steps + 1) + ptr_config->min_parking_duration_steps        // set total parking duration
+    
     ptr_vehicle->queue_time = 0                                                                 // initialize queue time to zero
 
     RETURN ptr_vehicle                                                                          // return pointer to newly created vehicle
@@ -29,7 +34,7 @@ FUNCTION free_vehicle(ptr_vehicle : Vehicle*)
         RETURN
     ENDIF
 
-    free(ptr_vehicle)                               // release allocated memory
+    CALL free(ptr_vehicle)                          // release allocated memory
     
     // The caller shall set the pointer to NULL after calling this function
 

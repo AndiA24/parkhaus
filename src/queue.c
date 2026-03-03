@@ -2,17 +2,20 @@
 #include "../include/vehicle.h"
 
 /* 
-FUNCTION init_queue(ptr_queue : Queue*)
+FUNCTION init_queue()
+    ptr_queue : Queue*
+    ptr_queue<- CALL malloc(CALL sizeof(*ptr_queue))
     ptr_queue->ptr_head = NULL                                  // initialize head to NULL
     ptr_queue->ptr_tail = NULL                                  // initialize tail to NULL
     ptr_queue->size = 0                                         // set size to 0
+    RETURN ptr_queue
 END FUNCTION
 */
 
 /*
 FUNCTION enqueue(ptr_queue : Queue*, ptr_vehicle : Vehicle*)
     ptr_new_node : QueueNode*                                   // temporary pointer for new node
-    ptr_new_node = CALL malloc(sizeof *ptr_new_node)            // allocate memory for new node
+    ptr_new_node = CALL malloc(CALL sizeof *ptr_new_node)            // allocate memory for new node
 
     IF !ptr_new_node THEN
         RETURN ERROR                                            // return error if allocation fails
@@ -51,9 +54,12 @@ FUNCTION dequeue(ptr_queue : Queue*, ptr_simstats : SimStats*) RETURNS Vehicle*
         ptr_queue->ptr_tail = NULL                              // queue is empty -> tail NULL
     ENDIF
 
-    free(ptr_prev_head)                                         // free memory of previous head node
+    CALL free(ptr_prev_head)                                    // free memory of previous head node
     ptr_queue->size = ptr_queue->size -1                        // decrement queue size
-
+    IF ptr_vehicle->queue_time > 0
+        ptr_simstats->total_queued++
+    END IF
+    
     RETURN ptr_vehicle                                          // return dequeued vehicle
 END FUNCTION
 */
@@ -71,10 +77,10 @@ END FUNCTION
 */ 
 
 /*
-FUNCTION delete_queue(ptr_queue : Queue*)
+FUNCTION delete_queue(ptr_queue : Queue*, ptr_stats : SimStats*)
     WHILE ptr_queue->ptr_head != NULL
         ptr_vehicle : Vehicle*
-        ptr_vehicle = CALL dequeue(ptr_queue)                        // dequeue each node until queue is empty
+        ptr_vehicle = CALL dequeue(ptr_queue, ptr_stats)                        // dequeue each node until queue is empty
         CALL free(ptr_vehicle)                                       // free vehicle memory
     ENDWHILE
 END FUNCTION
@@ -82,6 +88,6 @@ END FUNCTION
 
 /*
 FUNCTION free_queue(ptr_queue : Queue*)
-    free(ptr_queue)
+    CALL free(ptr_queue)
 END FUNCTION
 */

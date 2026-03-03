@@ -80,9 +80,9 @@ void check_exit(Parking *ptr_parking, SimStats *ptr_simstats);
  * that are currently free.
  *
  * @param[in] ptr_parking Pointer to the Parking structure
- * @return Integer of free parking spots
+ *
  */
-int get_free_spots(Parking *ptr_parking);
+void get_free_spots(Parking *ptr_parking);
 
 /**
  * @brief Frees all dynamically allocated memory associated with the Parking structure.

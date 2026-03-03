@@ -61,8 +61,9 @@ SimStats *init_simstats();
  * is successfully created, the simulation configuration is written
  * at the top of the CSV so that every output file is self-documenting.
  *
- * @param[in] config Pointer to the SimConfig structure containing the output
+ * @param[in,out] ptr_config Pointer to the SimConfig structure containing the output
  *                   filename and all configuration values written to the header.
+ * @return pointer to output file.
  */
 FILE *create_output_file(SimConfig *ptr_config);
 
@@ -95,11 +96,11 @@ void update_peak(SimStats *ptr_simstats);
 /**
  * @brief Logs the statistics of the current time step to console and file.
  *
- * Outputs all metrics stored in the SimStats structure for the current
- * time step in a readable format to stdout and appends them to the
- * simulation log file and outputs in console.
+ * Appends all metrics stored in the SimStats structure for the current
+ * time step to the simulation log file.
  *
- * @param[in] simstats Pointer to the SimStats structure of the current step
+ * @param[in] ptr_simstats Pointer to the SimStats structure of the current step
+ * @param[in] ptr_output_file Pointer to the output file
  */
 void save_temp_dataset(SimStats *ptr_simstats, FILE *ptr_output_file);
 
@@ -111,7 +112,6 @@ void save_temp_dataset(SimStats *ptr_simstats, FILE *ptr_output_file);
  *
  * @param[in,out] ptr_simstats Pointer to the SimStats structure whose temporary
  *                             fields are to be reset.‚
- * @param[in]     ptr_config   Pointer to the simulation configuration.
  */
 void reset_temp_stats(SimStats *ptr_simstats);
 
@@ -123,7 +123,7 @@ void reset_temp_stats(SimStats *ptr_simstats);
  * Closes the output File after writing the final data.
  *
  * @param[in] ptr_simstats Pointer to the SimStats structure containing all data.
- * @param[in] ptr_config   Pointer to the simulation configuration.
+ * @param[in] ptr_output_file  Pointer to the output file.
  */
 void save_final_dataset(SimStats *ptr_simstats, FILE *ptr_output_file);
 

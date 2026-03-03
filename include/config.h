@@ -37,7 +37,7 @@ SimConfig *create_config();
  * given SimConfig structure. If the file does not exist, the struct
  * is filled with default values.
  *
- * @param[out] config Pointer to the SimConfig structure to be populated
+ * @param[in,out] ptr_config Pointer to the SimConfig structure to be populated
  */
 void get_config(SimConfig *ptr_config);
 
