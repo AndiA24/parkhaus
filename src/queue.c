@@ -6,7 +6,7 @@ FUNCTION init_queue(ptr_queue : Queue*)
     ptr_queue->ptr_head = NULL                                  // initialize head to NULL
     ptr_queue->ptr_tail = NULL                                  // initialize tail to NULL
     ptr_queue->size = 0                                         // set size to 0
-ENDFUNCTION
+END FUNCTION
 */
 
 /*
@@ -29,7 +29,7 @@ FUNCTION enqueue(ptr_queue : Queue*, ptr_vehicle : Vehicle*)
     
     ptr_queue->ptr_tail = ptr_new_node                          // update tail to new node
     ptr_queue->size = ptr_queue->size +1                        // increment queue size
-ENDFUNCTION
+END FUNCTION
 */
 
 /*
@@ -55,7 +55,7 @@ FUNCTION dequeue(ptr_queue : Queue*, ptr_simstats : SimStats*) RETURNS Vehicle*
     ptr_queue->size = ptr_queue->size -1                        // decrement queue size
 
     RETURN ptr_vehicle                                          // return dequeued vehicle
-ENDFUNCTION
+END FUNCTION
 */
 
 /* 
@@ -67,7 +67,7 @@ FUNCTION increment_queue_time(ptr_queue : Queue*)
         ptr_temp_node->ptr_vehicle->queue_time++                // increment queue time
         ptr_temp_node = ptr_temp_node->ptr_next                 // move to next node in queue
     ENDWHILE
-ENDFUNCTION
+END FUNCTION
 */ 
 
 /*
@@ -77,5 +77,11 @@ FUNCTION delete_queue(ptr_queue : Queue*)
         ptr_vehicle = CALL dequeue(ptr_queue)                        // dequeue each node until queue is empty
         CALL free(ptr_vehicle)                                       // free vehicle memory
     ENDWHILE
-ENDFUNCTION
+END FUNCTION
+*/
+
+/*
+FUNCTION free_queue(ptr_queue : Queue*)
+    free(ptr_queue)
+END FUNCTION
 */
