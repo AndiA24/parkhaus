@@ -78,6 +78,12 @@ FUNCTION update_simstats(SimStats (Adress)ptr_simstats, Parking (Adress)ptr_park
         ptr_simstats->temp_rel_occupancy_percent = 0
     ENDIF
 
+    // running average formular to add the rel. occupancy of the step to the avg.
+    ptr_simstats->avg_rel_occupancy =
+    (ptr_simstats->avg_rel_occupancy * ptr_simstats->step_num
+     + ptr_simstats->temp_rel_occupancy_percent)
+    / (ptr_simstats->step_num + 1)
+
     IF ptr_parking->occupied_count == ptr_parking->total_capacity THEN
         ptr_simstats->time_full_occupancy = ptr_simstats->time_full_occupancy + 1
     END IF
@@ -186,6 +192,7 @@ FUNCTION reset_all_stats(SimStats (Adress)ptr_simstats)
     ptr_simstats->total_queue_time = 0
     ptr_simstats->total_parking_time = 0
     ptr_simstats->time_full_occupancy = 0
+    ptr_simstats->avg_rel_occupancy = 0.0
     ptr_simstats->peak_queue_length = 0
     ptr_simstats->step_longest_queue = 0
     ptr_simstats->peak_rel_occupancy = 0
