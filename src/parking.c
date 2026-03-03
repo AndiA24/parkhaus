@@ -66,11 +66,11 @@ FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simst
                 // --- Update stats ---
                 ptr_simstats->temp_entrys = ptr_simstats->temp_entrys + 1                   // increment step entries
                 ptr_simstats->total_entrys = ptr_simstats->total_entrys + 1                 // increment total entries
-                ptr_simstats->temp_rel_occupancy_precent = 
+                ptr_simstats->temp_rel_occupancy_percent = 
                     (ptr_parking->occupied_count / ptr_parking->total_capacity) * 100.0     // compute step occupancy %
                 
-                IF ptr_simstats->temp_rel_occupancy_precent > ptr_simstats->peak_rel_occupancy THEN
-                    ptr_simstats->peak_rel_occupancy = ptr_simstats->temp_rel_occupancy_precent
+                IF ptr_simstats->temp_rel_occupancy_percent > ptr_simstats->peak_rel_occupancy THEN
+                    ptr_simstats->peak_rel_occupancy = ptr_simstats->temp_rel_occupancy_percent
                     ptr_simstats->step_highest_occupancy = ptr_simstats->step_num           // update peak occupancy if new high
                 ENDIF
 
