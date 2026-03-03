@@ -37,14 +37,14 @@ FUNCTION run_simulation(ptr_config, ptr_stats)
         CALL update_simstats(ptr_stats, ptr_parking, ptr_queue)
         CALL update_peak(ptr_stats)
         CALL save_temp_dataset(ptr_stats, ptr_output_file)
+        CALL show_running(ptr_stats)
         CALL reset_temp_stats(ptr_stats)
         CALL increment_queue_time
         ptr_stats->step_num = ptr_stats->step_num + 1
-        CALL show_running(ptr_stats)
     END FOR
 
     // after successfull simulation
-    CALL delete_queue(ptr_queue)
+    CALL delete_queue(ptr_queue, ptr_stats)
     CALL save_final_dataset(ptr_stats, ptr_output_file)
     CALL close_output_file(output_file)
     CALL reset_all_stats

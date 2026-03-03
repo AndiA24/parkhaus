@@ -106,7 +106,7 @@ END FUNCTION
 
 FUNCTION show_results(Struct ptr_SimStats)
     results <- true     
-    CALL print("Total cars that left the car park", ptr_SimStats->temp_exits)
+    CALL print("Total cars that left the car park", ptr_SimStats->total_exits)
     CALL print("Total cars that entered the car park", ptr_SimStats->total_entries)
     CALL print("Total cars that had to wait in queue", ptr_SimStats->total_queued)
     CALL print("Sum of all queue steps", ptr_SimStats->total_queue_time)
@@ -117,11 +117,14 @@ FUNCTION show_results(Struct ptr_SimStats)
     CALL print("Peak relative occupany during the simulation", ptr_SimStats->peak_rel_occupancy)
     CALL print("Step at which the highest occupancy occured", ptr_SimStats->step_highest_occupancy)
     CALL print("Avarage wait time in queue", ptr_SimStats->total_queue_time/ptr_SimStats->total_queued)
-    CALL print("Percentage of vehicles that had to wait", ptr_SimStats->total-entries/ptr_SimStats->total_queued)
-    CALL print("Percentage of vehicles that had to wait", ptr_SimStats->total_entries/ptr_SimStats->total_queued)
+    IF ptr_SimStats = 0
+        CALL print("Percentage of vehicles that had to wait",ptr_SimStats->total_queued)
+    ELSE
+        CALL print("Percentage of vehicles that had to wait", ptr_SimStats->total-entries/ptr_SimStats->total_queued)
+    END IF
     CALL print("Average occupancy throughout the entire simulation", ptr_SimStats->avarage_rel_occupancy)
-    key <- CALL get_input()
     WHILE results
+        key <- CALL get_input()
         IF key = 'Enter' OR 'Q' OR 'ESC' THEN
             restults <- false
         END IF

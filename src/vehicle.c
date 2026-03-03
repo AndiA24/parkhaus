@@ -18,7 +18,7 @@ FUNCTION create_vehicle(SimStats ptr_stats, SimConfig ptr_config) RETURNS Vehicl
     parking duration set in the config struct.
 
     ptr_vehicle->parking_duration = CALL rand() % (ptr_config->max_parking_duration_steps - 
-    ptr_config->min_parking_duration_steps + 1) + ptr_config->min_parking_duration_steps + 1    // set total parking duration
+    ptr_config->min_parking_duration_steps + 1) + ptr_config->min_parking_duration_steps        // set total parking duration
     
     ptr_vehicle->queue_time = 0                                                                 // initialize queue time to zero
 
