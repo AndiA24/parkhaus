@@ -26,7 +26,7 @@ typedef struct {
  *
  * @param[out] queue Pointer to the queue to be initialized
  */
-void init_queue(Queue *ptr_queue);
+Queue *init_queue(Queue *ptr_queue);
 
 /**
  * @brief Adds a vehicle to the end of the waiting queue.
