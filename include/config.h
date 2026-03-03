@@ -23,9 +23,7 @@ typedef struct {
 /**
  * @brief Creates a configuration file with default values.
  *
- * Initializes the SimConfig structure with predefined default values
- * and writes them to a configuration file. This function is called
- * by get_config if no existing configuration file is found.
+ * Initializes the SimConfig structure with empty values.
  *
  * @return Pointer to a newly allocated SimConfig with default values,
  *         or NULL on failure.
@@ -36,8 +34,8 @@ SimConfig *create_config();
  * @brief Reads simulation parameters from the configuration file.
  *
  * Opens the configuration file and parses its contents into the
- * given SimConfig structure. If the file does not exist, create_config
- * is called to generate one with default values first.
+ * given SimConfig structure. If the file does not exist, the struct
+ * is filled with default values.
  *
  * @param[out] config Pointer to the SimConfig structure to be populated
  */
