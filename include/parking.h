@@ -70,6 +70,18 @@ void entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sim
  */
 void check_exit(Parking *ptr_parking, SimStats *ptr_simstats);
 
+
+/**
+ * @brief Returns the number of available parking spots.
+ *
+ * Iterates through the parking structure and counts all spots
+ * that are currently free.
+ *
+ * @param[in] ptr_parking Pointer to the Parking structure
+ * @return Integer of free parking spots
+ */
+int get_free_spots(Parking *ptr_parking);
+
 /**
  * @brief Frees all dynamically allocated memory associated with the Parking structure.
  *

@@ -24,7 +24,6 @@ FUNCTION check_exit(ptr_parking, ptr_simstats)
                     // save the values of the leaving car in the stats struct
                     ptr_simstats->temp_exits         <- ptr_simstats->temp_exits + 1
                     ptr_simstats->total_exits        <- ptr_simstats->total_exits + 1
-                    ptr_simstats->total_queue_time   <- ptr_simstats->total_queue_time + ptr_vehicle->queue_time
                     ptr_simstats->total_parking_time <- ptr_simstats->total_parking_time + ptr_vehicle->parking_duration
 
                     CALL free_vehicle(ptr_vehicle) // free the memory of the vehicle
@@ -54,10 +53,6 @@ FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simst
         RETURN                                                   
     ENDIF
 
-    IF ptr_parking->occupied_count == ptr_parking->total_capacity THEN                      // check if parking is full
-        RETURN                                                   
-    ENDIF
-
     FOR deck = 0 TO ptr_parking->deck_count - 1                                             // iterate over each deck
         FOR spot = 0 TO ptr_parking->ptr_decks[deck].capacity - 1                           // iterate over each spot in current deck
             IF !ptr_parking->ptr_decks[deck].ptr_spots[spot].occupied THEN                  // check if spot is occupied
@@ -68,11 +63,11 @@ FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simst
                 // --- Update stats ---
                 ptr_simstats->temp_entrys = ptr_simstats->temp_entrys + 1                   // increment step entries
                 ptr_simstats->total_entrys = ptr_simstats->total_entrys + 1                 // increment total entries
-                ptr_simstats->temp_rel_occupancy_precent = 
+                ptr_simstats->temp_rel_occupancy_percent = 
                     (ptr_parking->occupied_count / ptr_parking->total_capacity) * 100.0     // compute step occupancy %
                 
-                IF ptr_simstats->temp_rel_occupancy_precent > ptr_simstats->peak_rel_occupancy THEN
-                    ptr_simstats->peak_rel_occupancy = ptr_simstats->temp_rel_occupancy_precent
+                IF ptr_simstats->temp_rel_occupancy_percent > ptr_simstats->peak_rel_occupancy THEN
+                    ptr_simstats->peak_rel_occupancy = ptr_simstats->temp_rel_occupancy_percent
                     ptr_simstats->step_highest_occupancy = ptr_simstats->step_num           // update peak occupancy if new high
                 ENDIF
 
@@ -80,5 +75,13 @@ FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simst
             ENDIF
         ENDFOR
     ENDFOR
+ENDFUNCTION
+
+FUNCTION get_free_spots(ptr_parking : Parking*) RETURNS int
+    IF ptr_parking->occupied_count == ptr_parking->total_capacity THEN                      // check if parking is full
+        RETURN 0                                                   
+    ENDIF
+
+    RETURN ptr_parking->total_capacity - ptr_parking->occupied_count                        // return free parking spots 
 ENDFUNCTION
 */
