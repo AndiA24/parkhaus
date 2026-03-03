@@ -1,3 +1,6 @@
+#include "../include/config.h"
+#include "../include/stats.h"
+#include "../include/ui.h"
 /*
 PSEUDOCODE
 
