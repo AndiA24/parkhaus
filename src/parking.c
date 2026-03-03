@@ -177,7 +177,7 @@ FUNCTION get_free_spots(ptr_parking : Parking*) RETURNS int
     RETURN ptr_parking->total_capacity - ptr_parking->occupied_count                        // return free parking spots 
 ENDFUNCTION
 
-FUNCTION free_parking(ptr_parking)
-    free all memory allocated for parking struct
+FUNCTION free_parking(Parking ptr_parking)
+    CALL free(ptr_parking)
 END FUNCTION
 */

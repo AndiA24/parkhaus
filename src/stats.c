@@ -45,7 +45,7 @@ FUNCTION create_output_file(ptr_config : SimConfig*) RETURNS FILE*
         ENDIF
     WHILE TRUE
 
-    ptr_output_file = fopen(ptr_config->output_file_name, "a")
+    ptr_output_file = CALL fopen(ptr_config->output_file_name, "a")
 
     IF ptr_output_file == NULL
         RETURN NULL
@@ -112,14 +112,6 @@ FUNCTION save_temp_dataset(ptr_simstats : SimStats*, ptr_output_file : FILE*)
         RETURN
     ENDIF
 
-    CALL printf("%u %u %.2f %u %u %u\n",
-       ptr_simstats->temp_exits,
-       ptr_simstats->temp_entries,
-       ptr_simstats->temp_rel_occupancy_percent,
-       ptr_simstats->temp_queue_length,
-       ptr_simstats->temp_free_spots,
-       ptr_simstats->temp_time_left)
-
     CALL fprintf(ptr_output_file,
         "%u,%u,%.2f,%u,%u,%u\n",
         ptr_simstats->temp_exits,
@@ -148,18 +140,6 @@ FUNCTION save_final_dataset(ptr_simstats : SimStats*, ptr_output_file : FILE*)
         RETURN
     ENDIF
 
-    CALL printf("%u %u %u %u %u %u %u %u %.2f %u\n",
-        ptr_simstats->total_exits,
-        ptr_simstats->total_entries,
-        ptr_simstats->total_queued,
-        ptr_simstats->total_queue_time,
-        ptr_simstats->total_parking_time,
-        ptr_simstats->time_full_occupancy,
-        ptr_simstats->peak_queue_length,
-        ptr_simstats->step_longest_queue,
-        ptr_simstats->peak_rel_occupancy,
-        ptr_simstats->step_highest_occupancy)
-
     CALL fprintf(ptr_output_file,
         "%u,%u,%u,%u,%u,%u,%u,%u,%.2f,%u\n",
         ptr_simstats->total_exits,
@@ -176,7 +156,7 @@ END FUNCTION
 
 
 FUNCTION close_output_file(FILE ptr_output_file)
-    Close file (ptr_output_file)
+    CALL flcose(ptr_output_file)
 END FUNCTION
 
 
@@ -201,7 +181,7 @@ END FUNCTION
 
 
 FUNCTION free_stats(SimStats (Adress)ptr_simstats)
-    Free memory allocated for (ptr_simstats)
+    CALL free(ptr_simstats)
 END FUNCTION
 
 

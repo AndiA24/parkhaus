@@ -51,7 +51,7 @@ FUNCTION dequeue(ptr_queue : Queue*, ptr_simstats : SimStats*) RETURNS Vehicle*
         ptr_queue->ptr_tail = NULL                              // queue is empty -> tail NULL
     ENDIF
 
-    free(ptr_prev_head)                                         // free memory of previous head node
+    CALL free(ptr_prev_head)                                    // free memory of previous head node
     ptr_queue->size = ptr_queue->size -1                        // decrement queue size
 
     RETURN ptr_vehicle                                          // return dequeued vehicle
@@ -82,6 +82,6 @@ END FUNCTION
 
 /*
 FUNCTION free_queue(ptr_queue : Queue*)
-    free(ptr_queue)
+    CALL free(ptr_queue)
 END FUNCTION
 */
