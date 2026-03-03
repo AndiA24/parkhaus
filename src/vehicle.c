@@ -1,7 +1,7 @@
 #include "../include/vehicle.h"
 
 /*
-FUNCTION create_vehicle(id : int, entry_time : int, duration : int) RETURNS Vehicle*
+FUNCTION create_vehicle(SimStats ptr_stats, SimConfig ptr_config) RETURNS Vehicle*
 
     ptr_vehicle : Vehicle*                          // declare pointer to Vehicle
     ptr_vehicle = malloc(sizeof(Vehicle))           // allocate memory for one Vehicle object
@@ -10,12 +10,14 @@ FUNCTION create_vehicle(id : int, entry_time : int, duration : int) RETURNS Vehi
         RETURN NULL                                 
     ENDIF
 
-    ptr_vehicle->id = id                            // assign unique vehicle ID
-    ptr_vehicle->entry_time = entry_time            // set simulation entry time
-    ptr_vehicle->parking_duration = duration        // set total parking duration
-    ptr_vehicle->queue_time = 0                     // initialize queue time to zero
+    ptr_vehicle->id = ptr_stats->id_count                                                       // assign unique vehicle ID
+    ptr_stats->id_count = ptr_stats->id_count + 1
+    ptr_vehicle->entry_time = ptr_stats->step_num                                               // set simulation entry time
+    ptr_vehicle->parking_duration = rand() % (ptr_config->max_parking_duration_steps - 
+    ptr_config->min_parking_duration_steps + 1) + ptr_config->min_parking_duration_steps + 1    // set total parking duration
+    ptr_vehicle->queue_time = 0                                                                 // initialize queue time to zero
 
-    RETURN ptr_vehicle                              // return pointer to newly created vehicle
+    RETURN ptr_vehicle                                                                          // return pointer to newly created vehicle
 END FUNCTION
 */
 
