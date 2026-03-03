@@ -169,12 +169,12 @@ FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simst
     ENDFOR
 ENDFUNCTION
 
-FUNCTION get_free_spots(ptr_parking : Parking*) RETURNS int
+FUNCTION get_free_spots(ptr_parking : Parking*, ptr_simstats : SimStats*) 
     IF ptr_parking->occupied_count == ptr_parking->total_capacity THEN                      // check if parking is full
         RETURN 0                                                   
     ENDIF
 
-    RETURN ptr_parking->total_capacity - ptr_parking->occupied_count                        // return free parking spots 
+    ptr_simstats->temp_free_spots = ptr_parking->total_capacity - ptr_parking->occupied_count   // save free spots in stats param
 ENDFUNCTION
 
 FUNCTION free_parking(ptr_parking)
