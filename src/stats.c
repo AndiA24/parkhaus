@@ -15,13 +15,47 @@ FUNCTION init_simstats()
     return ptr_simstats
 END FUNCTION
 
+FUNCTION create_output_file(ptr_config : SimConfig*) RETURNS FILE*
+    user_input : char
+    output_file : FILE*
 
-FUNCTION create_output_file(config)
-    
+    DO
+        output_file = fopen(ptr_config->output_file_name, "r")
 
+        IF output_file != NULL
+            fclose(output_file)
+            CALL printf("File already exists. Overwrite? (y/n): ")
+            CALL scanf(" %c", &user_input)
 
-    return ptr_output_file
+            IF user_input == 'y'
+                BREAK
+            ELSE
+                CALL printf("Enter new file name: ")
+                CALL scanf("%s", ptr_config->output_file_name) 
+            ENDIF
+        ELSE
+            BREAK
+        ENDIF
+    WHILE TRUE
 
+    output_file = fopen(ptr_config->output_file_name, "w")
+
+    IF output_file == NULL
+        RETURN NULL
+    ENDIF
+
+    // Write configuration values
+    CALL fprintf(output_file, "%u\n", ptr_config->num_decks)
+    CALL fprintf(output_file, "%u\n", ptr_config->spots_per_deck)
+    CALL fprintf(output_file, "%u\n", ptr_config->initial_occupancy)
+    CALL fprintf(output_file, "%u\n", ptr_config->max_parking_duration_steps)
+    CALL fprintf(output_file, "%u\n", ptr_config->min_parking_duration_steps)
+    CALL fprintf(output_file, "%u\n", ptr_config->sim_duration_steps)
+    CALL fprintf(output_file, "%u\n", ptr_config->arrival_probability_percent)
+    CALL fprintf(output_file, "%s\n", ptr_config->output_file_name)
+    CALL fprintf(output_file, "%u\n", ptr_config->seed)
+
+    RETURN output_file
 END FUNCTION
 
 
