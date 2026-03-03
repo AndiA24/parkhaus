@@ -5,7 +5,7 @@
 PSEUDOCODE
 
 FUNCTION init_simstats()
-    
+
     Allocate Memory for SimStats Function wrte adress in ptr_simstats
 
     IF ptr_simstats == NULL (memory allocation failed)
@@ -13,65 +13,77 @@ FUNCTION init_simstats()
         return NULL
     END IF
 
-    set all field to 0 
+    set all field to 0
     return ptr_simstats
 END FUNCTION
 
 FUNCTION create_output_file(ptr_config : SimConfig*) RETURNS FILE*
     user_input : char
-    output_file : FILE*
+    ptr_output_file : FILE*
 
     DO
-        output_file = fopen(ptr_config->output_file_name, "r")
+        ptr_output_file = fopen(ptr_config->output_file_name, "r")
 
-        IF output_file != NULL
-            fclose(output_file)
+        IF ptr_output_file != NULL
+            fclose(ptr_output_file)
             CALL printf("File already exists. Overwrite? (y/n): ")
             CALL scanf(" %c", &user_input)
 
             IF user_input == 'y'
+                ptr_output_file = fopen(ptr_config->output_file_name, "w")
+                IF ptr_output_file == NULL
+                    RETURN NULL
+                ENDIF
+                    CALL fclose(ptr_output_file)
                 BREAK
             ELSE
                 CALL printf("Enter new file name: ")
-                CALL scanf("%s", ptr_config->output_file_name) 
+                CALL scanf("%s", ptr_config->output_file_name)
             ENDIF
         ELSE
             BREAK
         ENDIF
     WHILE TRUE
 
-    output_file = fopen(ptr_config->output_file_name, "w")
+    ptr_output_file = fopen(ptr_config->output_file_name, "a")
 
-    IF output_file == NULL
+    IF ptr_output_file == NULL
         RETURN NULL
     ENDIF
 
     // Write configuration values
-    CALL fprintf(output_file, "%u\n", ptr_config->num_decks)
-    CALL fprintf(output_file, "%u\n", ptr_config->spots_per_deck)
-    CALL fprintf(output_file, "%u\n", ptr_config->initial_occupancy)
-    CALL fprintf(output_file, "%u\n", ptr_config->max_parking_duration_steps)
-    CALL fprintf(output_file, "%u\n", ptr_config->min_parking_duration_steps)
-    CALL fprintf(output_file, "%u\n", ptr_config->sim_duration_steps)
-    CALL fprintf(output_file, "%u\n", ptr_config->arrival_probability_percent)
-    CALL fprintf(output_file, "%s\n", ptr_config->output_file_name)
-    CALL fprintf(output_file, "%u\n", ptr_config->seed)
+    CALL fprintf(ptr_output_file, "%u,%u,%u,%u,%u,%u,%u,%s,%u\n", 
+        ptr_config->num_decks, 
+        ptr_config->spots_per_deck, 
+        ptr_config->initial_occupancy, 
+        ptr_config->max_parking_duration_steps, 
+        ptr_config->min_parking_duration_steps, 
+        ptr_config->sim_duration_steps, 
+        ptr_config->arrival_probability_percent, 
+        ptr_config->output_file_name, 
+        ptr_config->seed)
 
-    RETURN output_file
+    CALL fprintf(ptr_output_file,
+        "exits,entries,rel_occupancy,queue_length,free_spots,time_left\n")
+
+    RETURN ptr_output_file
 END FUNCTION
 
 
-FUNCTION update_simstats(SimStats (Adress)ptr_stats, Parking (Adress)ptr_parking, Queue (Adress)ptr_queue)
-    
+FUNCTION update_simstats(SimStats (Adress)ptr_simstats, Parking (Adress)ptr_parking, Queue (Adress)ptr_queue)
     // calculate rel occupancy
-    ptr_stats->temp_rel_occupancy_percent = (ptr_parking->occupied_count / ptr_parking->total_capacity) * 100
+    IF ptr_parking->total_capacity > 0 THEN
+        ptr_simstats->temp_rel_occupancy_percent = ((float)ptr_parking->occupied_count / (float)ptr_parking->total_capacity) * 100
+    ELSE
+        ptr_simstats->temp_rel_occupancy_percent = 0
+    ENDIF
 
-    IF ptr_stats->temp_rel_occupancy_percent == 100 THEN
-        ptr_stats->time_full_occupancy = ptr_stats->time_full_occupancy + 1
+    IF ptr_parking->occupied_count == ptr_parking->total_capacity THEN
+        ptr_simstats->time_full_occupancy = ptr_simstats->time_full_occupancy + 1
     END IF
 
     // update queue length
-    ptr_stats->temp_queue_length = ptr_queue->size
+    ptr_simstats->temp_queue_length = ptr_queue->size
 
 END FUNCTION
 
@@ -88,21 +100,72 @@ FUNCTION update_peak((Adress)ptr_simstats)
 END FUNCTION
 
 
-FUNCTION save_temp_dataset()
+FUNCTION save_temp_dataset(ptr_simstats : SimStats*, ptr_output_file : FILE*)
+
+    IF ptr_output_file == NULL
+        RETURN
+    ENDIF
+
+    CALL printf("%u %u %.2f %u %u %u\n",
+       ptr_simstats->temp_exits,
+       ptr_simstats->temp_entrys,
+       ptr_simstats->temp_rel_occupancy_percent,
+       ptr_simstats->temp_queue_length,
+       ptr_simstats->temp_free_spots,
+       ptr_simstats->temp_time_left)
+
+    CALL fprintf(ptr_output_file,
+        "%u,%u,%.2f,%u,%u,%u\n",
+        ptr_simstats->temp_exits,
+        ptr_simstats->temp_entrys,
+        ptr_simstats->temp_rel_occupancy_percent,
+        ptr_simstats->temp_queue_length,
+        ptr_simstats->temp_free_spots,
+        ptr_simstats->temp_time_left)
 
 END FUNCTION
 
 
-FUNCTION reset_temp_stats(SimStats (Adress)ptr_stats)
-    ptr_stats->temp_exits = 0
-    ptr_stats->temp_entrys = 0
-    ptr_stats->temp_rel_occupancy_percent = 0
-    ptr_stats->temp_queue_length = 0
+FUNCTION reset_temp_stats(SimStats (Adress)ptr_simstats)
+    ptr_simstats->temp_exits = 0
+    ptr_simstats->temp_entrys = 0
+    ptr_simstats->temp_rel_occupancy_percent = 0
+    ptr_simstats->temp_queue_length = 0
+    ptr_simstats->temp_free_spots = 0
+    ptr_simstats->temp_time_left = 0
 END FUNCTION
 
 
-FUNCTION save_final_dataset()
+FUNCTION save_final_dataset(ptr_simstats : SimStats*, ptr_output_file : FILE*)
 
+    IF ptr_output_file == NULL
+        RETURN
+    ENDIF
+
+    CALL printf("%u %u %u %u %u %u %u %u %.2f %u\n",
+        ptr_simstats->total_exits,
+        ptr_simstats->total_entrys,
+        ptr_simstats->total_queued,
+        ptr_simstats->total_queue_time,
+        ptr_simstats->total_parking_time,
+        ptr_simstats->time_full_occupancy,
+        ptr_simstats->peak_queue_length,
+        ptr_simstats->step_longest_queue,
+        ptr_simstats->peak_rel_occupancy,
+        ptr_simstats->step_highest_occupancy)
+
+    CALL fprintf(ptr_output_file,
+        "%u,%u,%u,%u,%u,%u,%u,%u,%.2f,%u\n",
+        ptr_simstats->total_exits,
+        ptr_simstats->total_entrys,
+        ptr_simstats->total_queued,
+        ptr_simstats->total_queue_time,
+        ptr_simstats->total_parking_time,
+        ptr_simstats->time_full_occupancy,
+        ptr_simstats->peak_queue_length,
+        ptr_simstats->step_longest_queue,
+        ptr_simstats->peak_rel_occupancy,
+        ptr_simstats->step_highest_occupancy)
 END FUNCTION
 
 
@@ -111,27 +174,27 @@ FUNCTION close_output_file(FILE ptr_output_file)
 END FUNCTION
 
 
-FUNCTION reset_all_stats
-    ptr_stats->step_num = 0
-    ptr_stats->temp_exits = 0
-    ptr_stats->temp_entrys = 0
-    ptr_stats->temp_rel_occupancy_percent = 0
-    ptr_stats->temp_queue_length = 0
-    ptr_stats->total_exits = 0
-    ptr_stats->total_entrys = 0
-    ptr_stats->total_queued = 0
-    ptr_stats->total_queue_time = 0
-    ptr_stats->total_parking_time = 0
-    ptr_stats->time_full_occupancy = 0
-    ptr_stats->peak_queue_length = 0
-    ptr_stats->step_longest_queue = 0
-    ptr_stats->peak_rel_occupancy = 0
-    ptr_stats->step_highest_occupancy = 0
+FUNCTION reset_all_stats(SimStats (Adress)ptr_simstats)
+    ptr_simstats->step_num = 0
+    ptr_simstats->temp_exits = 0
+    ptr_simstats->temp_entrys = 0
+    ptr_simstats->temp_rel_occupancy_percent = 0
+    ptr_simstats->temp_queue_length = 0
+    ptr_simstats->total_exits = 0
+    ptr_simstats->total_entrys = 0
+    ptr_simstats->total_queued = 0
+    ptr_simstats->total_queue_time = 0
+    ptr_simstats->total_parking_time = 0
+    ptr_simstats->time_full_occupancy = 0
+    ptr_simstats->peak_queue_length = 0
+    ptr_simstats->step_longest_queue = 0
+    ptr_simstats->peak_rel_occupancy = 0
+    ptr_simstats->step_highest_occupancy = 0
 END FUNCTION
 
 
-FUNCTION free_stats(SimStats (Adress)ptr_stats)
-    Free memory allocated for (ptr_stats)
+FUNCTION free_stats(SimStats (Adress)ptr_simstats)
+    Free memory allocated for (ptr_simstats)
 END FUNCTION
 
 
