@@ -32,6 +32,7 @@ typedef struct {
     unsigned int total_queue_time;              /**< Sum of all queue waiting times (in steps). */
     unsigned int total_parking_time;            /**< Sum of all parking durations (in steps). */
     unsigned int time_full_occupancy;           /**< Steps where parking was at full capacity. */
+    float        avg_rel_occupancy;             /**< Average relative occupancy over all steps. */
 
     /* --- Tracked extremes for final report --- */
     unsigned int peak_queue_length;             /**< Peak queue length observed. */

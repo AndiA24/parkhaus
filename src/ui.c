@@ -124,6 +124,8 @@ FUNCTION show_results(Struct ptr_SimStats)
             restults <- false
         END IF
     END WHILE
+    CALL print("Percentage of vehicles that had to wait", ptr_SimStats->total_entries/ptr_SimStats->total_queued)
+    CALL print("Average occupancy throughout the entire simulation", ptr_SimStats->avarage_rel_occupancy)
 END FUNCTION
 
 
