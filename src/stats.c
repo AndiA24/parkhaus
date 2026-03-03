@@ -71,6 +71,10 @@ END FUNCTION
 
 
 FUNCTION update_simstats(SimStats (Adress)ptr_simstats, Parking (Adress)ptr_parking, Queue (Adress)ptr_queue)
+    IF !ptr_simstats OR !ptr_parking OR !ptr_queue THEN
+        RETURN
+    ENDIF
+
     // calculate rel occupancy
     IF ptr_parking->total_capacity > 0 THEN
         ptr_simstats->temp_rel_occupancy_percent = ((float)ptr_parking->occupied_count / (float)ptr_parking->total_capacity) * 100
