@@ -2,6 +2,7 @@
 #define QUEUE_H
 
 #include "vehicle.h"
+#include "stats.h"
 
 /**
  * @brief A node in the doubled-linked waiting queue.
@@ -54,7 +55,7 @@ void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle);
  * @return Pointer to the next vehicle allowed to enter the parking lot,
  *         or NULL if the queue is empty
  */
-Vehicle *dequeue(Queue *ptr_queue);
+Vehicle *dequeue(Queue *ptr_queue, SimStats *ptr_stats);
 
 /**
  * @brief Increments the queue time of all vehicles in the waiting queue at each time step.
