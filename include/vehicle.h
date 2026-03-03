@@ -1,3 +1,6 @@
+#ifndef VEHICLE_H
+#define VEHICLE_H
+
 /**
  * @brief Represents a vehicle in the parking simulation.
  */
@@ -21,3 +24,5 @@ void init_vehicle(Vehicle *ptr_vehicle);
  * @param ptr_vehicle Pointer to the Vehicle to free.
  */
 void free_vehicle(Vehicle *ptr_vehicle);
+
+#endif

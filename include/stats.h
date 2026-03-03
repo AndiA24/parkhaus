@@ -21,6 +21,8 @@ typedef struct {
     unsigned int temp_entrys;                   /**< New arrivals this step. */
     float        temp_rel_occupancy_percent;    /**< Relative occupancy this step (0.0–100.0). */
     unsigned int temp_queue_length;             /**< Cars in queue at end of this step. */
+    unsigned int temp_free_spots;               /**< Free spots after this step. */
+    unsigned int temp_time_left;                /**< Average time left for cars in the car park */
 
     /* --- Cumulative stats (accumulated until end) --- */
     unsigned int total_exits;                   /**< Total cars exited over all steps. */

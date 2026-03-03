@@ -1,3 +1,6 @@
+#ifndef SIMULATION_H
+#define SIMULATION_H
+
 #include "config.h"
 #include "stats.h"
 
@@ -23,3 +26,5 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats);
  * @return                  Returns 1 for arrival 0 for no arrival
  */
 int rand_arrival(SimConfig *ptr_config);
+
+#endif

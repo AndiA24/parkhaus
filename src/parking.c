@@ -1,6 +1,7 @@
 #include "../include/parking.h"
 #include "../include/vehicle.h"
 #include "../include/stats.h"
+#include "../include/config.h"
 /* 
 PSEUDOCODE
 

@@ -1,5 +1,9 @@
+#ifndef PARKING_H
+#define PARKING_H
+
 #include "vehicle.h"
 #include "stats.h"
+#include "config.h"
 
 /**
  * @brief Represents a single parking spot within a deck.
@@ -86,3 +90,5 @@ int get_free_spots(Parking *ptr_parking);
  * @param[in] ptr_parking Pointer to the Parking structure to be freed.
  */
 void free_parking(Parking *ptr_parking);
+
+#endif

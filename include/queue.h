@@ -1,3 +1,6 @@
+#ifndef QUEUE_H
+#define QUEUE_H
+
 #include "vehicle.h"
 
 /**
@@ -84,3 +87,5 @@ void delete_queue(Queue *ptr_queue);
  * @param[in] ptr_queue Pointer to the Queue structure to be freed.
  */
 void free_queue(Queue *ptr_queue);
+
+#endif
