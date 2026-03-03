@@ -5,6 +5,10 @@
 /* 
 PSEUDOCODE
 
+FUNCTION init_parking(SimConfig ptr_config, SimStats ptr_stats)
+    ...
+END FUNCTION
+
 FUNCTION check_exit(ptr_parking, ptr_simstats)
 
     sim_step <- ptr_simstats->step_num // Get the current sim step / time
@@ -84,4 +88,8 @@ FUNCTION get_free_spots(ptr_parking : Parking*) RETURNS int
 
     RETURN ptr_parking->total_capacity - ptr_parking->occupied_count                        // return free parking spots 
 ENDFUNCTION
+
+FUNCTION free_parking(ptr_parking)
+    free all memory allocated for parking struct
+END FUNCTION
 */
