@@ -14,7 +14,8 @@ typedef struct Parking Parking;
  * step into the output File after each step / to create the final report at the end.
  */
 typedef struct {
-    unsigned int step_num;               /**< Current simulation step number. */
+    unsigned int step_num;                      /**< Current simulation step number. */
+    unsigned int id_count;                      /**< Counter for the current Car ID */
 
     /* --- Per-step stats (overwritten each step) --- */
     unsigned int temp_exits;                    /**< Cars that exited this step. */
