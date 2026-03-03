@@ -107,7 +107,8 @@ FUNCTION show_results(Struct ptr_SimStats)
     CALL print("Peak relative occupany during the simulation", ptr_SimStats->peak_rel_occupancy)
     CALL print("Step at which the highest occupancy occured", ptr_SimStats->step_highest_occupancy)
     CALL print("Avarage wait time in queue", ptr_SimStats->total_queue_time/ptr_SimStats->total_queued)
-    CALL print("Percentage of vehicles that had to wait", ptr_SimStats->total-entries/ptr_SimStats->total_queued)
+    CALL print("Percentage of vehicles that had to wait", ptr_SimStats->total_entries/ptr_SimStats->total_queued)
+    CALL print("Average occupancy throughout the entire simulation", ptr_SimStats->avarage_rel_occupancy)
 END FUNCTION
 
 
