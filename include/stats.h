@@ -108,10 +108,10 @@ void save_temp_dataset(SimStats *ptr_simstats, FILE *ptr_output_file);
  * simulation step.
  *
  * @param[in,out] ptr_simstats Pointer to the SimStats structure whose temporary
- *                             fields are to be reset.
+ *                             fields are to be reset.‚
  * @param[in]     ptr_config   Pointer to the simulation configuration.
  */
-void reset_temp_stats(SimStats *ptr_simstats, SimConfig *ptr_config);
+void reset_temp_stats(SimStats *ptr_simstats);
 
 /**
  * @brief Logs the overall simulation statistics to console and file.
