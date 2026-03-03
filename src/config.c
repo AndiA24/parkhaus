@@ -82,7 +82,7 @@ END FUNCTION
 FUNCTION show_running(Struct ptr_SimStats)
     print("Exists this time step", ptr_SimStats->temp_exits)
     print("Entrys this time step", ptr_SimStats->temp_entrys)
-    print("Relative Occupancy this time step", ptr_SimStats->temp_rel_occupancy_precent)
+    print("Relative Occupancy this time step", ptr_SimStats->temp_rel_occupancy_percent)
     print("Current queue length", ptr_SimStats->temp_queue_length)
 END FUNCTION
 

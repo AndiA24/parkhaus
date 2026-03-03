@@ -58,22 +58,80 @@ FUNCTION create_output_file(ptr_config : SimConfig*) RETURNS FILE*
     RETURN output_file
 END FUNCTION
 
-FUNCTION update_simstats()
-    
-    
 
-    return ptr_output_file
+FUNCTION update_simstats(SimStats (Adress)ptr_stats, Parking (Adress)ptr_parking, Queue (Adress)ptr_queue)
+    
+    // calculate rel occupancy
+    ptr_stats->temp_rel_occupancy_percent = (ptr_parking->occupied_count / ptr_parking->total_capacity) * 100
+
+    IF ptr_stats->temp_rel_occupancy_percent == 100 THEN
+        ptr_stats->time_full_occupancy = ptr_stats->time_full_occupancy + 1
+    END IF
+
+    // update queue length
+    ptr_stats->temp_queue_length = ptr_queue->size
 
 END FUNCTION
+
+
+FUNCTION update_peak((Adress)ptr_simstats)
+    IF ptr_simstats->temp_rel_occupancy_percent > ptr_simstats->peak_rel_occupancy THEN // check whether current occupancy is higher then saved peak
+        ptr_simstats->peak_rel_occupancy = ptr_simstats->temp_rel_occupancy_percent
+        ptr_simstats->step_highest_occupancy = ptr_simstats->step_num
+    END IF
+    IF ptr_simstats->temp_queue_length > ptr_simstats->peak_queue_length THEN // check wheather current queue length is higher than saved peak
+        ptr_simstats->peak_queue_length = ptr_simstats->temp_queue_length
+        ptr_simstats->step_longest_queue = ptr_simstats->step_num
+    END IF
+END FUNCTION
+
 
 FUNCTION save_temp_dataset()
 
 END FUNCTION
 
 
+FUNCTION reset_temp_stats(SimStats (Adress)ptr_stats)
+    ptr_stats->temp_exits = 0
+    ptr_stats->temp_entrys = 0
+    ptr_stats->temp_rel_occupancy_percent = 0
+    ptr_stats->temp_queue_length = 0
+END FUNCTION
+
+
 FUNCTION save_final_dataset()
 
 END FUNCTION
+
+
+FUNCTION close_output_file(FILE ptr_output_file)
+    Close file (ptr_output_file)
+END FUNCTION
+
+
+FUNCTION reset_all_stats
+    ptr_stats->step_num = 0
+    ptr_stats->temp_exits = 0
+    ptr_stats->temp_entrys = 0
+    ptr_stats->temp_rel_occupancy_percent = 0
+    ptr_stats->temp_queue_length = 0
+    ptr_stats->total_exits = 0
+    ptr_stats->total_entrys = 0
+    ptr_stats->total_queued = 0
+    ptr_stats->total_queue_time = 0
+    ptr_stats->total_parking_time = 0
+    ptr_stats->time_full_occupancy = 0
+    ptr_stats->peak_queue_length = 0
+    ptr_stats->step_longest_queue = 0
+    ptr_stats->peak_rel_occupancy = 0
+    ptr_stats->step_highest_occupancy = 0
+END FUNCTION
+
+
+FUNCTION free_stats(SimStats (Adress)ptr_stats)
+    Free memory allocated for (ptr_stats)
+END FUNCTION
+
 
 END PSEUDOCODE
 */
