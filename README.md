@@ -310,7 +310,7 @@ typedef struct {
 | `check_exit(ptr_parking, ptr_simstats)` | Prüft alle Stellplätze auf Fahrzeuge, deren Parkdauer abgelaufen ist, entfernt sie und aktualisiert Zähler und Statistiken. | `Parking *ptr_parking`, `SimStats *ptr_simstats` | — |
 | ***Begründung:*** | Hilfsfunktion um den aktuellen Belegungszustand nach außen bereitzustellen| | |
 | `get_free_spots(ptr_parking)` | Iteriert durch die Parkhausstruktur und zählt alle aktuell freien Stellplätze. | `Parking *ptr_parking` | `int` (Anzahl freier Stellplätze) |
-| ***Begründung:*** | Kapselt die vollständige Speicherfreigabe passend zu init_parking(), um den Lebenszyklus der Struct konsistent zu halten| | |
+| ***Begründung:*** | Kapselt die vollständige Speicherfreigabe passend zu `init_parking`, um den Lebenszyklus der Struct konsistent zu halten| | |
 | `free_parking(ptr_parking)` | Gibt den gesamten durch `init_parking` allokierten Speicher frei. | `Parking *ptr_parking` | — |
 
 ---
@@ -329,7 +329,7 @@ typedef struct {
 | `increment_queue_time(ptr_queue)` | Inkrementiert `queue_time` jedes Fahrzeugs in der Warteschlange um 1. Tut nichts, wenn die Warteschlange leer ist. | `Queue *ptr_queue` | — |
 | ***Begründung:*** | Leert die Warteschlange am Simulationsende, ohne die Queue-Struct selbst freizugeben, damit diese bei Bedarf wiederverwendet werden könnte| | |
 | `delete_queue(ptr_queue)` | Gibt alle Knoten der Warteschlange frei und setzt sie auf den Initialzustand zurück (size = 0). Die enthaltenen `Vehicle`-Objekte werden nicht freigegeben. | `Queue *ptr_queue` | — |
-| ***Begründung:*** | Kapselt die Speicherfreigabe passend zu init_queue(), um den Lebenszyklus der Struct konsistent zu halten| | |
+| ***Begründung:*** | Kapselt die Speicherfreigabe passend zu `init_queue`, um den Lebenszyklus der Struct konsistent zu halten| | |
 | `free_queue(ptr_queue)` | Gibt die durch `init_queue` allokierte `Queue` Struct frei. | `Queue *ptr_queue` | — |
 
 ---
