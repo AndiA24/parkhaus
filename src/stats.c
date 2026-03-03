@@ -67,10 +67,10 @@ FUNCTION update_simstats(SimStats (Adress)ptr_simstats, Parking (Adress)ptr_park
     IF ptr_parking->total_capacity > 0 THEN
         ptr_simstats->temp_rel_occupancy_percent = ((float)ptr_parking->occupied_count / (float)ptr_parking->total_capacity) * 100
     ELSE
-        ptr_parking->total_capacity = 0
+        ptr_parking->temp_rel_occupancy_percent = 0
     ENDIF
 
-    IF ptr_simstats->temp_rel_occupancy_percent == 100 THEN
+    IF ptr_parking->occupied_count == ptr_parking->total_capacity THEN
         ptr_simstats->time_full_occupancy = ptr_simstats->time_full_occupancy + 1
     END IF
 
@@ -104,7 +104,7 @@ FUNCTION save_temp_dataset(ptr_simstats : SimStats*, ptr_output_file : FILE*)
        ptr_simstats->temp_rel_occupancy_percent,
        ptr_simstats->temp_queue_length,
        ptr_simstats->temp_free_spots,
-       ptr_simstats->temp_time_left);
+       ptr_simstats->temp_time_left)
 
     CALL fprintf(ptr_output_file,
         "%u,%u,%f,%u,%u,%u\n",
@@ -113,7 +113,7 @@ FUNCTION save_temp_dataset(ptr_simstats : SimStats*, ptr_output_file : FILE*)
         ptr_simstats->temp_rel_occupancy_percent,
         ptr_simstats->temp_queue_length,
         ptr_simstats->temp_free_spots,
-        ptr_simstats->temp_time_left);
+        ptr_simstats->temp_time_left)
 
 END FUNCTION
 
