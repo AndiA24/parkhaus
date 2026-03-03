@@ -19,13 +19,13 @@ END FUNCTION
 
 FUNCTION create_output_file(ptr_config : SimConfig*) RETURNS FILE*
     user_input : char
-    output_file : FILE*
+    ptr_output_file : FILE*
 
     DO
-        output_file = fopen(ptr_config->output_file_name, "r")
+        ptr_output_file = fopen(ptr_config->output_file_name, "r")
 
-        IF output_file != NULL
-            fclose(output_file)
+        IF ptr_output_file != NULL
+            fclose(ptr_output_file)
             CALL printf("File already exists. Overwrite? (y/n): ")
             CALL scanf(" %c", &user_input)
 
@@ -40,24 +40,24 @@ FUNCTION create_output_file(ptr_config : SimConfig*) RETURNS FILE*
         ENDIF
     WHILE TRUE
 
-    output_file = fopen(ptr_config->output_file_name, "w")
+    ptr_output_file = fopen(ptr_config->output_file_name, "w")
 
-    IF output_file == NULL
+    IF ptr_output_file == NULL
         RETURN NULL
     ENDIF
 
     // Write configuration values
-    CALL fprintf(output_file, "%u\n", ptr_config->num_decks)
-    CALL fprintf(output_file, "%u\n", ptr_config->spots_per_deck)
-    CALL fprintf(output_file, "%u\n", ptr_config->initial_occupancy)
-    CALL fprintf(output_file, "%u\n", ptr_config->max_parking_duration_steps)
-    CALL fprintf(output_file, "%u\n", ptr_config->min_parking_duration_steps)
-    CALL fprintf(output_file, "%u\n", ptr_config->sim_duration_steps)
-    CALL fprintf(output_file, "%u\n", ptr_config->arrival_probability_percent)
-    CALL fprintf(output_file, "%s\n", ptr_config->output_file_name)
-    CALL fprintf(output_file, "%u\n", ptr_config->seed)
+    CALL fprintf(ptr_output_file, "%u\n", ptr_config->num_decks)
+    CALL fprintf(ptr_output_file, "%u\n", ptr_config->spots_per_deck)
+    CALL fprintf(ptr_output_file, "%u\n", ptr_config->initial_occupancy)
+    CALL fprintf(ptr_output_file, "%u\n", ptr_config->max_parking_duration_steps)
+    CALL fprintf(ptr_output_file, "%u\n", ptr_config->min_parking_duration_steps)
+    CALL fprintf(ptr_output_file, "%u\n", ptr_config->sim_duration_steps)
+    CALL fprintf(ptr_output_file, "%u\n", ptr_config->arrival_probability_percent)
+    CALL fprintf(ptr_output_file, "%s\n", ptr_config->output_file_name)
+    CALL fprintf(ptr_output_file, "%u\n", ptr_config->seed)
 
-    RETURN output_file
+    RETURN ptr_output_file
 END FUNCTION
 
 
