@@ -1,6 +1,7 @@
 #include "../include/config.h"
 #include "../include/stats.h"
 #include "../include/ui.h"
+#include "../include/simulation.h"
 /*
 PSEUDOCODE
 

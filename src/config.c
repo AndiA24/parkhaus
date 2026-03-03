@@ -29,7 +29,7 @@ FUNCTION get_config(SimConfig *ptr_config)
     END IF
 
     fields_read : int
-    fields_read<-CALL fscanf(ptr_config_file, "%u,%u,%u,%u,%u,%u,%u,%69[^,],%69[^,],%u",
+    fields_read<-CALL fscanf(ptr_config_file, "%u,%u,%u,%u,%u,%u,%u,%69[^,],%u",
         &ptr_config->num_decks,
         &ptr_config->spots_per_deck,
         &ptr_config->initial_occupancy,
@@ -38,7 +38,6 @@ FUNCTION get_config(SimConfig *ptr_config)
         &ptr_config->sim_duration_steps,
         &ptr_config->arrival_probability_percent,
         ptr_config->output_file_name,
-        ptr_config->config_file_name,
         &ptr_config->seed)
 
     CALL fclose(ptr_config_file)

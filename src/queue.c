@@ -4,7 +4,9 @@
 /* 
 FUNCTION init_queue()
     ptr_queue : Queue*
-    ptr_queue<- CALL malloc(CALL sizeof(*ptr_queue))
+    IF ptr_queue<- CALL malloc(CALL sizeof(*ptr_queue)) != 1 THEN
+        RETURN
+    END IF
     ptr_queue->ptr_head = NULL                                  // initialize head to NULL
     ptr_queue->ptr_tail = NULL                                  // initialize tail to NULL
     ptr_queue->size = 0                                         // set size to 0
@@ -81,7 +83,7 @@ FUNCTION delete_queue(ptr_queue : Queue*, ptr_stats : SimStats*)
     WHILE ptr_queue->ptr_head != NULL
         ptr_vehicle : Vehicle*
         ptr_vehicle = CALL dequeue(ptr_queue, ptr_stats)                        // dequeue each node until queue is empty
-        CALL free(ptr_vehicle)                                       // free vehicle memory
+        CALL free_vehicle(ptr_vehicle)                                      // free vehicle memory
     ENDWHILE
 END FUNCTION
 */

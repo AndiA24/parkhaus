@@ -5,7 +5,7 @@
 /* 
 PSEUDOCODE
 
-FUNCTION init_parking(SimConfig ptr_config, SimStats ptr_stats)
+FUNCTION init_parking(SimConfig *ptr_config, SimStats *ptr_stats)
     ptr_parking = allocate memory for (size)Parking and set all fields to 0
     IF ptr_parking == NULL THEN
         OUTPUT Error cannot allocate memory
@@ -151,6 +151,8 @@ FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simst
                 ptr_parking->ptr_decks[deck].ptr_spots[spot].ptr_vehicle = ptr_vehicle      // assign vehicle to free spot
                 ptr_parking->ptr_decks[deck].ptr_spots[spot].occupied = 1                   // set occupied flag
                 ptr_parking->occupied_count = ptr_parking->occupied_count + 1               // increment occupied count
+                ptr_parking->ptr_decks[deck].occupied_count = ptr_parking->ptr_decks[deck].occupied_count + 1
+                ptr_vehicle->entry_time = ptr_stats->step_num
 
                 // --- Update stats ---
                 ptr_simstats->temp_entries = ptr_simstats->temp_entries + 1                   // increment step entries
@@ -169,15 +171,11 @@ FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simst
     ENDFOR
 ENDFUNCTION
 
-FUNCTION get_free_spots(ptr_parking : Parking*) RETURNS int
-    IF ptr_parking->occupied_count == ptr_parking->total_capacity THEN                      // check if parking is full
-        RETURN 0                                                   
-    ENDIF
-
-    RETURN ptr_parking->total_capacity - ptr_parking->occupied_count                        // return free parking spots 
-ENDFUNCTION
+FUNCTION get_free_spots(ptr_parking : Parking*, ptr_simstats : SimStats*) 
+    ptr_simstats->temp_free_spots = ptr_parking->total_capacity - ptr_parking->occupied_count   // save free spots in stats param
+END FUNCTION
 
 FUNCTION free_parking(Parking ptr_parking)
-    CALL free(ptr_parking)
+    CALL free(ptr_parking)  //free all memory inside this struct for reference look at init_parking for walking through all things inside
 END FUNCTION
 */

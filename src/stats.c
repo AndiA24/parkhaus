@@ -38,7 +38,7 @@ FUNCTION create_output_file(ptr_config : SimConfig*) RETURNS FILE*
                 BREAK
             ELSE
                 CALL printf("Enter new file name: ")
-                CALL scanf("%s", ptr_config->output_file_name)
+                CALL scanf("%69s", ptr_config->output_file_name)
             ENDIF
         ELSE
             BREAK
@@ -88,6 +88,9 @@ FUNCTION update_simstats(SimStats (Adress)ptr_simstats, Parking (Adress)ptr_park
         ptr_simstats->time_full_occupancy = ptr_simstats->time_full_occupancy + 1
     END IF
 
+    IF ptr_parking->occupied_count > 0 THEN
+        ptr_simstats->temp_time_left = ptr_simstats->temp_time_left / ptr_parking->occupied_count
+    END IF
     // update queue length
     ptr_simstats->temp_queue_length = ptr_queue->size
 
@@ -160,6 +163,7 @@ FUNCTION close_output_file(FILE ptr_output_file)
         RETURN -1
     ELSE
         RETURN 1
+    END IF
 END FUNCTION
 
 
