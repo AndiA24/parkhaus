@@ -5,6 +5,15 @@
 
 /*
 
+Dies ist die vorläufige Version des UI. Allerdings kann sich hier noch einiges ändern. In ersten Tests mit der Library habe ich bereits festgestellt,
+dass noch weitere kleine Hilfsfunktionen gebraucht werden um das UI effizient zu erzeugen (z.B. zur Darstellung von Prozentbalken). Zusätzlich ist in diesem 
+Pseudocode noch nicht richtig dargestellt, wie der User Input ermittelt wird (Keyboard Shortcuts, Einstellungen eingeben). Außerdem sind auch Dinge wie 
+die Reihenfolge der Daten oder die genutzten Tasten für die Funktionen noch nicht final. Alles soll eine erste Richtung darstellen wird aber beim 
+Programmieren des tatsächlichen UI vermutlich noch deutlich verändert werden.
+
+
+
+
 FUNCTION show_welcome(Struct *ptr_SimConfig)
     active <- true
     CALL render_welcome()
@@ -12,11 +21,11 @@ FUNCTION show_welcome(Struct *ptr_SimConfig)
     WHILE active
         key <- CALL get_input()
         
-        IF key = 'Q'
+        IF key = 'Q' THEN
             CALL quit(ptr_SimConfig)
-        ELSE IF key = 'S'
+        ELSE IF key = 'S' THEN
             CALL show_settings(ptr_SimConfig)
-        ELSE IF key = 'Enter'
+        ELSE IF key = 'Enter' THEN
             active <- false //main will start simulation
         END IF
     END WHILE
@@ -30,25 +39,25 @@ FUNCTION show_settings(Struct *ptr_SimConfig)
     WHILE active
         key <- CALL get_input()
         
-        IF key = '1'
+        IF key = '1' THEN
             ptr_SimConfig->num_decks <- CALL prompt_input("Number of Decks", ptr_SimConfig->num_decks, 1, 99)
-        ELSE IF key = '2'
+        ELSE IF key = '2' THEN
             ptr_SimConfig->spots_per_deck <- CALL prompt_input("Spots per Deck", ptr_SimConfig->spots_per_deck, 1, 999)
-        ELSE IF key = '3'
+        ELSE IF key = '3' THEN
             ptr_SimConfig->initial_occupancy <- CALL prompt_input("Initial Occupancy", ptr_SimConfig->initial_occupancy, 0, 999)
-        ELSE IF key = '4'
+        ELSE IF key = '4' THEN
             ptr_SimConfig->max_parking_duration_steps <- CALL prompt_input("Max Parking Duration", ptr_SimConfig->max_parking_duration_steps, 1, 9999)
-        ELSE IF key = '5'
+        ELSE IF key = '5' THEN
             ptr_SimConfig->min_parking_duration_steps <- CALL prompt_input("Min Parking Duration", ptr_SimConfig->min_parking_duration_steps, 1, 9999)
-        ELSE IF key = '6'
+        ELSE IF key = '6' THEN
             ptr_SimConfig->sim_duration_steps <- CALL prompt_input("Simulation Duration", ptr_SimConfig->sim_duration_steps, 1, 9999)
-        ELSE IF key = '7'
+        ELSE IF key = '7' THEN
             ptr_SimConfig->arrival_probability_percent <- CALL prompt_input("Arrival Probability %", ptr_SimConfig->arrival_probability_percent, 0, 100)
-        ELSE IF key = '8'
+        ELSE IF key = '8' THEN
             ptr_SimConfig->seed <- CALL prompt_input("RNG Seed", ptr_SimConfig->seed, 0, 9999)
-        ELSE IF key = '9'
+        ELSE IF key = '9' THEN
             ptr_SimConfig->config_file_name <- CALL prompt_input("The file name to store the config inside of", ptr_SimConfig->config_file_name)
-        ELSE IF key = 'ESC' || 'Enter' || 'Q'
+        ELSE IF key = 'ESC' || 'Enter' || 'Q' THEN
             active <- false
         END IF
     END WHILE
@@ -63,9 +72,9 @@ FUNCTION prompt_input(name, current_value, min, max)
     WHILE NOT valid
         input <- CALL get_text_input()
         
-        IF current_value is not config_file_name AND input is a valid number AND input >= min AND input <= max
+        IF current_value is not config_file_name AND input is a valid number AND input >= min AND input <= max THEN
             valid <- true
-        ELSE IF current_value is config_file_name AND input is a valid string AND input length < array length
+        ELSE IF current_value is config_file_name AND input is a valid string AND input length < array length THEN
             valid <- true
         ELSE
             CALL print("Please enter a correct value between min and max")
@@ -88,7 +97,7 @@ END FUNCTION
 
 FUNCTION show_running(Struct ptr_SimStats)
     CALL print("Exists this time step", ptr_SimStats->temp_exits)
-    CALL print("Entrys this time step", ptr_SimStats->temp_entrys)
+    CALL print("entries this time step", ptr_SimStats->temp_entries)
     CALL print("Relative Occupancy this time step", ptr_SimStats->temp_rel_occupancy_precent)
     CALL print("Current queue length", ptr_SimStats->temp_queue_length)
     CALL print("Free spots this timestep", ptr_SimStats->temp_free_spots)
@@ -96,6 +105,7 @@ FUNCTION show_running(Struct ptr_SimStats)
 END FUNCTION
 
 FUNCTION show_results(Struct ptr_SimStats)
+    results <- true     
     CALL print("Total cars that left the car park", ptr_SimStats->temp_exits)
     CALL print("Total cars that entered the car park", ptr_SimStats->total_entries)
     CALL print("Total cars that had to wait in queue", ptr_SimStats->total_queued)
@@ -107,8 +117,15 @@ FUNCTION show_results(Struct ptr_SimStats)
     CALL print("Peak relative occupany during the simulation", ptr_SimStats->peak_rel_occupancy)
     CALL print("Step at which the highest occupancy occured", ptr_SimStats->step_highest_occupancy)
     CALL print("Avarage wait time in queue", ptr_SimStats->total_queue_time/ptr_SimStats->total_queued)
+    CALL print("Percentage of vehicles that had to wait", ptr_SimStats->total-entries/ptr_SimStats->total_queued)
     CALL print("Percentage of vehicles that had to wait", ptr_SimStats->total_entries/ptr_SimStats->total_queued)
     CALL print("Average occupancy throughout the entire simulation", ptr_SimStats->avarage_rel_occupancy)
+    key <- CALL get_input()
+    WHILE results
+        IF key = 'Enter' OR 'Q' OR 'ESC' THEN
+            restults <- false
+        END IF
+    END WHILE
 END FUNCTION
 
 

@@ -40,6 +40,7 @@ FUNCTION run_simulation(ptr_config, ptr_stats)
         CALL reset_temp_stats(ptr_stats)
         CALL increment_queue_time
         ptr_stats->step_num = ptr_stats->step_num + 1
+        CALL show_running(ptr_stats)
     END FOR
 
     // after successfull simulation
@@ -49,6 +50,7 @@ FUNCTION run_simulation(ptr_config, ptr_stats)
     CALL reset_all_stats
     CALL free_parking(ptr_parking)
     CALL free_queue(ptr_queue)
+    CALL show_results(ptr_stats)
 
 END FUNCTION
 */

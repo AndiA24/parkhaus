@@ -153,8 +153,8 @@ FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simst
                 ptr_parking->occupied_count = ptr_parking->occupied_count + 1               // increment occupied count
 
                 // --- Update stats ---
-                ptr_simstats->temp_entrys = ptr_simstats->temp_entrys + 1                   // increment step entries
-                ptr_simstats->total_entrys = ptr_simstats->total_entrys + 1                 // increment total entries
+                ptr_simstats->temp_entries = ptr_simstats->temp_entries + 1                   // increment step entries
+                ptr_simstats->total_entries = ptr_simstats->total_entries + 1                 // increment total entries
                 ptr_simstats->temp_rel_occupancy_percent = 
                     (ptr_parking->occupied_count / ptr_parking->total_capacity) * 100.0     // compute step occupancy %
                 

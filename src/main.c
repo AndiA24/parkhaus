@@ -1,3 +1,6 @@
+#include "../include/config.h"
+#include "../include/stats.h"
+#include "../include/ui.h"
 /*
 PSEUDOCODE
 
@@ -10,7 +13,7 @@ FUNCTION MAIN
     ptr_stats = CALL init_simstats() // Create stats-struct
 
     WHILE run DO:
-        show_welcome(ptr_config) // ask user for config changes
+        CALL show_welcome(ptr_config) // ask user for config changes
 
         // simulation started by user:
         CALL save_config(ptr_config)
