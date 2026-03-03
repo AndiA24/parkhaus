@@ -19,7 +19,7 @@ ENDFUNCTION
 FUNCTION run_simulation(ptr_config, ptr_stats)
     ptr_parking = CALL init_parking(ptr_config, ptr_stats)
     ptr_queue = CALL init_queue
-    ptr_output_file = CALL create_output_file
+    ptr_output_file = CALL create_output_file(ptr_config)
     total_steps = ptr_config->sim_duration_steps
     CALL srand(ptr_config->seed)
 
@@ -39,7 +39,7 @@ FUNCTION run_simulation(ptr_config, ptr_stats)
         CALL save_temp_dataset(ptr_stats, ptr_output_file)
         CALL show_running(ptr_stats)
         CALL reset_temp_stats(ptr_stats)
-        CALL increment_queue_time
+        CALL increment_queue_time(ptr_queue)
         ptr_stats->step_num = ptr_stats->step_num + 1
     END FOR
 

@@ -12,7 +12,7 @@
  * - Press `S` to open the settings menu.
  * - Press `Q` to quit the application.
  *
- * @param ptr_config Pointer to the simulation configuration struct.
+ * @param[in,out] ptr_config Pointer to the simulation configuration struct.
  */
 void show_welcome(SimConfig *ptr_config);
 
@@ -24,7 +24,7 @@ void show_welcome(SimConfig *ptr_config);
  * Each key opens a prompt to enter a new value for that setting.
  * - Press `ESC`, `Enter`, or `Q` to return to the welcome screen.
  *
- * @param ptr_config Pointer to the simulation configuration struct.
+ * @param[in,out] ptr_config Pointer to the simulation configuration struct.
  */
 void show_settings(SimConfig *ptr_config);
 
@@ -39,11 +39,11 @@ void show_settings(SimConfig *ptr_config);
  *
  * @param text              Human-readable name of the field being edited,
  *                          shown in the prompt.
- * @param ptr_current_value Pointer to the field that will be updated with
+ * @param[in,out] ptr_current_value Pointer to the field that will be updated with
  *                          the validated input. The type is inferred from
  *                          context (numeric or string).
- * @param min               Minimum accepted value (inclusive) for numeric fields.
- * @param max               Maximum accepted value (inclusive) for numeric fields.
+ * @param[in] min               Minimum accepted value (inclusive) for numeric fields.
+ * @param[in] max               Maximum accepted value (inclusive) for numeric fields.
  */
 void prompt_input(char text[], void *ptr_current_value, long min, long max);
 
@@ -54,7 +54,7 @@ void prompt_input(char text[], void *ptr_current_value, long min, long max);
  * list, including deck count, spots per deck, occupancy, durations,
  * arrival probability, and RNG seed.
  *
- * @param ptr_config Pointer to the simulation configuration struct to display.
+ * @param[in] ptr_config Pointer to the simulation configuration struct to display.
  */
 void render_settings(SimConfig *ptr_config);
 
@@ -77,7 +77,7 @@ void show_running(SimStats *ptr_stats);
  * exits, queue statistics, parking duration totals, peak occupancy, and
  * the steps at which peaks occurred.
  *
- * @param ptr_stats Pointer to the simulation statistics struct containing
+ * @param[in] ptr_stats Pointer to the simulation statistics struct containing
  *                  the final aggregated data.
  */
 void show_results(SimStats *ptr_stats);

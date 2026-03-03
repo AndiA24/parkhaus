@@ -17,10 +17,10 @@ typedef struct {
 /**
  * @brief Initializes a Vehicle with default values.
  *
- * @param ptr_stats     Pointer to Stats to get current ID-count.
- * @param ptr_config    Pointer to Config Struct to get max-parking-duration.
+ * @param[in,out] ptr_stats     Pointer to Stats to get current ID-count.
+ * @param[in] ptr_config    Pointer to Config Struct to get max-parking-duration.
  * 
- * @return Pointer to new created vehicle.
+ * @return Pointer to new created vehicle or null if pointer allocation fails.
  * 
  */
 Vehicle *create_vehicle(SimStats *ptr_stats, SimConfig *ptr_config);
@@ -28,7 +28,7 @@ Vehicle *create_vehicle(SimStats *ptr_stats, SimConfig *ptr_config);
 /**
  * @brief Frees the memory of a Vehicle struct after exit.
  *
- * @param ptr_vehicle Pointer to the Vehicle to free.
+ * @param[in] ptr_vehicle Pointer to the Vehicle to free.
  */
 void free_vehicle(Vehicle *ptr_vehicle);
 

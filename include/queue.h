@@ -78,8 +78,9 @@ void increment_queue_time(Queue *ptr_queue);
  * The contained Vehicle objects are also freed.
  *
  * @param[in,out] ptr_queue Pointer to the queue to be deleted
+ * @param[in,out] ptr_stats Pointer to the stats to have the data from the vehicles safed inside of
  */
-void delete_queue(Queue *ptr_queue);
+void delete_queue(Queue *ptr_queue, SimStats *ptr_stats);
 
 /**
  * @brief Frees all dynamically allocated memory associated with the Queue structure.
