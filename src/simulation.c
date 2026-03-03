@@ -46,7 +46,7 @@ FUNCTION run_simulation(ptr_config, ptr_stats)
     // after successfull simulation
     CALL delete_queue(ptr_queue, ptr_stats)
     CALL save_final_dataset(ptr_stats, ptr_output_file)
-    CALL close_output_file(output_file)
+    CALL close_output_file(ptr_output_file)
     CALL show_results(ptr_stats)
     CALL reset_all_stats(ptr_stats)
     CALL free_parking(ptr_parking)
