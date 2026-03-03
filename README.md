@@ -42,6 +42,8 @@ Team-Repository für den Programmentwurf "Parkhaus" zur Vorlesung Programmieren 
         - Zeit der längsten Schlange + maximale Länge
         - Zeit der höchsten Belegung + höchste Belegung
 
+# Docu / Reasoning according to Task f)
+
 ## Projekt Architektur
 
 ```
