@@ -2,7 +2,7 @@
 #define VEHICLE_H
 
 #include "config.h"
-#include "stats.h"
+typedef struct SimStats SimStats;
 
 /**
  * @brief Represents a vehicle in the parking simulation.

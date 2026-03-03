@@ -5,7 +5,6 @@
 /*
 PSEUDOCODE
 
-/*
 FUNCTION rand_arrival(ptr_config : SimConfig*) RETURNS int
     rand_i = (CALL rand() % 100) + 1
     
@@ -17,11 +16,11 @@ FUNCTION rand_arrival(ptr_config : SimConfig*) RETURNS int
 ENDFUNCTION
 
 FUNCTION run_simulation(ptr_config, ptr_stats)
+    CALL srand(ptr_config->seed)
     ptr_parking = CALL init_parking(ptr_config, ptr_stats)
     ptr_queue = CALL init_queue
     ptr_output_file = CALL create_output_file(ptr_config)
     total_steps = ptr_config->sim_duration_steps
-    CALL srand(ptr_config->seed)
 
     FOR i = 0, i < total_steps, i++ DO
         IF CALL rand_arrival(ptr_config) DO
@@ -29,6 +28,8 @@ FUNCTION run_simulation(ptr_config, ptr_stats)
         END IF
         
         CALL check_exit(ptr_parking, ptr_stats)
+
+        CALL get_free_spots(ptr_parking, ptr_stats)
 
         IF ptr_stats->temp_free_spots DO
             CALL entry_parking(ptr_parking, CALL dequeue(ptr_queue, ptr_stats), ptr_stats)

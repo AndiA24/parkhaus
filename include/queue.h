@@ -9,7 +9,7 @@
  */
 typedef struct QueueNode {
     Vehicle             *ptr_vehicle;   /**< Pointer to the vehicle held by this node. */
-    struct QueueNode    *ptr_previous; /**< Pointer to the previous node in the queue, or NULL if this is the head. */
+    struct QueueNode    *ptr_previous; /**< Pointer to the previous node in the queue, or NULL if this is the head. Not sure if it's going to be used yet. Probably not but we'll leave it here for now.*/
     struct QueueNode    *ptr_next;     /**< Pointer to the next node in the queue, or NULL if this is the tail. */
 } QueueNode;
 

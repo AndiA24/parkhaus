@@ -56,7 +56,7 @@ FUNCTION show_settings(Struct *ptr_SimConfig)
         ELSE IF key = '8' THEN
             ptr_SimConfig->seed <- CALL prompt_input("RNG Seed", ptr_SimConfig->seed, 0, 9999)
         ELSE IF key = '9' THEN
-            ptr_SimConfig->config_file_name <- CALL prompt_input("The file name to store the config inside of", ptr_SimConfig->config_file_name)
+            ptr_SimConfig->config_file_name <- CALL prompt_input("The file name to store the config inside of", ptr_SimConfig->output_file_name)
         ELSE IF key = 'ESC' || 'Enter' || 'Q' THEN
             active <- false
         END IF
@@ -122,7 +122,7 @@ FUNCTION show_results(Struct ptr_SimStats)
         CALL print("Avarage wait time in queue", ptr_SimStats->total_queue_time/ptr_SimStats->total_queued)
     END IF
     IF ptr_SimStats->total_queued = 0
-        CALL print("Percentage of vehicles that had to wait",ptr_SimStats->total_queued)
+        CALL print("Percentage of vehicles that had to wait", (total_queued * 100) / total_entries)
     ELSE
         CALL print("Percentage of vehicles that had to wait", ptr_SimStats->total_entries/ptr_SimStats->total_queued)
     END IF
