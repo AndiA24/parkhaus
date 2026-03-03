@@ -138,7 +138,7 @@ FUNCTION close_output_file(FILE ptr_output_file)
 END FUNCTION
 
 
-FUNCTION reset_all_stats
+FUNCTION reset_all_stats(SimStats (Adress)ptr_simstats)
     ptr_simstats->step_num = 0
     ptr_simstats->temp_exits = 0
     ptr_simstats->temp_entrys = 0
