@@ -116,11 +116,15 @@ FUNCTION show_results(Struct ptr_SimStats)
     CALL print("Step at which the queue was the longest", ptr_SimStats->step_longest_queue)
     CALL print("Peak relative occupany during the simulation", ptr_SimStats->peak_rel_occupancy)
     CALL print("Step at which the highest occupancy occured", ptr_SimStats->step_highest_occupancy)
-    CALL print("Avarage wait time in queue", ptr_SimStats->total_queue_time/ptr_SimStats->total_queued)
-    IF ptr_SimStats = 0
+    IF ptr_SimStats->total_queued = 0
+        CALL print("Avarage wait time in queue", ptr_SimStats->total_queued)
+    ELSE
+        CALL print("Avarage wait time in queue", ptr_SimStats->total_queue_time/ptr_SimStats->total_queued)
+    END IF
+    IF ptr_SimStats->total_queued = 0
         CALL print("Percentage of vehicles that had to wait",ptr_SimStats->total_queued)
     ELSE
-        CALL print("Percentage of vehicles that had to wait", ptr_SimStats->total-entries/ptr_SimStats->total_queued)
+        CALL print("Percentage of vehicles that had to wait", ptr_SimStats->total_entries/ptr_SimStats->total_queued)
     END IF
     CALL print("Average occupancy throughout the entire simulation", ptr_SimStats->avg_rel_occupancy)
     WHILE results

@@ -156,7 +156,10 @@ END FUNCTION
 
 
 FUNCTION close_output_file(FILE ptr_output_file)
-    CALL flcose(ptr_output_file)
+    IF CALL flcose(ptr_output_file) = EOF
+        RETURN -1
+    ELSE
+        RETURN 1
 END FUNCTION
 
 

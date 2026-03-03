@@ -2,17 +2,20 @@
 #include "../include/vehicle.h"
 
 /* 
-FUNCTION init_queue(ptr_queue : Queue*)
+FUNCTION init_queue()
+    ptr_queue : Queue*
+    ptr_queue<- CALL malloc(CALL sizeof(*ptr_queue))
     ptr_queue->ptr_head = NULL                                  // initialize head to NULL
     ptr_queue->ptr_tail = NULL                                  // initialize tail to NULL
     ptr_queue->size = 0                                         // set size to 0
+    RETURN ptr_queue
 END FUNCTION
 */
 
 /*
 FUNCTION enqueue(ptr_queue : Queue*, ptr_vehicle : Vehicle*)
     ptr_new_node : QueueNode*                                   // temporary pointer for new node
-    ptr_new_node = CALL malloc(sizeof *ptr_new_node)            // allocate memory for new node
+    ptr_new_node = CALL malloc(CALL sizeof *ptr_new_node)            // allocate memory for new node
 
     IF !ptr_new_node THEN
         RETURN ERROR                                            // return error if allocation fails
@@ -74,7 +77,7 @@ END FUNCTION
 */ 
 
 /*
-FUNCTION delete_queue(ptr_queue : Queue*, ptr_stats : SimStats*)
+FUNCTION delete_queue(ptr_queue : Queue*)
     WHILE ptr_queue->ptr_head != NULL
         ptr_vehicle : Vehicle*
         ptr_vehicle = CALL dequeue(ptr_queue, ptr_stats)                        // dequeue each node until queue is empty
