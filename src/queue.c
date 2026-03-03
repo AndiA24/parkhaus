@@ -77,7 +77,7 @@ END FUNCTION
 */ 
 
 /*
-FUNCTION delete_queue(ptr_queue : Queue*)
+FUNCTION delete_queue(ptr_queue : Queue*, ptr_stats : SimStats*)
     WHILE ptr_queue->ptr_head != NULL
         ptr_vehicle : Vehicle*
         ptr_vehicle = CALL dequeue(ptr_queue, ptr_stats)                        // dequeue each node until queue is empty
