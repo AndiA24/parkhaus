@@ -58,6 +58,9 @@ FUNCTION create_output_file(ptr_config : SimConfig*) RETURNS FILE*
         ptr_config->output_file_name, 
         ptr_config->seed)
 
+    CALL fprintf(ptr_output_file,
+        "exits,entries,rel_occupancy,queue_length,free_spots,time_left\n")
+
     RETURN ptr_output_file
 END FUNCTION
 
