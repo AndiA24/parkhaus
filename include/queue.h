@@ -2,6 +2,7 @@
 #define QUEUE_H
 
 #include "vehicle.h"
+#include "stats.h"
 
 /**
  * @brief A node in the doubled-linked waiting queue.
@@ -27,9 +28,9 @@ typedef struct {
  * Sets all fields of the Queue structure to their initial values
  * (head and tail to NULL, size to 0).
  *
- * @param[out] queue Pointer to the queue to be initialized
+ *
  */
-Queue *init_queue(Queue *ptr_queue);
+Queue *init_queue();
 
 /**
  * @brief Adds a vehicle to the end of the waiting queue.
@@ -54,7 +55,7 @@ void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle);
  * @return Pointer to the next vehicle allowed to enter the parking lot,
  *         or NULL if the queue is empty
  */
-Vehicle *dequeue(Queue *ptr_queue);
+Vehicle *dequeue(Queue *ptr_queue, SimStats *ptr_stats);
 
 /**
  * @brief Increments the queue time of all vehicles in the waiting queue at each time step.

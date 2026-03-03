@@ -1,23 +1,24 @@
 /*
 PSEUDOCODE
 
+run = 1
+
 FUNCTION MAIN
 
-    config = CALL create_config() // create config-struct
+    ptr_config = CALL create_config() // create config-struct
     CALL get_config((Adress)config) // read config from config file
-    stats = CALL init_simstats // Create stats-struct
+    ptr_stats = CALL init_simstats() // Create stats-struct
 
     WHILE run DO:
-        XXX // ask user for config changes
+        show_welcome(ptr_config) // ask user for config changes
 
         // simulation started by user:
-        CALL save_config
-        CALL run_simulation()
-        CALL reset_all_stats
+        CALL save_config(ptr_config)
+        CALL run_simulation(ptr_config, ptr_stats)
     END WHILE
 
-    CALL free_stats()
-    CALL free_config()
+    CALL free_stats(ptr_stats)
+    CALL free_config(ptr_config)
 
 END FUNCTION
 

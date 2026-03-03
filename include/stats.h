@@ -14,7 +14,8 @@ typedef struct Parking Parking;
  * step into the output File after each step / to create the final report at the end.
  */
 typedef struct {
-    unsigned int step_num;               /**< Current simulation step number. */
+    unsigned int step_num;                      /**< Current simulation step number. */
+    unsigned int id_count;                      /**< Counter for the current Car ID */
 
     /* --- Per-step stats (overwritten each step) --- */
     unsigned int temp_exits;                    /**< Cars that exited this step. */
@@ -108,10 +109,10 @@ void save_temp_dataset(SimStats *ptr_simstats, FILE *ptr_output_file);
  * simulation step.
  *
  * @param[in,out] ptr_simstats Pointer to the SimStats structure whose temporary
- *                             fields are to be reset.
+ *                             fields are to be reset.‚
  * @param[in]     ptr_config   Pointer to the simulation configuration.
  */
-void reset_temp_stats(SimStats *ptr_simstats, SimConfig *ptr_config);
+void reset_temp_stats(SimStats *ptr_simstats);
 
 /**
  * @brief Logs the overall simulation statistics to console and file.
@@ -123,7 +124,7 @@ void reset_temp_stats(SimStats *ptr_simstats, SimConfig *ptr_config);
  * @param[in] ptr_simstats Pointer to the SimStats structure containing all data.
  * @param[in] ptr_config   Pointer to the simulation configuration.
  */
-void save_final_dataset(SimStats *ptr_simstats, SimConfig *ptr_config, FILE *ptr_output_file);
+void save_final_dataset(SimStats *ptr_simstats, FILE *ptr_output_file);
 
 /**
  * @brief Closes the open Output-File 
