@@ -1,6 +1,9 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
 
+#include "config.h"
+#include "stats.h"
+
 /**
  * @brief Represents a vehicle in the parking simulation.
  */
