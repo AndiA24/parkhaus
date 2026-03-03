@@ -14,9 +14,13 @@ typedef struct {
 /**
  * @brief Initializes a Vehicle with default values.
  *
- * @param ptr_vehicle Pointer to the Vehicle to initialize.
+ * @param ptr_stats     Pointer to Stats to get current ID-count.
+ * @param ptr_config    Pointer to Config Struct to get max-parking-duration.
+ * 
+ * @return Pointer to new created vehicle.
+ * 
  */
-void init_vehicle(Vehicle *ptr_vehicle);
+Vehicle *create_vehicle(SimStats *ptr_stats, SimConfig *ptr_config);
 
 /**
  * @brief Frees the memory of a Vehicle struct after exit.
