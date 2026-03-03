@@ -75,7 +75,14 @@ FUNCTION update_simstats(SimStats (Adress)ptr_simstats, Parking (Adress)ptr_park
         RETURN
     ENDIF
 
-   // running average formular to add the rel. occupancy of the step to the avg.
+    // calculate rel occupancy
+    IF ptr_parking->total_capacity > 0 THEN
+        ptr_simstats->temp_rel_occupancy_percent = ((float)ptr_parking->occupied_count / (float)ptr_parking->total_capacity) * 100
+    ELSE
+        ptr_simstats->temp_rel_occupancy_percent = 0
+    ENDIF
+
+    // running average formular to add the rel. occupancy of the step to the avg.
     ptr_simstats->avg_rel_occupancy =
     (ptr_simstats->avg_rel_occupancy * ptr_simstats->step_num
      + ptr_simstats->temp_rel_occupancy_percent)

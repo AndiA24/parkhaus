@@ -157,18 +157,6 @@ FUNCTION entry_parking(ptr_parking : Parking*, ptr_vehicle : Vehicle*, ptr_simst
                 ptr_simstats->total_entries = ptr_simstats->total_entries + 1               // increment total entries
                 ptr_simstats->temp_time_left += ptr_vehicle->parking_duration               // update avg time left    
 
-                 // calculate rel occupancy
-                IF ptr_parking->total_capacity > 0 THEN
-                    ptr_simstats->temp_rel_occupancy_percent = ((float)ptr_parking->occupied_count / (float)ptr_parking->total_capacity) * 100
-                ELSE
-                    ptr_simstats->temp_rel_occupancy_percent = 0
-                ENDIF 
-                
-                IF ptr_simstats->temp_rel_occupancy_percent > ptr_simstats->peak_rel_occupancy THEN
-                    ptr_simstats->peak_rel_occupancy = ptr_simstats->temp_rel_occupancy_percent
-                    ptr_simstats->step_highest_occupancy = ptr_simstats->step_num           // update peak occupancy if new high
-                ENDIF
-
                 RETURN                                                                      // vehicle parked, exit
             ENDIF
         ENDFOR
