@@ -19,7 +19,7 @@ typedef struct {
     /* --- Per-step stats (overwritten each step) --- */
     unsigned int temp_exits;                    /**< Cars that exited this step. */
     unsigned int temp_entrys;                   /**< New arrivals this step. */
-    float        temp_rel_occupancy_precent;    /**< Relative occupancy this step (0.0–100.0). */
+    float        temp_rel_occupancy_percent;    /**< Relative occupancy this step (0.0–100.0). */
     unsigned int temp_queue_length;             /**< Cars in queue at end of this step. */
     unsigned int temp_free_spots;               /**< Free spots after this step. */
     unsigned int temp_time_left;                /**< Average time left for cars in the car park */
@@ -79,7 +79,7 @@ void update_simstats(SimStats *ptr_simstats, Parking *ptr_parking, Queue *ptr_qu
 /**
  * @brief Checks temporary values against current peaks and updates them if exceeded.
  *
- * Compares temp_queue_length and temp_rel_occupancy_precent in the SimStats
+ * Compares temp_queue_length and temp_rel_occupancy_percent in the SimStats
  * structure against the stored peak values. If a new maximum is detected, the
  * corresponding peak field is overwritten and the current step_num is saved
  * in the matching step-tracking field step_longest_queue or
