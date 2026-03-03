@@ -17,7 +17,7 @@ FUNCTION rand_arrival(ptr_config : SimConfig*) RETURNS int
 ENDFUNCTION
 
 FUNCTION run_simulation(ptr_config, ptr_stats)
-    ptr_parking = CALL init_parking(ptr_config)
+    ptr_parking = CALL init_parking(ptr_config, ptr_stats)
     ptr_queue = CALL init_queue
     ptr_output_file = CALL create_output_file
     total_steps = ptr_config->sim_duration_steps
