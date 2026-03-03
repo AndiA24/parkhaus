@@ -30,6 +30,11 @@ FUNCTION create_output_file(ptr_config : SimConfig*) RETURNS FILE*
             CALL scanf(" %c", &user_input)
 
             IF user_input == 'y'
+                ptr_output_file = fopen(ptr_config->output_file_name, "w")
+                IF ptr_output_file == NULL
+                    RETURN NULL
+                ENDIF
+                    CALL fclose(ptr_output_file)
                 BREAK
             ELSE
                 CALL printf("Enter new file name: ")
