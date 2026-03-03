@@ -123,7 +123,7 @@ void reset_temp_stats(SimStats *ptr_simstats);
  * @param[in] ptr_simstats Pointer to the SimStats structure containing all data.
  * @param[in] ptr_config   Pointer to the simulation configuration.
  */
-void save_final_dataset(SimStats *ptr_simstats, SimConfig *ptr_config, FILE *ptr_output_file);
+void save_final_dataset(SimStats *ptr_simstats, FILE *ptr_output_file);
 
 /**
  * @brief Closes the open Output-File 
