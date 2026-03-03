@@ -88,7 +88,25 @@ FUNCTION update_peak((Adress)ptr_simstats)
 END FUNCTION
 
 
-FUNCTION save_temp_dataset()
+FUNCTION save_temp_dataset(ptr_simstats : SimStats*, ptr_output_file : FILE*)
+    
+    IF ptr_output_file == NULL
+        RETURN
+    ENDIF
+
+    CALL printf("%u\n", ptr_config->temp_exits)
+    CALL printf("%u\n", ptr_config->temp_entrys)
+    CALL printf("%f\n", ptr_config->temp_rel_occupancy_percent)
+    CALL printf("%u\n", ptr_config->temp_queue_length)
+    CALL printf("%u\n", ptr_config->temp_free_spots)
+    CALL printf("%u\n", ptr_config->temp_time_left)
+    
+    CALL fprintf(ptr_output_file, "%u\n", ptr_config->temp_exits)
+    CALL fprintf(ptr_output_file, "%u\n", ptr_config->temp_entrys)
+    CALL fprintf(ptr_output_file, "%f\n", ptr_config->temp_rel_occupancy_percent)
+    CALL fprintf(ptr_output_file, "%u\n", ptr_config->temp_queue_length)
+    CALL fprintf(ptr_output_file, "%u\n", ptr_config->temp_free_spots)
+    CALL fprintf(ptr_output_file, "%u\n", ptr_config->temp_time_left)
 
 END FUNCTION
 
