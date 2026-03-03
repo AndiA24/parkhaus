@@ -6,7 +6,7 @@
 PSEUDOCODE
 
 FUNCTION init_parking(SimConfig ptr_config, SimStats ptr_stats)
-    ...
+    // to add create parking, create decks, create spots, IF initial occupancy THEN prefill with create vehicle and park diectly without entry parking to avoid saving stats
 END FUNCTION
 
 FUNCTION check_exit(ptr_parking, ptr_simstats)
