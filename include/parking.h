@@ -37,13 +37,15 @@ typedef struct {
 
 /**
  * @brief Create Parking Struct containing Parking decks and spots
- *
+ *  Creates Parking structure with all containing Deck and Spot structs
+ *  and prefills the Parking with a given amount of vehicles.
  * 
  *
- * @param[in]   config  Config struct containing number of decks and spots
- * @return      Pointer to the created parking structure
+ * @param[in]       ptr_config  Pointer to Config struct containing number of decks and spots
+ * @param[in,out]   ptr_stats   Pointer to Stats Struct to get and increment ID-count
+ * @return          Pointer to the created parking structure
  */
-Parking *init_parking(SimConfig *ptr_config);
+Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats);
 
 /**
  * @brief Parks a vehicle in the first available spot in the parking lot.
