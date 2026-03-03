@@ -30,6 +30,7 @@ FUNCTION init_parking(SimConfig ptr_config, SimStats ptr_stats)
         ((ptr_parking->ptr_decks) + i)->ptr_spots = (Adress)allocate memory for (ptr_config->spots_per_deck) * (size)ParkingSpot (calloc) and fill all fields with 0
             IF ((ptr_parking->ptr_decks) + i)->ptr_spots == NULL THEN
                 OUTPUT Error cannot allocate memory
+                // the memeory for all spots that were already created must be freed
                 j = 0
                 FOR j < i DO
                     free memory allocated for ((ptr_parking->ptr_decks) + j)->ptr_spots
@@ -41,6 +42,8 @@ FUNCTION init_parking(SimConfig ptr_config, SimStats ptr_stats)
             END IF
         k = 0
         FOR k < ptr_config->spots_per_deck Do
+            // Global spot ID: deck index * spots per deck + local spot index 
+            // this way every spot got an unique ID across als decks
             (((ptr_parking->ptr_decks) + i)->ptr_spots + k)->id = (i * ptr_config->spots_per_deck) + k
             (((ptr_parking->ptr_decks) + i)->ptr_spots + k)->occupied = 0
             (((ptr_parking->ptr_decks) + i)->ptr_spots + k)->ptr_vehicle = NULL
@@ -53,19 +56,23 @@ FUNCTION init_parking(SimConfig ptr_config, SimStats ptr_stats)
         // check if initial_occupancy exceeds cpacity to avoid segmentation fault
         // if this is the case the error is consciously handled by not filling the parking at all
         // another option could to fill the parking with total_capacity amount of cars
-        IF ptr_config->initial_occupancy > ptr_parking->total_capacity THEN 
+        IF ptr_config->initial_occupancy > ptr_parking->total_capacity THEN
             OUTPUT Error initial_occupancy exceeds total_capacity: Parking is now empty without initial_occupancy
             return ptr_parking
         END IF
         i = 0
         FOR i < ptr_config->initial_occupancy DO
+            // fill spots one by one across all decks: floor(i / spots_per_deck) gives the deck index
+            // i % spots_per_deck gives the position within that deck
             (((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + (i % ptr_config->spots_per_deck))->ptr_vehicle = create_vehicle(ptr_stats, ptr_config)
             IF (((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + (i % ptr_config->spots_per_deck))->ptr_vehicle == NULL THEN
                 OUTPUT Failed to create vehicle
+                // if something went wrong during filling, free all already created vehicles and other structures
                 i = 0
                 FOR i < ptr_parking->decks DO
                     k = 0
                     FOR k < ptr_config->spots_per_deck DO
+                        // only free spots that actually got a vehicle assigned
                         IF (((ptr_parking->ptr_decks) + i)->ptr_spots + k)->ptr_vehicle != NULL THEN
                             free_vehicle((((ptr_parking->ptr_decks) + i)->ptr_spots + k)->ptr_vehicle)
                         END IF
@@ -78,6 +85,8 @@ FUNCTION init_parking(SimConfig ptr_config, SimStats ptr_stats)
                 free memory allocated for ptr_parking
                 return NULL
             END IF
+
+            // set the spot to occupied and increment the occupied_count of the deck and the parking
             (((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + (i % ptr_config->spots_per_deck))->occupied = 1
             ((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->occupied_count = ((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->occupied_count + 1
             ptr_parking->occupied_count = ptr_parking->occupied_count + 1
