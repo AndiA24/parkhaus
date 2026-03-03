@@ -98,6 +98,8 @@ FUNCTION reset_temp_stats(SimStats (Adress)ptr_stats)
     ptr_stats->temp_entrys = 0
     ptr_stats->temp_rel_occupancy_percent = 0
     ptr_stats->temp_queue_length = 0
+    ptr_stats->temp_free_spots = 0
+    ptr_stats->temp_time_left = 0
 END FUNCTION
 
 
