@@ -27,9 +27,9 @@ typedef struct {
  * Sets all fields of the Queue structure to their initial values
  * (head and tail to NULL, size to 0).
  *
- * @param[out] queue Pointer to the queue to be initialized
+ *
  */
-Queue *init_queue(Queue *ptr_queue);
+Queue *init_queue();
 
 /**
  * @brief Adds a vehicle to the end of the waiting queue.
