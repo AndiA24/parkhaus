@@ -338,25 +338,25 @@ typedef struct {
 
 | Funktion | Beschreibung | Parameter | Rückgabe |
 |---|---|---|---|
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Kapselt Allokierung und Nullinitialisierung der Statistik-Struct, damit ein definierter Ausgangszustand vor der Simulation garantiert ist| | |
 | `init_simstats()` | Allokiert und initialisiert eine `SimStats` Struct mit allen Feldern auf null. | — | `SimStats *` (neu allokiert) oder `NULL` bei Fehler |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Kapselt die gesamte Dateilogik inklusive Nutzerinteraktion, damit der Simulationsloop ein fertiges Datei-Handle erhält und nicht mit Dateiverwaltung belastet wird| | |
 | `create_output_file(ptr_config)` | Öffnet oder erstellt die CSV-Ausgabedatei. Existiert bereits eine Datei mit diesem Namen, wird der Nutzer gefragt, ob er überschreiben oder umbenennen möchte. Schreibt die Simulationskonfiguration als Header. | `SimConfig *ptr_config` | `FILE *` (offenes Datei-Handle) |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Zentralisiert die Berechnung aller Schrittkennwerte| | |
 | `update_simstats(ptr_simstats, ptr_parking, ptr_queue)` | Sammelt und berechnet alle relevanten Kennwerte für den aktuellen Simulationsschritt und schreibt sie in die `SimStats` Struct. | `SimStats *ptr_simstats`, `Parking *ptr_parking`, `Queue *ptr_queue` | — |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Trennt die Höchstwertaktualisierung von der allgemeinen Statistikberechnung, damit diese Logik separat und gezielt nach jedem Schritt aufgerufen werden kann| | |
 | `update_peak(ptr_simstats)` | Vergleicht temporäre Werte mit gespeicherten Höchstwerten und aktualisiert diese, falls ein neues Maximum erkannt wird, und speichert die aktuelle Schrittnummer. | `SimStats *ptr_simstats` | — |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Kapselt die Ausgabe pro Schritt, damit Datei- und Konsolenausgabe an einer zentralen Stelle erfolgen und nicht über den Simulationsloop verstreut sind| | |
 | `save_temp_dataset(ptr_simstats, ptr_output_file)` | Schreibt die Statistiken des aktuellen Schritts in die Ausgabedatei und auf stdout. | `SimStats *ptr_simstats`, `FILE *ptr_output_file` | — |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | tellt sicher, dass temporäre Felder zu Beginn jedes Schritts sauber zurückgesetzt werden, ohne dass der Aufrufer die interne Feldstruktur kennen muss| | |
 | `reset_temp_stats(ptr_simstats)` | Setzt alle per-Step (temporären) Felder der Struct auf null zurück. | `SimStats *ptr_simstats` | — |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | apselt die abschließende Ausgabe, damit die Zusammenfassung konsistent an einer Stelle geschrieben wird| | |
 | `save_final_dataset(ptr_simstats, ptr_output_file)` | Schreibt die abschließende Simulationszusammenfassung in die Ausgabedatei und auf stdout. | `SimStats *ptr_simstats`, `FILE *ptr_output_file` | — |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Kapselt das Schließen der Datei passend zu `create_output_file`, um den Lebenszyklus des Datei-Handles konsistent zu halten| | |
 | `close_output_file(ptr_output_file)` | Schließt die geöffnete Ausgabedatei. | `FILE *ptr_output_file` | `1` bei Erfolg, `-1` bei Fehler |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Ermöglicht einen vollständigen Neustart der Statistik ohne Neuallokierung, etwa für mehrere aufeinanderfolgende Simulationsläufe| | |
 | `reset_all_stats(ptr_simstats)` | Setzt alle Felder der Struct auf null zurück. | `SimStats *ptr_simstats` | — |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Kapselt die Speicherfreigabe passend zu `init_simstats`, um den Lebenszyklus der Struct konsistent zu halten| | |
 | `free_stats(ptr_simstats)` | Gibt den durch `init_simstats` allokierten Speicher frei. | `SimStats *ptr_simstats` | — |
 
 ---
@@ -365,9 +365,9 @@ typedef struct {
 
 | Funktion | Beschreibung | Parameter | Rückgabe |
 |---|---|---|---|
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Kapselt den gesamten Simulationsablauf, damit main nur einen einzigen Aufruf benötigt| | |
 | `run_simulation(ptr_config, ptr_stats)` | Führt die Simulation für die konfigurierte Anzahl an Schritten aus und ruft dabei alle notwendigen Funktionen je Schritt auf. | `SimConfig *ptr_config`, `SimStats *ptr_stats` | `1` bei Erfolg, `-1` bei Fehler |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Isoliert die Zufallsentscheidung über Fahrzeugankunft, damit diese Logik nicht direkt im Simulationsloop steht und bei Bedarf leicht angepasst werden kann| | |
 | `rand_arrival(ptr_config)` | Entscheidet zufällig, ob ein Fahrzeug im aktuellen Schritt ankommt, basierend auf der konfigurierten Ankunftswahrscheinlichkeit. | `SimConfig *ptr_config` | `1` (Ankunft) oder `0` (keine Ankunft) |
 
 ---
@@ -376,17 +376,17 @@ typedef struct {
 
 | Funktion | Beschreibung | Parameter | Rückgabe |
 |---|---|---|---|
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Bildet den zentralen Einstiegspunkt der Anwendung und steuert den Programmfluss, bevor die Simulation gestartet wird| | |
 | `show_welcome(ptr_config)` | Zeigt den Willkommensscreen und verarbeitet Eingaben: `Enter` → Simulation starten, `S` → Einstellungen, `Q` → Beenden. | `SimConfig *ptr_config` | — |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Kapselt die gesamte Einstellungslogik, damit Konfigurationsänderungen über eine dedizierte Ansicht erfolgen und nicht in den Hauptablauf eingreifen| | |
 | `show_settings(ptr_config)` | Zeigt das Einstellungsmenü und erlaubt das Ändern von Parametern über Zifferntasten (1–9). `ESC`/`Enter`/`Q` → zurück zum Willkommensscreen. | `SimConfig *ptr_config` | — |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Zentralisiert die validierte Nutzereingabe, damit Eingabeprüfung und Fehlerbehandlung nicht für jedes Konfigurationsfeld separat implementiert werden müssen| | |
 | `prompt_input(text, ptr_current_value, min, max)` | Fordert den Nutzer zur Eingabe eines neuen Werts für ein Konfigurationsfeld auf. Wiederholt die Abfrage, bis ein gültiger Wert innerhalb `[min, max]` eingegeben wird. | `char text[]` (Feldname), `void *ptr_current_value` (Zielfeld), `long min`, `long max` | — |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Trennt die Darstellung der Einstellungen von der Eingabelogik in `show_settings`, damit beide unabhängig voneinander angepasst werden können| | |
 | `render_settings(ptr_config)` | Gibt alle Konfigurationsfelder und ihre aktuellen Werte formatiert aus. | `SimConfig *ptr_config` | — |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Kapselt die Live-Ausgabe pro Schritt, damit der Simulationsloop nicht direkt mit der Darstellungslogik vermischt wird| | |
 | `show_running(ptr_stats)` | Zeigt Live-Statistiken je Schritt (Ausfahrten, Einfahrten, relative Belegung, Warteschlangenlänge). | `SimStats *ptr_stats` | — |
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Kapselt die Ergebnisanzeige am Simulationsende, damit die Ausgabelogik zentral an einer Stelle liegt und unabhängig vom Simulationsloop angepasst werden kann| | |
 | `show_results(ptr_stats)` | Zeigt die abschließende Zusammenfassung aller akkumulierten Simulationsstatistiken. | `SimStats *ptr_stats` | — |
 
 ---
@@ -395,5 +395,5 @@ typedef struct {
 
 | Funktion | Beschreibung | Parameter | Rückgabe |
 |---|---|---|---|
-| ***Begründung:*** | | | |
+| ***Begründung:*** | Kapselt den sauberen Programmabschluss, damit Konfigurationsspeicherung und Ressourcenfreigabe garantiert an einer zentralen Stelle erfolgen und nicht vom Aufrufer manuell durchgeführt werden müssen| | |
 | `quit(ptr_config)` | Beendet die Anwendung sauber durch Speichern der Konfiguration und Freigabe der Ressourcen. | `SimConfig *ptr_config` | — |
