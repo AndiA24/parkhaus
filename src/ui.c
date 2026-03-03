@@ -122,7 +122,7 @@ FUNCTION show_results(Struct ptr_SimStats)
     ELSE
         CALL print("Percentage of vehicles that had to wait", ptr_SimStats->total-entries/ptr_SimStats->total_queued)
     END IF
-    CALL print("Average occupancy throughout the entire simulation", ptr_SimStats->avarage_rel_occupancy)
+    CALL print("Average occupancy throughout the entire simulation", ptr_SimStats->avg_rel_occupancy)
     WHILE results
         key <- CALL get_input()
         IF key = 'Enter' OR 'Q' OR 'ESC' THEN
