@@ -5,6 +5,15 @@
 
 /*
 
+Dies ist die vorläufige Version des UI. Allerdings kann sich hier noch einiges ändern. In ersten Tests mit der Library habe ich bereits festgestellt,
+dass noch weitere kleine Hilfsfunktionen gebraucht werden um das UI effizient zu erzeugen (z.B. zur Darstellung von Prozentbalken). Zusätzlich ist in diesem 
+Pseudocode noch nicht richtig dargestellt, wie der User Input ermittelt wird (Keyboard Shortcuts, Einstellungen eingeben). Außerdem sind auch Dinge wie 
+die Reihenfolge der Daten oder die genutzten Tasten für die Funktionen noch nicht final. Alles soll eine erste Richtung darstellen wird aber beim 
+Programmieren des tatsächlichen UI vermutlich noch deutlich verändert werden.
+
+
+
+
 FUNCTION show_welcome(Struct *ptr_SimConfig)
     active <- true
     CALL render_welcome()
@@ -88,7 +97,7 @@ END FUNCTION
 
 FUNCTION show_running(Struct ptr_SimStats)
     CALL print("Exists this time step", ptr_SimStats->temp_exits)
-    CALL print("Entrys this time step", ptr_SimStats->temp_entrys)
+    CALL print("entries this time step", ptr_SimStats->temp_entries)
     CALL print("Relative Occupancy this time step", ptr_SimStats->temp_rel_occupancy_precent)
     CALL print("Current queue length", ptr_SimStats->temp_queue_length)
     CALL print("Free spots this timestep", ptr_SimStats->temp_free_spots)

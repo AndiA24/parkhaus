@@ -108,7 +108,7 @@ FUNCTION save_temp_dataset(ptr_simstats : SimStats*, ptr_output_file : FILE*)
 
     CALL printf("%u %u %.2f %u %u %u\n",
        ptr_simstats->temp_exits,
-       ptr_simstats->temp_entrys,
+       ptr_simstats->temp_entries,
        ptr_simstats->temp_rel_occupancy_percent,
        ptr_simstats->temp_queue_length,
        ptr_simstats->temp_free_spots,
@@ -117,7 +117,7 @@ FUNCTION save_temp_dataset(ptr_simstats : SimStats*, ptr_output_file : FILE*)
     CALL fprintf(ptr_output_file,
         "%u,%u,%.2f,%u,%u,%u\n",
         ptr_simstats->temp_exits,
-        ptr_simstats->temp_entrys,
+        ptr_simstats->temp_entries,
         ptr_simstats->temp_rel_occupancy_percent,
         ptr_simstats->temp_queue_length,
         ptr_simstats->temp_free_spots,
@@ -128,7 +128,7 @@ END FUNCTION
 
 FUNCTION reset_temp_stats(SimStats (Adress)ptr_simstats)
     ptr_simstats->temp_exits = 0
-    ptr_simstats->temp_entrys = 0
+    ptr_simstats->temp_entries = 0
     ptr_simstats->temp_rel_occupancy_percent = 0
     ptr_simstats->temp_queue_length = 0
     ptr_simstats->temp_free_spots = 0
@@ -144,7 +144,7 @@ FUNCTION save_final_dataset(ptr_simstats : SimStats*, ptr_output_file : FILE*)
 
     CALL printf("%u %u %u %u %u %u %u %u %.2f %u\n",
         ptr_simstats->total_exits,
-        ptr_simstats->total_entrys,
+        ptr_simstats->total_entries,
         ptr_simstats->total_queued,
         ptr_simstats->total_queue_time,
         ptr_simstats->total_parking_time,
@@ -157,7 +157,7 @@ FUNCTION save_final_dataset(ptr_simstats : SimStats*, ptr_output_file : FILE*)
     CALL fprintf(ptr_output_file,
         "%u,%u,%u,%u,%u,%u,%u,%u,%.2f,%u\n",
         ptr_simstats->total_exits,
-        ptr_simstats->total_entrys,
+        ptr_simstats->total_entries,
         ptr_simstats->total_queued,
         ptr_simstats->total_queue_time,
         ptr_simstats->total_parking_time,
@@ -177,11 +177,11 @@ END FUNCTION
 FUNCTION reset_all_stats(SimStats (Adress)ptr_simstats)
     ptr_simstats->step_num = 0
     ptr_simstats->temp_exits = 0
-    ptr_simstats->temp_entrys = 0
+    ptr_simstats->temp_entries = 0
     ptr_simstats->temp_rel_occupancy_percent = 0
     ptr_simstats->temp_queue_length = 0
     ptr_simstats->total_exits = 0
-    ptr_simstats->total_entrys = 0
+    ptr_simstats->total_entries = 0
     ptr_simstats->total_queued = 0
     ptr_simstats->total_queue_time = 0
     ptr_simstats->total_parking_time = 0

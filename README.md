@@ -119,13 +119,13 @@ typedef struct {
 
     /* --- Per-step stats (overwritten each step) --- */
     unsigned int temp_exits;                    /**< Cars that exited this step. */
-    unsigned int temp_entrys;                   /**< New arrivals this step. */
+    unsigned int temp_entries;                   /**< New arrivals this step. */
     float        temp_rel_occupancy_precent;    /**< Relative occupancy this step (0.0–100.0). */
     unsigned int temp_queue_length;             /**< Cars in queue at end of this step. */
 
     /* --- Cumulative stats (accumulated until end) --- */
     unsigned int total_exits;                   /**< Total cars exited over all steps. */
-    unsigned int total_entrys;                  /**< Total cars arrived over all steps. */
+    unsigned int total_entries;                  /**< Total cars arrived over all steps. */
     unsigned int total_queued;                  /**< Total cars that had to wait in queue. */
     unsigned int total_queue_time;              /**< Sum of all queue waiting times (in steps). */
     unsigned int total_parking_time;            /**< Sum of all parking durations (in steps). */
