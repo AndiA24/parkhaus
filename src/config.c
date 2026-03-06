@@ -52,8 +52,22 @@ int get_config(SimConfig *ptr_config) {
     }
 }
 
-void save_config(SimConfig *ptr_config) {
+int save_config(SimConfig *ptr_config) {
+    FILE *f = fopen(ptr_config->config_file_name, "w");
+    if(!f) return -1;
 
+    fprintf(f, "%u,%u,%u,%u,%u,%u,%u,%s,%u\n",
+        ptr_config->num_decks,
+        ptr_config->spots_per_deck,
+        ptr_config->initial_occupancy,
+        ptr_config->max_parking_duration_steps,
+        ptr_config->min_parking_duration_steps,
+        ptr_config->sim_duration_steps,
+        ptr_config->arrival_probability_percent,
+        ptr_config->output_file_name,
+        ptr_config->seed);
+    fclose(f);
+    return 1;
 }
 
 void free_config(SimConfig *ptr_config) {
