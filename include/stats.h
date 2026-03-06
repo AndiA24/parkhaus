@@ -3,8 +3,8 @@
 
 #include <stdio.h>
 #include "config.h"
+#include "parking.h"
 
-typedef struct Parking Parking;
 typedef struct Queue Queue;
 
 /**
