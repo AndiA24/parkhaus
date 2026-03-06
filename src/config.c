@@ -1,18 +1,32 @@
 #include "../include/config.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #define NUM_DECKS_DEFAULT 5
 #define SPOTS_PER_DECK_DEFAULT 60
 #define INITIAL_OCCUPANCY_DEFAULT 150
 #define MAX_PARKING_DURATION_DEFAULT 200
 #define MIN_PARKING_DURATION_DEFAULT 10
-#define SIM_DURATION_STEPS_DEFAUTL 1000
+#define SIM_DURATION_STEPS_DEFAULT 1000
 #define ARRIVAL_PERCENT_DEFAULT 70
 #define OUTPUT_FILE_NAME_DEFAULT "parkhaus_results.csv"
 #define CONFIG_FILE_NAME_DEFAULT "parkhaus_config.csv"
 #define SEED_DEFAULT 69
 
+
+void populate_with_default(SimConfig *ptr_config) {
+    ptr_config->num_decks = NUM_DECKS_DEFAULT;
+    ptr_config->spots_per_deck = SPOTS_PER_DECK_DEFAULT;
+    ptr_config->initial_occupancy = INITIAL_OCCUPANCY_DEFAULT;
+    ptr_config->max_parking_duration_steps = MAX_PARKING_DURATION_DEFAULT;
+    ptr_config->min_parking_duration_steps = MIN_PARKING_DURATION_DEFAULT;
+    ptr_config->sim_duration_steps = SIM_DURATION_STEPS_DEFAULT;
+    ptr_config->arrival_probability_percent = ARRIVAL_PERCENT_DEFAULT;
+    strcpy(ptr_config->output_file_name, OUTPUT_FILE_NAME_DEFAULT);
+    strcpy(ptr_config->config_file_name, CONFIG_FILE_NAME_DEFAULT);
+    ptr_config->seed = SEED_DEFAULT;
+}
 
 SimConfig *create_config() {
     SimConfig *ptr_config = calloc(1, sizeof(SimConfig));
@@ -72,19 +86,6 @@ int save_config(SimConfig *ptr_config) {
 
 void free_config(SimConfig *ptr_config) {
     free(ptr_config);
-}
-
-void populate_with_default(SimConfig *ptr_config) {
-    ptr_config->num_decks = NUM_DECKS_DEFAULT;
-    ptr_config->spots_per_deck = SPOTS_PER_DECK_DEFAULT;
-    ptr_config->initial_occupancy = INITIAL_OCCUPANCY_DEFAULT;
-    ptr_config->max_parking_duration_steps = MAX_PARKING_DURATION_DEFAULT;
-    ptr_config->min_parking_duration_steps = MIN_PARKING_DURATION_DEFAULT;
-    ptr_config->sim_duration_steps = SIM_DURATION_STEPS_DEFAUTL;
-    ptr_config->arrival_probability_percent = ARRIVAL_PERCENT_DEFAULT;
-    strcpy(ptr_config->output_file_name, OUTPUT_FILE_NAME_DEFAULT);
-    strcpy(ptr_config->config_file_name, CONFIG_FILE_NAME_DEFAULT);
-    ptr_config->seed = SEED_DEFAULT;
 }
 
 /*

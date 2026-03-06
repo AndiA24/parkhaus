@@ -21,6 +21,16 @@ typedef struct {
 } SimConfig;                    
 
 /**
+ * @brief Populates the SimConfig structure with default values.
+ *
+ * Overwrites all fields of the given SimConfig structure with
+ * the predefined default configuration values.
+ *
+ * @param[out] ptr_config Pointer to the SimConfig structure to be populated.
+ */
+void populate_with_default(SimConfig *ptr_config);
+
+/**
  * @brief Initializes the SimConfig structure with empty values.
  *
  * @return Pointer to a newly allocated SimConfig with default values,
