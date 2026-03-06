@@ -2,6 +2,42 @@
 #include "../include/vehicle.h"
 #include "../include/stats.h"
 #include "../include/config.h"
+
+
+Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats) {}
+
+void check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
+{
+    int sim_step = ptr_simstats->step_num;
+
+    for (int i = 0; i < (ptr_parking->decks)-1; i++)
+    {
+        for (int j = 0; j < ptr_parking->ptr_decks[i].capacity; j++)
+        {
+            ParkingSpot *ptr_spot = &ptr_parking->ptr_decks[i].ptr_spots[j];
+            Vehicle *ptr_vehicle = ptr_spot->ptr_vehicle;
+
+            if (ptr_spot->occupied == 1)
+            {
+                if ((sim_step - ptr_vehicle->entry_time) >= ptr_vehicle->parking_duration)
+                {
+                    ptr_simstats->temp_exits++;
+                    ptr_simstats->total_exits++;
+                    ptr_simstats->total_parking_time += ptr_vehicle->parking_duration;
+
+                    //free_vehicle(ptr_vehicle);
+                    ptr_spot->occupied = 0;
+                    ptr_parking->occupied_count--;
+                    ptr_parking->ptr_decks[i].occupied_count--;
+                }
+                
+            }
+            ptr_spot = NULL;
+            ptr_vehicle = NULL;
+        }
+    }
+}
+
 /* 
 PSEUDOCODE
 
