@@ -2,7 +2,8 @@
 #define QUEUE_H
 
 #include "vehicle.h"
-#include "stats.h"
+
+typedef struct SimStats SimStats;
 
 /**
  * @brief A node in the doubled-linked waiting queue.
