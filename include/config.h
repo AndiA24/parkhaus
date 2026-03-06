@@ -21,9 +21,7 @@ typedef struct {
 } SimConfig;                    
 
 /**
- * @brief Creates a configuration file with default values.
- *
- * Initializes the SimConfig structure with empty values.
+ * @brief Initializes the SimConfig structure with empty values.
  *
  * @return Pointer to a newly allocated SimConfig with default values,
  *         or NULL on failure.
