@@ -21,9 +21,7 @@ typedef struct {
 } SimConfig;                    
 
 /**
- * @brief Creates a configuration file with default values.
- *
- * Initializes the SimConfig structure with empty values.
+ * @brief Initializes the SimConfig structure with empty values.
  *
  * @return Pointer to a newly allocated SimConfig with default values,
  *         or NULL on failure.
@@ -39,7 +37,7 @@ SimConfig *create_config();
  *
  * @param[in,out] ptr_config Pointer to the SimConfig structure to be populated
  */
-void get_config(SimConfig *ptr_config);
+int get_config(SimConfig *ptr_config);
 
 /**
  * @brief Saves the current simulation configuration to a file.
@@ -49,7 +47,7 @@ void get_config(SimConfig *ptr_config);
  *
  * @param[in] config Pointer to the SimConfig structure to be saved
  */
-void save_config(SimConfig *ptr_config);
+int save_config(SimConfig *ptr_config);
 
 /**
  * @brief Frees all dynamically allocated memory associated with the config structure.
