@@ -6,8 +6,6 @@
 #include "config.h"
 #include "parking.h"
 
-//typedef struct Parking Parking;
-
 /**
  * @brief Holds the statistics collected during the simulation / one simulation step.
  *
