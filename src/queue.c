@@ -87,6 +87,13 @@ void delete_queue(Queue *ptr_queue, SimStats *ptr_simstats)
         Vehicle *ptr_vehicle = dequeue(ptr_queue, ptr_simstats);
         free_vehicle(ptr_vehicle);
     }
+
+    free_queue(ptr_queue);
+}
+
+void free_queue(Queue *ptr_queue) 
+{
+    free(ptr_queue);
 }
 
 /* 
