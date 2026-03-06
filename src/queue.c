@@ -1,7 +1,8 @@
 #include "../include/queue.h"
 #include "../include/vehicle.h"
 
-Queue* init_queue(){
+Queue* init_queue()
+{
     Queue *ptr_queue = malloc(sizeof *ptr_queue);
 
     if (ptr_queue == NULL)
@@ -16,7 +17,8 @@ Queue* init_queue(){
     return ptr_queue;
 }
 
-void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle){
+void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle)
+{
     QueueNode *ptr_new_node = malloc(sizeof *ptr_new_node);
 
     if (ptr_new_node == NULL)
@@ -38,7 +40,8 @@ void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle){
     ptr_queue->size++;
 }
 
-Vehicle* dequeue(Queue *ptr_queue, SimStats *ptr_simstats) {
+Vehicle* dequeue(Queue *ptr_queue, SimStats *ptr_simstats) 
+{
     if (ptr_queue->ptr_head == NULL) 
     {
         return NULL;
@@ -65,6 +68,16 @@ Vehicle* dequeue(Queue *ptr_queue, SimStats *ptr_simstats) {
     }
     
     return ptr_vehicle;
+}
+
+void increment_queue_time(Queue *ptr_queue) 
+{
+    QueueNode *ptr_temp_node = ptr_queue->ptr_head;
+    while (ptr_temp_node != NULL)
+    {
+        ptr_temp_node->ptr_vehicle->queue_time++;
+        ptr_temp_node = ptr_temp_node->ptr_next;
+    }
 }
 
 /* 
