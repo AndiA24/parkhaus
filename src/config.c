@@ -71,7 +71,7 @@ int save_config(SimConfig *ptr_config) {
 }
 
 void free_config(SimConfig *ptr_config) {
-
+    free(ptr_config);
 }
 
 void populate_with_default(SimConfig *ptr_config) {
