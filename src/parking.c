@@ -65,6 +65,10 @@ void get_free_spots(Parking *ptr_parking, SimStats *ptr_simstats)
 }
 
 void free_parking(Parking *ptr_parking) {
+    for (int i = 0; i < ptr_parking->decks; i++) {
+        free(ptr_parking->ptr_decks[i].ptr_spots);
+    }
+    free(ptr_parking->ptr_decks);
     free(ptr_parking);
 }
 
