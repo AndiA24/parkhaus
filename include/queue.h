@@ -2,7 +2,8 @@
 #define QUEUE_H
 
 #include "vehicle.h"
-#include "stats.h"
+
+typedef struct SimStats SimStats;
 
 /**
  * @brief A node in the doubled-linked waiting queue.
@@ -16,7 +17,7 @@ typedef struct QueueNode {
 /**
  * @brief A doubled-linked FIFO queue of waiting vehicles.
  */
-typedef struct {
+typedef struct Queue{
     QueueNode *ptr_head; /**< Pointer to the first node in the queue, or NULL if empty. */
     QueueNode *ptr_tail; /**< Pointer to the last node in the queue, or NULL if empty. */
     int        size;     /**< Current number of nodes (vehicles) in the queue. */

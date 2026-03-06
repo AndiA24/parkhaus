@@ -2,10 +2,10 @@
 #define STATS_H
 
 #include <stdio.h>
-#include "queue.h"
 #include "config.h"
+#include "parking.h"
 
-typedef struct Parking Parking;
+typedef struct Queue Queue;
 
 /**
  * @brief Holds the statistics collected during the simulation / one simulation step.
@@ -13,7 +13,7 @@ typedef struct Parking Parking;
  * Updated at each simulation step and used for writing the statistics of the simulation 
  * step into the output File after each step / to create the final report at the end.
  */
-typedef struct {
+typedef struct SimStats{
     unsigned int step_num;                      /**< Current simulation step number. */
     unsigned int id_count;                      /**< Counter for the current Car ID */
 
