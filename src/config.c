@@ -1,5 +1,6 @@
 #include "../include/config.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 #define NUM_DECKS_DEFAULT 5
 #define SPOTS_PER_DECK_DEFAULT 60
@@ -18,6 +19,48 @@ SimConfig *create_config() {
     if(ptr_config == NULL) {
         return NULL;
     }
+    populate_with_default(ptr_config);
+    return ptr_config;
+}
+
+int get_config(SimConfig *ptr_config) {
+    FILE *f = fopen(ptr_config->config_file_name, "r");
+    if(!f) {
+        populate_with_default(ptr_config);
+        return -1;
+    }
+    else {
+        int count = fscanf(f, "%u,%u,%u,%u,%u,%u,%u,%69[^,],%u",
+        &ptr_config->num_decks,
+        &ptr_config->spots_per_deck,
+        &ptr_config->initial_occupancy,
+        &ptr_config->max_parking_duration_steps,
+        &ptr_config->min_parking_duration_steps,
+        &ptr_config->sim_duration_steps,
+        &ptr_config->arrival_probability_percent,
+        ptr_config->output_file_name,
+        &ptr_config->seed);
+        if(count != 9) {
+            populate_with_default(ptr_config);
+            fclose(f);
+            return -1;
+        }
+        else {
+            fclose(f);
+            return 1;
+        }
+    }
+}
+
+void save_config(SimConfig *ptr_config) {
+
+}
+
+void free_config(SimConfig *ptr_config) {
+
+}
+
+void populate_with_default(SimConfig *ptr_config) {
     ptr_config->num_decks = NUM_DECKS_DEFAULT;
     ptr_config->spots_per_deck = SPOTS_PER_DECK_DEFAULT;
     ptr_config->initial_occupancy = INITIAL_OCCUPANCY_DEFAULT;
@@ -28,19 +71,6 @@ SimConfig *create_config() {
     strcpy(ptr_config->output_file_name, OUTPUT_FILE_NAME_DEFAULT);
     strcpy(ptr_config->config_file_name, CONFIG_FILE_NAME_DEFAULT);
     ptr_config->seed = SEED_DEFAULT;
-    return ptr_config;
-}
-
-void get_config(SimConfig *ptr_config) {
-
-}
-
-void save_config(SimConfig *ptr_config) {
-
-}
-
-void free_config(SimConfig *ptr_config) {
-
 }
 
 /*
