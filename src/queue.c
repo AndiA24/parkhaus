@@ -16,6 +16,28 @@ Queue* init_queue(){
     return ptr_queue;
 }
 
+void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle){
+    QueueNode *ptr_new_node = malloc(sizeof *ptr_new_node);
+
+    if (ptr_new_node == NULL)
+    {
+        return;
+    }
+    
+    ptr_new_node->ptr_vehicle = ptr_vehicle;
+    ptr_new_node->ptr_next = NULL;
+
+    if (ptr_queue->ptr_tail == NULL)
+    {
+        ptr_queue->ptr_head = ptr_new_node;
+    } else {
+        ptr_queue->ptr_tail->ptr_next = ptr_new_node;
+    }
+
+    ptr_queue->ptr_tail = ptr_new_node;
+    ptr_queue->size++;
+}
+
 /* 
 FUNCTION init_queue()
     ptr_queue : Queue*
