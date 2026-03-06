@@ -59,6 +59,11 @@ void entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sim
     }
 }
 
+void get_free_spots(Parking *ptr_parking, SimStats *ptr_simstats)
+{
+    ptr_simstats->temp_free_spots = ptr_parking->total_capacity - ptr_parking->occupied_count;
+}
+
 /* 
 PSEUDOCODE
 
