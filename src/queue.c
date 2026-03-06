@@ -1,12 +1,12 @@
 #include "../include/queue.h"
 #include "../include/vehicle.h"
 
-void init_queue(){
+Queue* init_queue(){
     Queue *ptr_queue = malloc(sizeof *ptr_queue);
 
-    if (ptr_queue != 1)
+    if (ptr_queue == NULL)
     {
-        return;
+        return NULL;
     }
 
     ptr_queue->ptr_head = NULL;
