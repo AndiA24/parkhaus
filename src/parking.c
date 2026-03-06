@@ -36,6 +36,29 @@ void check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
     }
 }
 
+void entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_simstats)
+{
+    for (int i = 0; i < ptr_parking->decks; i++)
+    {
+        for (int j = 0; j < ptr_parking->ptr_decks[i].capacity; j++)
+        {
+            if (!ptr_parking->ptr_decks[i].ptr_spots[j].occupied)
+            {
+                ptr_parking->ptr_decks[i].ptr_spots[j].ptr_vehicle = ptr_vehicle;
+                ptr_parking->ptr_decks[i].ptr_spots[j].occupied = 1;
+                ptr_parking->occupied_count++;               
+                ptr_parking->ptr_decks[i].occupied_count++;
+                ptr_vehicle->entry_time = ptr_simstats->step_num;
+
+                ptr_simstats->temp_entries++;
+                ptr_simstats->total_entries++;
+
+                return;
+            }
+        }
+    }
+}
+
 /* 
 PSEUDOCODE
 
