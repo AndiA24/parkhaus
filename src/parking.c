@@ -1,10 +1,11 @@
-#include "../include/parking.h"
+#include <stdlib.h>
+
 #include "../include/vehicle.h"
 #include "../include/stats.h"
 #include "../include/config.h"
+#include "../include/parking.h"
 
-
-Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats) {}
+Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats) {return NULL;}
 
 void check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
 {
