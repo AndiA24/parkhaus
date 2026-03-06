@@ -1,5 +1,8 @@
+#include <stdlib.h>
+
 #include "../include/queue.h"
 #include "../include/vehicle.h"
+#include "../include/stats.h"
 
 Queue* init_queue()
 {
