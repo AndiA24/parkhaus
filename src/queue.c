@@ -38,6 +38,35 @@ void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle){
     ptr_queue->size++;
 }
 
+Vehicle* dequeue(Queue *ptr_queue, SimStats *ptr_simstats) {
+    if (ptr_queue->ptr_head == NULL) 
+    {
+        return NULL;
+    }
+
+    QueueNode *ptr_prev_head = ptr_queue->ptr_head;
+    Vehicle *ptr_vehicle = ptr_prev_head->ptr_vehicle;
+
+    ptr_simstats->total_queue_time += ptr_vehicle->queue_time;
+
+    ptr_queue->ptr_head = ptr_prev_head->ptr_next;
+
+    if (ptr_queue->ptr_head == NULL)
+    {
+        ptr_queue->ptr_tail = NULL;
+    }
+
+    free(ptr_prev_head);
+    ptr_queue->size--;
+
+    if (ptr_vehicle->queue_time > 0)
+    {
+        ptr_simstats->total_queued++;
+    }
+    
+    return ptr_vehicle;
+}
+
 /* 
 FUNCTION init_queue()
     ptr_queue : Queue*
