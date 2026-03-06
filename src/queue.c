@@ -80,6 +80,15 @@ void increment_queue_time(Queue *ptr_queue)
     }
 }
 
+void delete_queue(Queue *ptr_queue, SimStats *ptr_simstats) 
+{
+    while (ptr_queue->ptr_head != NULL)
+    {
+        Vehicle *ptr_vehicle = dequeue(ptr_queue, ptr_simstats);
+        free_vehicle(ptr_vehicle);
+    }
+}
+
 /* 
 FUNCTION init_queue()
     ptr_queue : Queue*
