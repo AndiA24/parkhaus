@@ -20,7 +20,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     
     // allocate memory for an array of N Decks
     ptr_parking->ptr_decks = calloc((ptr_parking->decks), (sizeof(ParkingDeck)));
-    if(ptr_parking->decks == NULL){
+    if(ptr_parking->ptr_decks == NULL){
         printf("Failed to allocate memory for the ParkingDecs.\n");
         free(ptr_parking);
         ptr_parking = NULL;
@@ -68,9 +68,11 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
             (((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + 
                 (i % ptr_config->spots_per_deck))->ptr_vehicle = create_vehicle(ptr_stats, ptr_config);
 
+            // check return of create_vehicle
             if((((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + 
                 (i % ptr_config->spots_per_deck))->ptr_vehicle == NULL){
                     printf("Error: Failed to create Car. Stopping Simulation.\n");
+                    // clean-up loop
                     for(int j = 0; j < ptr_config->num_decks; j++){
                         for(int k = 0; k < ptr_config->spots_per_deck; k++){
                             if(((ptr_parking->ptr_decks + j)->ptr_spots + k) != NULL){
@@ -84,8 +86,8 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
                         ptr_parking->ptr_decks = NULL;
                         free(ptr_parking);
                         ptr_parking = NULL;
-                        return NULL;
                     }
+                    return NULL;
             }
             // set the spot to occupied and increment the occupied_count of the deck and the parking
             (((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + (i % ptr_config->spots_per_deck))->occupied = 1;
