@@ -70,11 +70,33 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
 
             if((((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + 
                 (i % ptr_config->spots_per_deck))->ptr_vehicle == NULL){
-
+                    printf("Error: Failed to create Car. Stopping Simulation.\n");
+                    for(int j = 0; j < ptr_config->num_decks; j++){
+                        for(int k = 0; k < ptr_config->spots_per_deck; k++){
+                            if(((ptr_parking->ptr_decks + j)->ptr_spots + k) != NULL){
+                                free(((ptr_parking->ptr_decks + j)->ptr_spots + k)->ptr_vehicle);
+                                ((ptr_parking->ptr_decks + j)->ptr_spots + k)->ptr_vehicle = NULL;
+                            }
+                        }
+                        free((ptr_parking->ptr_decks + j)->ptr_spots);
+                        (ptr_parking->ptr_decks + j)->ptr_spots = NULL;
+                        free(ptr_parking->ptr_decks);
+                        ptr_parking->ptr_decks = NULL;
+                        free(ptr_parking);
+                        ptr_parking = NULL;
+                        return NULL;
+                    }
             }
+            // set the spot to occupied and increment the occupied_count of the deck and the parking
+            (((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + (i % ptr_config->spots_per_deck))->occupied = 1;
+            ((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->occupied_count = ((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->occupied_count + 1;
+            ptr_parking->occupied_count = ptr_parking->occupied_count + 1;
         }
     }
+    return ptr_parking;
 }
+
+
 /* 
 PSEUDOCODE
 
