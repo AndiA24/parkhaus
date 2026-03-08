@@ -1,7 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "../include/parking.h"
 #include "../include/vehicle.h"
 #include "../include/stats.h"
 #include "../include/config.h"
+
+Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
+    Parking *ptr_parking = malloc(sizeof(*ptr_parking));
+    if(ptr_parking == NULL){
+        printf("Failed to allocate memory for the Parking-Struct.\n");
+        return NULL;
+    }
+
+    // configure Parking Struct with given params
+    ptr_parking->total_capacity = (ptr_config->num_decks) * (ptr_config->spots_per_deck);
+    ptr_parking->decks = ptr_config->num_decks;
+    ptr_parking->occupied_count = 0;
+    
+    // allocate memory for an array of N Decks
+    ptr_parking->ptr_decks = calloc((ptr_parking->decks), (sizeof(ParkingDeck)));
+    if(ptr_parking->decks == NULL){
+        printf("Failed to allocate memory for the ParkingDecs.\n");
+        free(ptr_parking);
+        ptr_parking = NULL;
+        return NULL;
+    }
+
+    for(int i = 0; i < ptr_parking->decks; i++){
+        (ptr_parking->ptr_decks + i)->deck_id = i;
+        (ptr_parking->ptr_decks + i)->capacity = ptr_config->spots_per_deck;
+        (ptr_parking->ptr_decks + i)->occupied_count = 0;
+
+        (ptr_parking->ptr_decks + i)->ptr_spots = calloc((ptr_config->spots_per_deck), sizeof(ParkingSpot));
+        if((ptr_parking->ptr_decks + i)->ptr_spots == NULL){
+            printf("Failed to allocate memory for the spots in the %d Deck.\n", i);
+            // free memory of already allocated spots
+            for(int j = 0; j < i; j++){
+                free((ptr_parking->ptr_decks + j)->ptr_spots);
+                (ptr_parking->ptr_decks + j)->ptr_spots = NULL;
+            }
+            // free memeory allocated for Decks and Parking
+            free(ptr_parking->ptr_decks);
+            ptr_parking->ptr_decks = NULL;
+            free(ptr_parking);
+            ptr_parking = NULL;
+            return NULL;
+        }
+
+        for(int j = 0; j < ptr_config->spots_per_deck; j++){
+            // Global spot ID: deck index * spots per deck + local spot index 
+            // this way every spot got an unique ID across all decks
+            (((ptr_parking->ptr_decks) + i)->ptr_spots + j)->id = (i * ptr_config->spots_per_deck) + j;
+            (((ptr_parking->ptr_decks) + i)->ptr_spots + j)->occupied = 0;
+            (((ptr_parking->ptr_decks) + i)->ptr_spots + j)->ptr_vehicle = NULL;
+        }
+    }
+    
+    // fill with initial occupancy
+    if(ptr_config->initial_occupancy){
+        if(ptr_config->initial_occupancy > ptr_parking->total_capacity){
+            printf("Error: Initial Occupancy exceeds total capacity of Parking. ");
+            printf("Parking initialized without initial occupyncy.\n");
+            return ptr_parking;
+        }
+        for(int i = 0; i < ptr_config->initial_occupancy; i++){
+            (((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + 
+                (i % ptr_config->spots_per_deck))->ptr_vehicle = create_vehicle(ptr_stats, ptr_config);
+
+            if((((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + 
+                (i % ptr_config->spots_per_deck))->ptr_vehicle == NULL){
+
+            }
+        }
+    }
+}
 /* 
 PSEUDOCODE
 
