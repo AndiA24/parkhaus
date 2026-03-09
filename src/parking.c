@@ -6,6 +6,46 @@
 #include "../include/stats.h"
 #include "../include/config.h"
 
+Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats){
+            if(ptr_config->initial_occupancy > ptr_parking->total_capacity){
+            printf("Error: Initial Occupancy exceeds total capacity of Parking. ");
+            printf("Parking initialized without initial occupyncy.\n");
+            return ptr_parking;
+        }
+        for(int i = 0; i < ptr_config->initial_occupancy; i++){
+            (((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + 
+                (i % ptr_config->spots_per_deck))->ptr_vehicle = create_vehicle(ptr_stats, ptr_config);
+
+            // check return of create_vehicle
+            if((((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + 
+                (i % ptr_config->spots_per_deck))->ptr_vehicle == NULL){
+                    printf("Error: Failed to create Car. Stopping Simulation.\n");
+                    // clean-up loop
+                    for(int j = 0; j < ptr_config->num_decks; j++){
+                        for(int k = 0; k < ptr_config->spots_per_deck; k++){
+                            if(((ptr_parking->ptr_decks + j)->ptr_spots + k) != NULL){
+                                free(((ptr_parking->ptr_decks + j)->ptr_spots + k)->ptr_vehicle);
+                                ((ptr_parking->ptr_decks + j)->ptr_spots + k)->ptr_vehicle = NULL;
+                            }
+                        }
+                        free((ptr_parking->ptr_decks + j)->ptr_spots);
+                        (ptr_parking->ptr_decks + j)->ptr_spots = NULL;
+                        free(ptr_parking->ptr_decks);
+                        ptr_parking->ptr_decks = NULL;
+                        free(ptr_parking);
+                        ptr_parking = NULL;
+                    }
+                    return NULL;
+            }
+            // set the spot to occupied and increment the occupied_count of the deck and the parking
+            (((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + (i % ptr_config->spots_per_deck))->occupied = 1;
+            ((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->occupied_count = ((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->occupied_count + 1;
+            ptr_parking->occupied_count = ptr_parking->occupied_count + 1;
+        }
+        return ptr_parking;
+}
+
+
 Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     Parking *ptr_parking = malloc(sizeof(*ptr_parking));
     if(ptr_parking == NULL){
@@ -59,44 +99,15 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     
     // fill with initial occupancy
     if(ptr_config->initial_occupancy){
-        if(ptr_config->initial_occupancy > ptr_parking->total_capacity){
-            printf("Error: Initial Occupancy exceeds total capacity of Parking. ");
-            printf("Parking initialized without initial occupyncy.\n");
-            return ptr_parking;
-        }
-        for(int i = 0; i < ptr_config->initial_occupancy; i++){
-            (((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + 
-                (i % ptr_config->spots_per_deck))->ptr_vehicle = create_vehicle(ptr_stats, ptr_config);
-
-            // check return of create_vehicle
-            if((((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + 
-                (i % ptr_config->spots_per_deck))->ptr_vehicle == NULL){
-                    printf("Error: Failed to create Car. Stopping Simulation.\n");
-                    // clean-up loop
-                    for(int j = 0; j < ptr_config->num_decks; j++){
-                        for(int k = 0; k < ptr_config->spots_per_deck; k++){
-                            if(((ptr_parking->ptr_decks + j)->ptr_spots + k) != NULL){
-                                free(((ptr_parking->ptr_decks + j)->ptr_spots + k)->ptr_vehicle);
-                                ((ptr_parking->ptr_decks + j)->ptr_spots + k)->ptr_vehicle = NULL;
-                            }
-                        }
-                        free((ptr_parking->ptr_decks + j)->ptr_spots);
-                        (ptr_parking->ptr_decks + j)->ptr_spots = NULL;
-                        free(ptr_parking->ptr_decks);
-                        ptr_parking->ptr_decks = NULL;
-                        free(ptr_parking);
-                        ptr_parking = NULL;
-                    }
-                    return NULL;
-            }
-            // set the spot to occupied and increment the occupied_count of the deck and the parking
-            (((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->ptr_spots + (i % ptr_config->spots_per_deck))->occupied = 1;
-            ((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->occupied_count = ((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck))->occupied_count + 1;
-            ptr_parking->occupied_count = ptr_parking->occupied_count + 1;
+        ptr_parking = initial_occupancy(ptr_parking, ptr_config, ptr_stats);
+        if(ptr_parking == NULL){
+            printf("Error: Failed during creating initial occupancy.\n");
         }
     }
     return ptr_parking;
 }
+
+
 
 
 /* 
