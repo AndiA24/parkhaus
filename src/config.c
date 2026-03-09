@@ -29,7 +29,7 @@ void populate_with_default(SimConfig *ptr_config) {
 }
 
 SimConfig *create_config() {
-    SimConfig *ptr_config = calloc(1, sizeof(ptr_config));
+    SimConfig *ptr_config = calloc(1, sizeof(*ptr_config));
     if(ptr_config == NULL) {
         return -1;
     }
