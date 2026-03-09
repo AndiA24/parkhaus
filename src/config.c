@@ -29,22 +29,21 @@ void populate_with_default(SimConfig *ptr_config) {
 }
 
 SimConfig *create_config() {
-    SimConfig *ptr_config = calloc(1, sizeof(SimConfig));
+    SimConfig *ptr_config = calloc(1, sizeof(ptr_config));
     if(ptr_config == NULL) {
-        return NULL;
+        return -1;
     }
-    populate_with_default(ptr_config);
     return ptr_config;
 }
 
 int get_config(SimConfig *ptr_config) {
-    FILE *f = fopen(ptr_config->config_file_name, "r");
-    if(!f) {
+    FILE *ptr_f = fopen(ptr_config->config_file_name, "r");
+    if(!ptr_f) {
         populate_with_default(ptr_config);
-        return -1;
+        return 0;
     }
     else {
-        int count = fscanf(f, "%u,%u,%u,%u,%u,%u,%u,%69[^,],%u",
+        int count = fscanf(ptr_f, "%u,%u,%u,%u,%u,%u,%u,%69[^,],%u",
         &ptr_config->num_decks,
         &ptr_config->spots_per_deck,
         &ptr_config->initial_occupancy,
@@ -56,21 +55,23 @@ int get_config(SimConfig *ptr_config) {
         &ptr_config->seed);
         if(count != 9) {
             populate_with_default(ptr_config);
-            fclose(f);
-            return -1;
+            fclose(ptr_f);
+            return 0;
         }
         else {
-            fclose(f);
+            fclose(ptr_f);
             return 1;
         }
     }
 }
 
 int save_config(SimConfig *ptr_config) {
-    FILE *f = fopen(ptr_config->config_file_name, "w");
-    if(!f) return -1;
+    FILE *ptr_f = fopen(ptr_config->config_file_name, "w");
+    if(!ptr_f) {
+        return -1;
+    }
 
-    fprintf(f, "%u,%u,%u,%u,%u,%u,%u,%s,%u\n",
+    fprintf(ptr_f, "%u,%u,%u,%u,%u,%u,%u,%s,%u\n",
         ptr_config->num_decks,
         ptr_config->spots_per_deck,
         ptr_config->initial_occupancy,
@@ -80,7 +81,7 @@ int save_config(SimConfig *ptr_config) {
         ptr_config->arrival_probability_percent,
         ptr_config->output_file_name,
         ptr_config->seed);
-    fclose(f);
+    fclose(ptr_f);
     return 1;
 }
 
