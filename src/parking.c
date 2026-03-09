@@ -9,7 +9,7 @@
 Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats){
             if(ptr_config->initial_occupancy > ptr_parking->total_capacity){
             printf("Error: Initial Occupancy exceeds total capacity of Parking. ");
-            printf("Parking initialized without initial occupyncy.\n");
+            printf("Parking initialized without initial occupancy.\n");
             return ptr_parking;
         }
         for(int i = 0; i < ptr_config->initial_occupancy; i++){
@@ -63,7 +63,6 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_parking->ptr_decks == NULL){
         printf("Failed to allocate memory for the ParkingDecs.\n");
         free(ptr_parking);
-        ptr_parking = NULL;
         return NULL;
     }
 
