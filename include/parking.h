@@ -34,6 +34,22 @@ typedef struct {
     ParkingDeck     *ptr_decks;      /**< Pointer to the array of decks in the garage. */
 } Parking;
 
+/**
+ * @brief Fills the parking structure with an initial set of vehicles.
+ *
+ * Populates the given parking structure with the number of vehicles specified
+ * in @p ptr_config->initial_occupancy. If the operation fails (e.g. memory
+ * allocation error), all previously allocated memory is freed and NULL is
+ * returned.
+ *
+ * @param[in,out] ptr_parking Pointer to the Parking structure to be populated.
+ * @param[in]     ptr_config  Pointer to the simulation configuration containing
+ *                            the initial occupancy count.
+ * @param[in,out] ptr_stats   Pointer to the Stats structure to get current Vehicle
+ *                            ID and increment.
+ * @return Pointer to the populated Parking structure, or NULL on failure.
+ */
+Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats);
 
 /**
  * @brief Create Parking Struct containing Parking decks and spots
