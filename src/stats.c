@@ -1,6 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "../include/stats.h"
 #include "../include/queue.h"
 #include "../include/config.h"
+
+
+SimStats *init_simstats(){
+    SimStats *ptr_stats = calloc(1,ptr_stats);
+    if(ptr_stats == NULL){
+        printf("Error: Failed to allocate memory for the Stats Struct.\n");
+        return NULL;
+    }
+    return ptr_stats;
+}
+
+
+
+
 /*
 PSEUDOCODE
 
