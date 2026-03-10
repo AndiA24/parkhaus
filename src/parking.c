@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "../include/vehicle.h"
 #include "../include/stats.h"
