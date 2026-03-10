@@ -7,7 +7,7 @@
 
 
 SimStats *init_simstats(){
-    SimStats *ptr_stats = calloc(1,ptr_stats);
+    SimStats *ptr_stats = calloc(1,sizeof(ptr_stats));
     if(ptr_stats == NULL){
         printf("Error: Failed to allocate memory for the Stats Struct.\n");
         return NULL;
