@@ -139,8 +139,14 @@ void check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
     }
 }
 
-void entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_simstats)
+int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_simstats)
 {
+    if (ptr_parking == NULL || ptr_vehicle == NULL || ptr_simstats == NULL)
+    {
+        printf("Error: Failed to park vehicle. Invalid argument.\n");
+        return -1;
+    }
+    
     for (int i = 0; i < ptr_parking->decks; i++)
     {
         for (int j = 0; j < ptr_parking->ptr_decks[i].capacity; j++)
@@ -156,7 +162,7 @@ void entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sim
                 ptr_simstats->temp_entries++;
                 ptr_simstats->total_entries++;
 
-                return;
+                return 1;
             }
         }
     }
