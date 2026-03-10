@@ -7,6 +7,7 @@
 //decide if we are on Windows or Linux/MacOS. Windows needs pdcurses for support. The others have ncurses built in.
 #ifdef _WIN32
     #include "../pdcurses/curses.h"
+    #include <windows.h>
 #else
     #include <ncurses.h>
 #endif
@@ -97,6 +98,11 @@ void render_welcome(SimConfig *ptr_config) {
 
 
 void show_welcome(SimConfig *ptr_config) {
+#ifdef _WIN32
+    AllocConsole();
+    freopen("CONOUT$", "w", stdout);
+    freopen("CONIN$",  "r", stdin);
+#endif
     initscr();
     cbreak();
     noecho();
@@ -142,6 +148,25 @@ void show_welcome(SimConfig *ptr_config) {
     delwin(ptr_win);
     endwin();
 }
+
+#ifdef UI_TEST
+int main() {
+    SimConfig config = {
+        .num_decks = 3,
+        .spots_per_deck = 50,
+        .initial_occupancy = 10,
+        .max_parking_duration_steps = 100,
+        .min_parking_duration_steps = 10,
+        .sim_duration_steps = 500,
+        .arrival_probability_percent = 40,
+        .seed = 42,
+        .config_file_name = "parkhaus.cfg",
+        .output_file_name = "output.csv"
+    };
+    show_welcome(&config);
+    return 0;
+}
+#endif
 
 
 /*
