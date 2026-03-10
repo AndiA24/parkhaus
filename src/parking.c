@@ -196,11 +196,16 @@ int free_parking(Parking *ptr_parking) {
     }
 
     for (int i = 0; i < ptr_parking->decks; i++) {
+        for (int j = 0; j < ptr_parking->ptr_decks[i].capacity; j++) {
+            if (ptr_parking->ptr_decks[i].ptr_spots[j].ptr_vehicle != NULL) {
+                free_vehicle(ptr_parking->ptr_decks[i].ptr_spots[j].ptr_vehicle);
+            }
+        }
         free(ptr_parking->ptr_decks[i].ptr_spots);
     }
+    
     free(ptr_parking->ptr_decks);
     free(ptr_parking);
-    return 1;
 }
 
 
