@@ -16,7 +16,41 @@ SimStats *init_simstats(){
 }
 
 
+FILE *create_output_file(SimConfig *ptr_config){
 
+}
+
+
+int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue){
+    if(ptr_stats == NULL || ptr_parking == NULL || ptr_queue == NULL){
+        printf("Error: Failed to update Stats. Invalid argument.\n");
+        return -1;
+    }
+
+    // calculate relative occupancy for current step
+    if(ptr_parking->total_capacity > 0){
+        ptr_stats->temp_rel_occupancy_percent = ((float)ptr_parking->occupied_count / (float)ptr_parking->total_capacity) * 100;
+    }
+    else{
+        ptr_stats->temp_rel_occupancy_percent = 0;
+    }
+
+    // save current queue-length
+    ptr_stats->temp_queue_length = ptr_queue->size;
+
+    // calculate avg relative occupancy using running avg formular
+    ptr_stats->avg_rel_occupancy = (ptr_stats->avg_rel_occupancy * ptr_stats->step_num + 
+        ptr_stats->temp_rel_occupancy_percent) / (ptr_stats->step_num + 1);
+
+    // save free spots for this step
+    ptr_stats->temp_free_spots = ptr_parking->total_capacity - ptr_parking->occupied_count;
+
+    if(ptr_parking->occupied_count == ptr_parking->total_capacity){
+        ptr_stats->time_full_occupancy ++;
+    }
+
+    return 1;
+}
 
 /*
 PSEUDOCODE
