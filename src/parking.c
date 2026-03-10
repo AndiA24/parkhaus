@@ -207,6 +207,7 @@ int free_parking(Parking *ptr_parking) {
     
     free(ptr_parking->ptr_decks);
     free(ptr_parking);
+    return 1;
 }
 
 
