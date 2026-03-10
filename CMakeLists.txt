@@ -17,7 +17,7 @@ target_include_directories(parkhaus PRIVATE include)
 
 if(WIN32)
     target_include_directories(parkhaus PRIVATE pdcurses)
-    target_link_libraries(parkhaus PRIVATE ${CMAKE_SOURCE_DIR}/pdcurses/wincon/libpdcurses.a)
+    target_link_libraries(parkhaus PRIVATE ${CMAKE_SOURCE_DIR}/pdcurses/wincon/libpdcurses.a winmm)
 else()
     target_link_libraries(parkhaus PRIVATE ncurses)
 endif()

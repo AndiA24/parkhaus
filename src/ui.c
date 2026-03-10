@@ -2,6 +2,8 @@
 #include "../include/config.h"
 #include "../include/stats.h"
 #include "../include/utils.h"
+#include <string.h>
+#include <stdarg.h>
 //decide if we are on Windows or Linux/MacOS. Windows needs pdcurses for support. The others have ncurses built in.
 #ifdef _WIN32
     #include "../pdcurses/curses.h"
@@ -10,56 +12,135 @@
 #endif
 
 
-//stdscr is already global to use by everybody, but this will make it more readable and maintainable
 static WINDOW *ptr_win;
 
 
-void render_welcome() {
-
+static void print_col(int y, int x, int pair, int attrs, const char *fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    wattron(ptr_win, COLOR_PAIR(pair) | attrs);
+    wmove(ptr_win, y, x);
+    vw_printw(ptr_win, fmt, args);
+    wattroff(ptr_win, COLOR_PAIR(pair) | attrs);
+    va_end(args);
 }
 
+
+static void draw_hline(int y) {
+    int w = getmaxx(ptr_win);
+    wattron(ptr_win, COLOR_PAIR(4) | A_BOLD);
+    mvwhline(ptr_win, y, 1, ACS_HLINE, w - 2);
+    mvwaddch(ptr_win, y, 0,     ACS_LTEE);
+    mvwaddch(ptr_win, y, w - 1, ACS_RTEE);
+    wattroff(ptr_win, COLOR_PAIR(4) | A_BOLD);
+}
+
+
+void render_welcome(SimConfig *ptr_config) {
+    werase(ptr_win);
+
+    int w = getmaxx(ptr_win);
+
+    wattron(ptr_win, COLOR_PAIR(4) | A_BOLD);
+    box(ptr_win, 0, 0);
+    wattroff(ptr_win, COLOR_PAIR(4) | A_BOLD);
+
+    const char *title = "PARKING GARAGE SIMULATOR";
+    print_col(1, (w - (int)strlen(title)) / 2, 4, A_BOLD, "%s", title);
+
+    draw_hline(2);
+
+    print_col(4, 2, 3, 0, "Eine Simulation eines Parkhauses. Entwickelt");
+    print_col(5, 2, 3, 0, "im Rahmen eines Hochschulprojekts, um das");
+    print_col(6, 2, 3, 0, "Belegungsverhalten, Warteschlangen und die");
+    print_col(7, 2, 3, 0, "Auslastung eines Parkhauses zu modellieren.");
+
+    draw_hline(9);
+
+    print_col(10, 2, 4, A_BOLD, "KONFIGURATION");
+
+    unsigned int total = ptr_config->num_decks * ptr_config->spots_per_deck;
+
+    print_col(11,  2, 3, 0,      "Etagen:");
+    print_col(11, 10, 1, A_BOLD, "%-4u",   ptr_config->num_decks);
+    print_col(11, 15, 3, 0,      "Stellpl./Etage:");
+    print_col(11, 31, 1, A_BOLD, "%-4u",   ptr_config->spots_per_deck);
+    print_col(11, 36, 3, 0,      "Gesamt:");
+    print_col(11, 44, 1, A_BOLD, "%u",     total);
+
+    print_col(12,  2, 3, 0,      "Dauer:");
+    print_col(12,  9, 1, A_BOLD, "%u Schritte", ptr_config->sim_duration_steps);
+    print_col(12, 30, 3, 0,      "Ankunft:");
+    print_col(12, 39, 1, A_BOLD, "%u%%",   ptr_config->arrival_probability_percent);
+
+    print_col(13,  2, 3, 0,      "Parkzeit:");
+    print_col(13, 12, 1, A_BOLD, "%u-%u Schritte", ptr_config->min_parking_duration_steps,
+                                                    ptr_config->max_parking_duration_steps);
+    print_col(13, 33, 3, 0,      "Seed:");
+    print_col(13, 39, 1, A_BOLD, "%u",     ptr_config->seed);
+
+    draw_hline(15);
+
+    print_col(16,  2, 4, A_BOLD, "[ENTER]");
+    print_col(16, 10, 3, 0,      "Simulation starten");
+    print_col(17,  2, 4, A_BOLD, "[S]");
+    print_col(17, 10, 3, 0,      "Einstellungen");
+    print_col(18,  2, 4, A_BOLD, "[Q]");
+    print_col(18, 10, 3, 0,      "Beenden");
+
+    draw_hline(20);
+
+    print_col(21, 2, 3, 0, "Konfig: %s", ptr_config->config_file_name);
+
+    wrefresh(ptr_win);
+}
+
+
 void show_welcome(SimConfig *ptr_config) {
-    //initialize window
     initscr();
+    cbreak();
     noecho();
-    int win_height = 52;
-    int win_width = 26;
+    curs_set(0);
+
+    int win_height = 22;
+    int win_width = 52;
     int sh, sw;
     getmaxyx(stdscr, sh, sw);
     ptr_win = newwin(win_height, win_width, (sh - win_height) / 2, (sw - win_width) / 2);
     keypad(ptr_win, TRUE);
     start_color();
-    //define color pairs
-    init_pair(1, COLOR_GREEN, COLOR_BLACK);     //color pair for good stuff and good results (i.e. no queue, high occupancy but not full)
-    init_pair(2, COLOR_RED, COLOR_BLACK);       //color pair for errors and bad results (i.e. full car park, long queue)
-    init_pair(3, COLOR_WHITE, COLOR_BLACK);     //color pair for info and neutral text may add yellow later on for neutral text
-    init_pair(4, COLOR_CYAN, COLOR_BLACK);      //color pair for boxes and edges
-    
 
+    init_pair(1, COLOR_GREEN, COLOR_BLACK);     //good results (no queue, high but not full occupancy)
+    init_pair(2, COLOR_RED, COLOR_BLACK);       //bad results (full car park, long queue)
+    init_pair(3, COLOR_WHITE, COLOR_BLACK);     //neutral info text
+    init_pair(4, COLOR_CYAN, COLOR_BLACK);      //boxes and borders
 
     int active = 1;
-    render_welcome();
-    while(active) {
-        int key = getch();
-        switch (key)
-        {
+    render_welcome(ptr_config);
+    while (active) {
+        int key = wgetch(ptr_win);
+        switch (key) {
         case 'q':
         case 'Q':
-            quit(ptr_config);
-            endwin();
+            active = 0;
+            //quit(ptr_config);
             break;
         case 's':
         case 'S':
-            show_settings(ptr_config);
-            render_welcome();
+            //show_settings(ptr_config);
+            render_welcome(ptr_config);
             break;
         case '\n':
         case KEY_ENTER:
             active = 0;
+            break;
         default:
             break;
         }
     }
+
+    delwin(ptr_win);
+    endwin();
 }
 
 
