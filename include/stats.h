@@ -12,7 +12,9 @@
 #include <stdio.h>
 #include "queue.h"
 #include "config.h"
-#include "parking.h"
+
+typedef struct Queue Queue;
+typedef struct Parking Parking;
 
 /**
  * @brief Holds the statistics collected during the simulation / one simulation step.
