@@ -2,6 +2,42 @@
 #include "../include/config.h"
 #include "../include/stats.h"
 #include "../include/utils.h"
+#ifdef _WIN32
+    #include "../pdcurses/curses.h"   // PDCurses on Windows
+#else
+    #include <ncurses.h>  // ncurses on Linux
+#endif
+
+
+
+
+
+
+
+void show_welcome(SimConfig *ptr_config) {
+    int active = 1;
+    render_welcome();
+    while(active) {
+        int key = getch();
+        switch (key)
+        {
+        case 'q':
+        case 'Q':
+            quit(ptr_config);
+            break;
+        case 's':
+        case 'S':
+            show_settings(ptr_config);
+            render_welcome();
+            break;
+        case '\n':
+        case KEY_ENTER:
+            active = 0;
+        default:
+            break;
+        }
+    }
+}
 
 /*
 
