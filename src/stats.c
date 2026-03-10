@@ -56,7 +56,7 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
 
 int update_peak(SimStats *ptr_stats){
     if(ptr_stats == NULL){
-        printf("Error: Failed to update peak-values. Invalis arguments.\n");
+        printf("Error: Failed to update peak-values. Invalid arguments.\n");
         return -1;
     }
 
