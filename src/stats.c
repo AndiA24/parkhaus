@@ -45,10 +45,110 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
     // save free spots for this step
     ptr_stats->temp_free_spots = ptr_parking->total_capacity - ptr_parking->occupied_count;
 
+    // if parking is full increment counter for full steps
     if(ptr_parking->occupied_count == ptr_parking->total_capacity){
         ptr_stats->time_full_occupancy ++;
     }
 
+    return 1;
+}
+
+
+int update_peak(SimStats *ptr_stats){
+    if(ptr_stats == NULL){
+        printf("Error: Failed to update peak-values. Invalis arguments.\n");
+        return -1;
+    }
+
+    // check if current values are higher then saved peaks
+    if(ptr_stats->temp_rel_occupancy_percent > ptr_stats->peak_rel_occupancy){
+        ptr_stats->peak_rel_occupancy = ptr_stats->temp_rel_occupancy_percent;
+        ptr_stats->step_highest_occupancy = ptr_stats->step_num;
+    }
+    if(ptr_stats->temp_queue_length > ptr_stats->peak_queue_length){
+        ptr_stats->peak_queue_length = ptr_stats->temp_queue_length;
+        ptr_stats->step_longest_queue = ptr_stats->step_num;
+    }
+    return 1;
+}
+
+
+int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
+    if(ptr_stats == NULL || ptr_output_file == NULL){
+        printf("Error: Failed to save temp dataset. Invalid Argument.\n");
+        return -1;
+    }
+
+    return 1;
+}
+
+
+int reset_temp_dataset(SimStats *ptr_stats){
+    if(ptr_stats == NULL){
+        printf("Error: Failed to reset temp Stats. Invalid Arguments.\n");
+        return -1;
+    }
+    ptr_stats->temp_entries = 0;
+    ptr_stats->temp_exits = 0;
+    ptr_stats->temp_free_spots = 0;
+    ptr_stats->temp_queue_length = 0;
+    ptr_stats->temp_rel_occupancy_percent = 0;
+    ptr_stats->temp_time_left = 0;
+    return 1;
+}
+
+
+int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
+    if(ptr_stats == NULL || ptr_output_file == NULL){
+        printf("Error: Failed to save final dataset. Invalid argumant\n");
+        return -1;
+    }
+}
+
+
+int close_output_file(FILE *ptr_output_file){
+    if(fclose(ptr_output_file) == EOF){
+        printf("Error: Failed to close output file.\n");
+        return -1;
+    }
+    return 1;
+}
+
+
+int reset_all_stats(SimStats *ptr_stats){
+    if(ptr_stats == NULL){
+        printf("Error: Failed to reset Stats. Invalid Argument.\n");
+        return -1;
+    }
+    ptr_stats->step_num = 0;
+    ptr_stats->id_count = 0;
+    ptr_stats->temp_exits = 0;
+    ptr_stats->temp_entries = 0;
+    ptr_stats->temp_rel_occupancy_percent = 0;
+    ptr_stats->temp_queue_length = 0;
+    ptr_stats->temp_free_spots = 0;
+    ptr_stats->temp_time_left = 0;
+    ptr_stats->total_exits = 0;
+    ptr_stats->total_entries = 0;
+    ptr_stats->total_queued = 0;
+    ptr_stats->total_queue_time = 0;
+    ptr_stats->time_full_occupancy = 0;
+    ptr_stats->avg_rel_occupancy = 0;
+    ptr_stats->peak_queue_length = 0;
+    ptr_stats->step_longest_queue = 0;
+    ptr_stats->peak_rel_occupancy = 0;
+    ptr_stats->step_highest_occupancy = 0;
+
+    return 1;
+}
+
+
+int free_stats(SimStats *ptr_stats){
+    if(ptr_stats == NULL){
+        printf("Error: Failed to free memory allocated for Stats. Invalid Argument\n");
+        return -1;
+    }
+    free(ptr_stats);
     return 1;
 }
 
