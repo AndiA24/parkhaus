@@ -22,7 +22,11 @@ void show_welcome(SimConfig *ptr_config) {
     //initialize window
     initscr();
     noecho();
-    ptr_win = stdscr;
+    int win_height = 52;
+    int win_width = 26;
+    int sh, sw;
+    getmaxyx(stdscr, sh, sw);
+    ptr_win = newwin(win_height, win_width, (sh - win_height) / 2, (sw - win_width) / 2);
     keypad(ptr_win, TRUE);
     start_color();
     //define color pairs
