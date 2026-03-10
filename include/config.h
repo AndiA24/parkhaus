@@ -39,7 +39,7 @@ SimConfig *create_config();
  *
  * @param[in,out] ptr_config Pointer to the SimConfig structure to be populated
  */
-void get_config(SimConfig *ptr_config);
+int get_config(SimConfig *ptr_config);
 
 /**
  * @brief Saves the current simulation configuration to a file.
@@ -49,7 +49,7 @@ void get_config(SimConfig *ptr_config);
  *
  * @param[in] config Pointer to the SimConfig structure to be saved
  */
-void save_config(SimConfig *ptr_config);
+int save_config(SimConfig *ptr_config);
 
 /**
  * @brief Frees all dynamically allocated memory associated with the config structure.
@@ -58,6 +58,6 @@ void save_config(SimConfig *ptr_config);
  *
  * @param[in] ptr_config Pointer to the SimConfig structure to be freed.
  */
-void free_config(SimConfig *ptr_config);
+int free_config(SimConfig *ptr_config);
 
 #endif
