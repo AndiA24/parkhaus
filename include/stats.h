@@ -77,7 +77,7 @@ FILE *create_output_file(SimConfig *ptr_config);
  * @param[in]     parking  Pointer to the current parking lot state
  * @param[in]     queue    Pointer to the current waiting queue state
  */
-void update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue);
+int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue);
 
 /**
  * @brief Checks temporary values against current peaks and updates them if exceeded.
