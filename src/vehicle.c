@@ -5,7 +5,7 @@
 #include "../include/stats.h"
 
 Vehicle *create_vehicle(SimStats *ptr_stats, SimConfig *ptr_config){
-    Vehicle *ptr_vehicle = malloc(sizeof(ptr_vehicle));
+    Vehicle *ptr_vehicle = malloc(sizeof(*ptr_vehicle));
     if(ptr_vehicle == NULL){
         printf("Error: Failed to allocate memory to generate vehicle. Invalid argument.\n");
         return NULL;
@@ -27,7 +27,7 @@ Vehicle *create_vehicle(SimStats *ptr_stats, SimConfig *ptr_config){
 
 int free_vehicle(Vehicle *ptr_vehicle){
     if(ptr_vehicle == NULL){
-        printf("Error: Failed to free memeory allocated for Vehicle. invalid argument.\n");
+        printf("Error: Failed to free memory allocated for Vehicle. Invalid argument.\n");
         return -1;
     }
     free(ptr_vehicle);
