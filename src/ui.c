@@ -2,19 +2,37 @@
 #include "../include/config.h"
 #include "../include/stats.h"
 #include "../include/utils.h"
+//decide if we are on Windows or Linux/MacOS. Windows needs pdcurses for support. The others have ncurses built in.
 #ifdef _WIN32
-    #include "../pdcurses/curses.h"   // PDCurses on Windows
+    #include "../pdcurses/curses.h"
 #else
-    #include <ncurses.h>  // ncurses on Linux
+    #include <ncurses.h>
 #endif
 
 
+//stdscr is already global to use by everybody, but this will make it more readable and maintainable
+static WINDOW *ptr_win;
 
 
+void render_welcome() {
 
-
+}
 
 void show_welcome(SimConfig *ptr_config) {
+    //initialize window
+    initscr();
+    noecho();
+    ptr_win = stdscr;
+    keypad(ptr_win, TRUE);
+    start_color();
+    //define color pairs
+    init_pair(1, COLOR_GREEN, COLOR_BLACK);     //color pair for good stuff and good results (i.e. no queue, high occupancy but not full)
+    init_pair(2, COLOR_RED, COLOR_BLACK);       //color pair for errors and bad results (i.e. full car park, long queue)
+    init_pair(3, COLOR_WHITE, COLOR_BLACK);     //color pair for info and neutral text may add yellow later on for neutral text
+    init_pair(4, COLOR_CYAN, COLOR_BLACK);      //color pair for boxes and edges
+    
+
+
     int active = 1;
     render_welcome();
     while(active) {
@@ -24,6 +42,7 @@ void show_welcome(SimConfig *ptr_config) {
         case 'q':
         case 'Q':
             quit(ptr_config);
+            endwin();
             break;
         case 's':
         case 'S':
@@ -38,6 +57,7 @@ void show_welcome(SimConfig *ptr_config) {
         }
     }
 }
+
 
 /*
 

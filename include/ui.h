@@ -90,4 +90,6 @@ void show_running(SimStats *ptr_stats);
  */
 void show_results(SimStats *ptr_stats);
 
+void render_welcome();
+
 #endif
