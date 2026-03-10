@@ -9,8 +9,7 @@
 Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_parking == NULL || ptr_config == NULL || ptr_stats == NULL){
         printf("Error: Failed to create initial occupancy. Invalid Argumant.\n");
-        free_parking(ptr_parking);
-        return NULL;
+        return ptr_parking;
     }    
     if(ptr_config->initial_occupancy > ptr_parking->total_capacity){
         printf("Error: Initial Occupancy exceeds total capacity of Parking. ");
@@ -66,18 +65,19 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     // allocate memory for an array of N Decks
     ptr_parking->ptr_decks = calloc((ptr_parking->decks), (sizeof(ParkingDeck)));
     if(ptr_parking->ptr_decks == NULL){
-        printf("Failed to allocate memory for the ParkingDecs.\n");
+        printf("Failed to allocate memory for the ParkingDecks.\n");
         free(ptr_parking);
         return NULL;
     }
 
+    ParkingDeck *ptr_current_deck = NULL;
     for(int i = 0; i < ptr_parking->decks; i++){
-        (ptr_parking->ptr_decks + i)->deck_id = i;
-        (ptr_parking->ptr_decks + i)->capacity = ptr_config->spots_per_deck;
-        (ptr_parking->ptr_decks + i)->occupied_count = 0;
+        ptr_current_deck = (ptr_parking->ptr_decks + i);
 
-        (ptr_parking->ptr_decks + i)->ptr_spots = calloc((ptr_config->spots_per_deck), sizeof(ParkingSpot));
-        if((ptr_parking->ptr_decks + i)->ptr_spots == NULL){
+        ptr_current_deck->deck_id = i;
+        ptr_current_deck->capacity = ptr_config->spots_per_deck;
+        ptr_current_deck->ptr_spots = calloc((ptr_config->spots_per_deck), sizeof(ParkingSpot));
+        if(ptr_current_deck->ptr_spots == NULL){
             printf("Failed to allocate memory for the spots in the %d Deck.\n", i);
             // free memory of already allocated spots
             for(int j = 0; j < i; j++){
@@ -96,8 +96,6 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
             // Global spot ID: deck index * spots per deck + local spot index 
             // this way every spot got an unique ID across all decks
             (((ptr_parking->ptr_decks) + i)->ptr_spots + j)->id = (i * ptr_config->spots_per_deck) + j;
-            (((ptr_parking->ptr_decks) + i)->ptr_spots + j)->occupied = 0;
-            (((ptr_parking->ptr_decks) + i)->ptr_spots + j)->ptr_vehicle = NULL;
         }
     }
     
