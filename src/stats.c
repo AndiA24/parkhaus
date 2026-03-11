@@ -35,7 +35,6 @@ FILE *create_output_file(SimConfig *ptr_config)
         fclose(ptr_output_file);
         printf("File already exists. Overwrite? (y/n): ");
         scanf(" %c", &user_input);
-
         if (user_input == 'y'){
             break;
         }
@@ -68,8 +67,9 @@ FILE *create_output_file(SimConfig *ptr_config)
         ptr_config->output_file_name,
         ptr_config->seed);
 
+    fprintf(ptr_output_file, "temp_exits,temp_entries,temp_rel_occupancy_percent,"
+    "temp_queue_length,temp_free_spots,temp_time_left");
     printf("Output file created successfully.\n");
-
     return ptr_output_file;
 }
 
@@ -131,6 +131,14 @@ int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
         printf("Error: Failed to save temp dataset. Invalid Argument.\n");
         return -1;
     }
+    fprintf(ptr_output_file,
+        "%u,%u,%.2f,%u,%u,%u\n",
+        ptr_stats->temp_exits,
+        ptr_stats->temp_entries,
+        ptr_stats->temp_rel_occupancy_percent,
+        ptr_stats->temp_queue_length,
+        ptr_stats->temp_free_spots,
+        ptr_stats->temp_time_left);
 
     return 1;
 }
