@@ -90,6 +90,27 @@ void show_running(SimStats *ptr_stats);
  */
 void show_results(SimStats *ptr_stats);
 
+/**
+ * @brief Prints formatted text at a specific position in the window with color and style.
+ *
+ * @param y     Row to print at (0 = top of window).
+ * @param x     Column to print at (0 = left of window).
+ * @param pair  Color pair index (e.g. 3 = white, 4 = cyan).
+ * @param attrs Additional curses attributes (e.g. A_BOLD).
+ * @param fmt   printf-style format string.
+ * @param ...   Arguments for the format string.
+ */
+static void print_col(int y, int x, int pair, int attrs, const char *fmt, ...);
+
+/**
+ * @brief Draws a horizontal divider line across the full width of the window.
+ *
+ * Uses box-drawing characters (├ ─ ┤) to connect cleanly with the window border.
+ *
+ * @param y Row to draw the line on (0 = top of window).
+ */
+static void draw_hline(int y);
+
 void render_welcome(SimConfig *ptr_config);
 
 #endif
