@@ -18,18 +18,17 @@ Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats
     }
     for(int i = 0; i < ptr_config->initial_occupancy; i++){
         ParkingDeck *ptr_current_deck =((ptr_parking->ptr_decks) + (i / ptr_config->spots_per_deck));
-        ParkingSpot *ptr_current_spot = ptr_current_deck->ptr_spots + (i % ptr_config->spots_per_deck);
-
-        ptr_current_spot->ptr_vehicle = create_vehicle(ptr_stats, ptr_config);
+        ParkingSpot *ptr_spot = ptr_current_deck->ptr_stack[--ptr_current_deck->free_spots];
+        ptr_spot->ptr_vehicle = create_vehicle(ptr_stats, ptr_config);
 
         // check return of create_vehicle
-        if(ptr_current_spot->ptr_vehicle == NULL){
+        if(ptr_spot->ptr_vehicle == NULL){
             printf("Error: Failed to create Vehicle. Stopping Simulation.\n");
             free_parking(ptr_parking);
             return NULL;
         }
         // set the spot to occupied and increment the occupied_count of the deck and the parking
-        ptr_current_spot->occupied = 1;
+        ptr_spot->occupied = 1;
         ptr_current_deck->occupied_count = ptr_current_deck->occupied_count + 1;
         ptr_parking->occupied_count = ptr_parking->occupied_count + 1;
     }
@@ -63,11 +62,15 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
 
         ptr_current_deck->deck_id = i;
         ptr_current_deck->capacity = ptr_config->spots_per_deck;
+        ptr_current_deck->free_spots = 0;
         ptr_current_deck->ptr_spots = calloc((ptr_config->spots_per_deck), sizeof(ParkingSpot));
-        if(ptr_current_deck->ptr_spots == NULL){
+        ptr_current_deck->ptr_stack = calloc(ptr_config->spots_per_deck, sizeof(ParkingSpot*));
+
+        if(ptr_current_deck->ptr_spots == NULL || ptr_current_deck->ptr_stack == NULL){
             printf("Failed to allocate memory for the spots in the %d Deck.\n", i);
             // free memory of already allocated spots
-            for(int j = 0; j < i; j++){
+            for(int j = 0; j <= i; j++){
+                free((ptr_parking->ptr_decks + j)->ptr_stack);
                 free((ptr_parking->ptr_decks + j)->ptr_spots);
                 (ptr_parking->ptr_decks + j)->ptr_spots = NULL;
             }
@@ -83,6 +86,9 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
             // Global spot ID: deck index * spots per deck + local spot index 
             // this way every spot got an unique ID across all decks
             (((ptr_parking->ptr_decks) + i)->ptr_spots + j)->id = (i * ptr_config->spots_per_deck) + j;
+
+            ptr_current_deck->ptr_stack[ptr_current_deck->free_spots] = &ptr_parking->ptr_decks[i].ptr_spots[j];
+            ptr_current_deck->free_spots++;
         }
     }
     
