@@ -29,7 +29,10 @@ Vehicle *create_vehicle(SimStats *ptr_stats, SimConfig *ptr_config);
  * @brief Frees the memory of a Vehicle struct after exit.
  *
  * @param[in] ptr_vehicle Pointer to the Vehicle to free.
+ * 
+ * @return Int 1 for success; -1 for a failure
+ * 
  */
-void free_vehicle(Vehicle *ptr_vehicle);
+int free_vehicle(Vehicle *ptr_vehicle);
 
 #endif
