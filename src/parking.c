@@ -17,7 +17,7 @@ Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats
         return ptr_parking;
     }
     for(int i = 0; i < ptr_config->initial_occupancy; i++){
-        ParkingDeck *ptr_current_deck =((ptr_parking->ptr_decks) + floor(i / ptr_config->spots_per_deck));
+        ParkingDeck *ptr_current_deck =((ptr_parking->ptr_decks) + (i / ptr_config->spots_per_deck));
         ParkingSpot *ptr_current_spot = ptr_current_deck->ptr_spots + (i % ptr_config->spots_per_deck);
 
         ptr_current_spot->ptr_vehicle = create_vehicle(ptr_stats, ptr_config);
