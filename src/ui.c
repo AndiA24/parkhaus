@@ -36,6 +36,32 @@ static void draw_hline(int y) {
     wattroff(ptr_win, COLOR_PAIR(4) | A_BOLD);
 }
 
+void prompt_uint(char *ptr_label, unsigned int *ptr_value, int min, int max) {
+    char buf[16] = {0};
+    //clear input area to make sure
+    print_col(17, 2, 3, 0, "%s (%u-%u):", ptr_label, min, max);
+    print_col(18, 2, 3, 0, "> ");
+    wrefresh(ptr_win);
+
+    echo();
+    curs_set(1);
+    wmove(ptr_win, 18, 4);
+    wgetnstr(ptr_win, buf, sizeof(buf) - 1); //-1 to leave room for null terminator
+    noecho();
+    curs_set(0);
+
+    char *ptr_end;
+    unsigned long val = strtoul(buf, &ptr_end, 10);
+    if(ptr_end == buf || val < min || val > max) {
+        print_col(19, 2, 2, 0, "Ungueltig! Der Bereich ist: %u-%u", min, max);
+        wrefresh(ptr_win);
+        wgetch(ptr_win);
+    }
+    else {
+        *ptr_value = val;
+    }
+}
+
 void render_welcome(SimConfig *ptr_config) {
     werase(ptr_win);
 
