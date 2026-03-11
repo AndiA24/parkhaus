@@ -24,22 +24,9 @@ Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats
 
         // check return of create_vehicle
         if(ptr_current_spot->ptr_vehicle == NULL){
-                printf("Error: Failed to create Car. Stopping Simulation.\n");
-                // clean-up loop
-                for(int j = 0; j < ptr_config->num_decks; j++){
-                    for(int k = 0; k < ptr_config->spots_per_deck; k++){
-                        ParkingSpot *ptr_itt_spot = ((ptr_parking->ptr_decks + j)->ptr_spots + k);
-                        free(ptr_itt_spot->ptr_vehicle);
-                        ptr_itt_spot->ptr_vehicle = NULL;
-                    }
-                    free((ptr_parking->ptr_decks + j)->ptr_spots);
-                    (ptr_parking->ptr_decks + j)->ptr_spots = NULL;
-                }
-                free(ptr_parking->ptr_decks);
-                ptr_parking->ptr_decks = NULL;
-                free(ptr_parking);
-                ptr_parking = NULL;
-                return NULL;
+            printf("Error: Failed to create Vehicle. Stopping Simulation.\n");
+            free_parking(ptr_parking);
+            return NULL;
         }
         // set the spot to occupied and increment the occupied_count of the deck and the parking
         ptr_current_spot->occupied = 1;
