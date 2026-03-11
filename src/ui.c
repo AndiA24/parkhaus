@@ -4,6 +4,7 @@
 #include "../include/utils.h"
 #include <string.h>
 #include <stdarg.h>
+#include <stdlib.h>
 //decide if we are on Windows or Linux/MacOS. Windows needs pdcurses for support. The others have ncurses built in.
 #ifdef _WIN32
     #include "../pdcurses/curses.h"
@@ -89,20 +90,70 @@ void render_welcome(SimConfig *ptr_config) {
     print_col(18,  2, 4, A_BOLD, "[Q]");
     print_col(18, 10, 3, 0,      "Beenden");
 
-    draw_hline(20);
-
-    print_col(21, 2, 3, 0, "Konfig: %s", ptr_config->config_file_name);
-
     wrefresh(ptr_win);
 }
 
+void render_settings(SimConfig *ptr_config) {
+
+}
+
+void show_settings(SimConfig *ptr_config) {
+    render_settings(ptr_config);
+    int active = 1;
+    while(active) {
+        int key = wgetch(ptr_win);
+        switch (key) {
+            case '1':
+                prompt_input("Anzahl der Etagen des Parkhauses", &ptr_config->num_decks, 1, 99);
+                render_settings(ptr_config);
+                break;
+            case '2':
+                prompt_input("Anzahl der Stellplätze pro Etage", &ptr_config->spots_per_deck, 1, 999);
+                render_settings(ptr_config);
+                break;
+            case '3':
+                prompt_input("Anzahl der Fahrzeuge im Parkhaus zum Beginn der Simulation", &ptr_config->initial_occupancy, 0, ptr_config->num_decks*ptr_config->spots_per_deck);
+                render_settings(ptr_config);
+                break;
+            case '4':
+                prompt_input("Maximal Parkdauer eines Fahrzeuges", &ptr_config->max_parking_duration_steps, 1, ptr_config->sim_duration_steps);
+                render_settings(ptr_config);
+                break;
+            case '5':
+                prompt_input("Minimale Parkdauer eines Fahrzeuges", &ptr_config->min_parking_duration_steps, 1, ptr_config->sim_duration_steps);
+                render_settings(ptr_config);
+                break;
+            case '6':
+                prompt_input("Dauer der Simulation in Schritten", &ptr_config->sim_duration_steps, 1, UINT_MAX);
+                render_settings(ptr_config);
+                break;
+            case '7':
+                prompt_input("Wahrscheinlichkeit für das Ankommen eines Fahrzeuges pro Schritt", &ptr_config->arrival_probability_percent, 1, 100);
+                render_settings(ptr_config);
+                break;
+            case '8':
+                prompt_input("RNG Seed der Simulation", &ptr_config->seed, 0, UINT_MAX);
+                render_settings(ptr_config);
+                break;
+            case '9':
+                prompt_input("Name der Ausgabedatei", &ptr_config->output_file_name, 1, sizeof(ptr_config->output_file_name));
+                render_settings(ptr_config);
+                break;
+            case 'q':
+            case 'Q':
+            case '\n':
+            case KEY_ENTER:
+            case 27: //Ascii code for ESC key. ESC isn't defined anywhere...
+                active = 0;
+                break;
+            default:
+                // we should probably throw an error if we ever hit the default since that shouldn't happen.
+                break;
+        }
+    }
+}
 
 void show_welcome(SimConfig *ptr_config) {
-#ifdef _WIN32
-    AllocConsole();
-    freopen("CONOUT$", "w", stdout);
-    freopen("CONIN$",  "r", stdin);
-#endif
     initscr();
     cbreak();
     noecho();
@@ -149,7 +200,6 @@ void show_welcome(SimConfig *ptr_config) {
     endwin();
 }
 
-#ifdef UI_TEST
 int main() {
     SimConfig config = {
         .num_decks = 3,
@@ -166,8 +216,6 @@ int main() {
     show_welcome(&config);
     return 0;
 }
-#endif
-
 
 /*
 
