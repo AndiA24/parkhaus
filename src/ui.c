@@ -16,6 +16,30 @@
 
 static WINDOW *ptr_win;
 
+void initialize_ui() {
+    initscr();
+    cbreak();
+    noecho();
+    curs_set(0);
+
+    int win_height = 22;
+    int win_width = 72;
+    int sh, sw;
+    getmaxyx(stdscr, sh, sw);
+    ptr_win = newwin(win_height, win_width, (sh - win_height) / 2, (sw - win_width) / 2);
+    keypad(ptr_win, TRUE);
+    start_color();
+
+    init_pair(1, COLOR_GREEN, COLOR_BLACK);     //good results (no queue, high but not full occupancy)
+    init_pair(2, COLOR_RED, COLOR_BLACK);       //bad results (full car park, long queue)
+    init_pair(3, COLOR_WHITE, COLOR_BLACK);     //neutral info text
+    init_pair(4, COLOR_CYAN, COLOR_BLACK);      //boxes and borders
+}
+
+void end() {
+    delwin(ptr_win);
+    endwin();
+}
 
 static void print_col(int y, int x, int pair, int attrs, const char *fmt, ...) {
     va_list args;
@@ -36,9 +60,31 @@ static void draw_hline(int y) {
     wattroff(ptr_win, COLOR_PAIR(4) | A_BOLD);
 }
 
+static void draw_bar(int y, int x, int width, float percent, int pair) {
+    int filled = (int)(width * percent / 100.0f);
+    mvwaddch(ptr_win, y, x, '[');
+    if (filled > width) filled = width;
+    wattron(ptr_win, COLOR_PAIR(pair) | A_REVERSE);
+    for (int i = 0; i < filled; i++)
+        mvwaddch(ptr_win, y, x + i + 1, ' ');
+    wattroff(ptr_win, COLOR_PAIR(pair) | A_REVERSE);
+    wattron(ptr_win, COLOR_PAIR(3));
+    for (int i = filled; i < width; i++)
+        mvwaddch(ptr_win, y, x + i + 1, '-');
+    wattroff(ptr_win, COLOR_PAIR(3));
+    mvwaddch(ptr_win, y, x + width, ']');
+}
+
+static void clear_prompt_area() {
+    int w = getmaxx(ptr_win);
+    for (int row = 17; row <= 20; row++)
+        for (int col = 1; col < w - 1; col++)
+            mvwaddch(ptr_win, row, col, ' ');
+}
+
 void prompt_uint(char *ptr_label, unsigned int *ptr_value, int min, int max) {
     char buf[16] = {0};
-    //clear input area to make sure
+    clear_prompt_area();
     print_col(17, 2, 3, 0, "%s (%u-%u):", ptr_label, min, max);
     print_col(18, 2, 3, 0, "> ");
     wrefresh(ptr_win);
@@ -64,7 +110,7 @@ void prompt_uint(char *ptr_label, unsigned int *ptr_value, int min, int max) {
 
 void prompt_string(char *label, char *ptr_value, int size) {
     char tmp[70] = {0};
-    //clear input line here as well
+    clear_prompt_area();
     print_col(17, 2, 3, 0, "%s:", label);
     print_col(18, 2, 3, 0, "> ");
     wrefresh(ptr_win);
@@ -256,24 +302,6 @@ void show_settings(SimConfig *ptr_config) {
 }
 
 void show_welcome(SimConfig *ptr_config) {
-    initscr();
-    cbreak();
-    noecho();
-    curs_set(0);
-
-    int win_height = 22;
-    int win_width = 72;
-    int sh, sw;
-    getmaxyx(stdscr, sh, sw);
-    ptr_win = newwin(win_height, win_width, (sh - win_height) / 2, (sw - win_width) / 2);
-    keypad(ptr_win, TRUE);
-    start_color();
-
-    init_pair(1, COLOR_GREEN, COLOR_BLACK);     //good results (no queue, high but not full occupancy)
-    init_pair(2, COLOR_RED, COLOR_BLACK);       //bad results (full car park, long queue)
-    init_pair(3, COLOR_WHITE, COLOR_BLACK);     //neutral info text
-    init_pair(4, COLOR_CYAN, COLOR_BLACK);      //boxes and borders
-
     int active = 1;
     render_welcome(ptr_config);
     while (active) {
@@ -297,25 +325,90 @@ void show_welcome(SimConfig *ptr_config) {
             break;
         }
     }
-
-    delwin(ptr_win);
-    endwin();
 }
 
+void show_running(SimStats *ptr_stats) {
+    werase(ptr_win);
+    int w = getmaxx(ptr_win);
+
+    wattron(ptr_win, COLOR_PAIR(4) | A_BOLD);
+    box(ptr_win, 0, 0);
+    wattroff(ptr_win, COLOR_PAIR(4) | A_BOLD);
+
+    const char *title = "SIMULATION LAEUFT";
+    print_col(1, (w - (int)strlen(title)) / 2, 4, A_BOLD, "%s", title);
+
+    draw_hline (2);
+
+    print_col(4, 2, 3, 0, "Aktueller Schritt:");
+    print_col(4, 65, 1, A_BOLD, "%u", ptr_stats->step_num);
+
+    print_col(8,  2, 3, 0, "Ausfahrten in diesem Schritt:");
+    print_col(8, 65, 1, A_BOLD, "%u",   ptr_stats->temp_exits);
+
+    print_col(9,  2, 3, 0,      "Aktuell freie Plätze:");
+    print_col(9, 65, 1, A_BOLD, "%u",   ptr_stats->temp_free_spots);
+
+    print_col(10, 2, 3, 0, "Aktuelle Belegung des Parkhauses:");
+    print_col(10, 65, 1, A_BOLD, "%.1f%%", ptr_stats->temp_rel_occupancy_percent);
+    int bar_color = 0;
+    if(ptr_stats->temp_rel_occupancy_percent >= 85.0f) {
+        bar_color = 2;
+    }
+    else {
+        bar_color = 1;
+    }
+    draw_bar(11, 2, 65, ptr_stats->temp_rel_occupancy_percent, bar_color);
+
+    print_col(12, 2, 3, 0, "Aktuelle Länge der Warteschlange:");
+    print_col(12, 65, 1, A_BOLD, "%u",   ptr_stats->temp_queue_length);
+
+    print_col(13, 2, 3, 0, "Durchschnittliche Restparkzeit aller Fahrzeuge");
+    print_col(13, 65, 1, A_BOLD, "%u Schr.", ptr_stats->temp_time_left);
+
+    wrefresh(ptr_win);
+} 
+
 int main() {
+    srand(42);
     SimConfig config = {
         .num_decks = 3,
         .spots_per_deck = 50,
         .initial_occupancy = 10,
         .max_parking_duration_steps = 100,
         .min_parking_duration_steps = 10,
-        .sim_duration_steps = 500,
+        .sim_duration_steps = 5000,
         .arrival_probability_percent = 40,
         .seed = 42,
         .config_file_name = "parkhaus.cfg",
         .output_file_name = "output.csv"
     };
+    initialize_ui();
     show_welcome(&config);
+    
+    /* --- test show_running with random per-step data --- */
+    unsigned int total_spots = config.num_decks * config.spots_per_deck;
+
+    SimStats stats = {0};
+    for (unsigned int step = 1; step <= config.sim_duration_steps; step++) {
+        stats.step_num                   = step;
+        stats.temp_entries               = rand() % 10;
+        stats.temp_exits                 = rand() % 10;
+        stats.temp_free_spots            = rand() % total_spots;
+        stats.temp_rel_occupancy_percent = (float)(total_spots - stats.temp_free_spots) / total_spots * 100.0f;
+        stats.temp_queue_length          = rand() % 5;
+        stats.temp_time_left             = rand() % config.max_parking_duration_steps;
+
+        show_running(&stats);
+
+        wtimeout(ptr_win, 100); /* wait 100ms, return ERR if no key pressed */
+        int key = wgetch(ptr_win);
+        if (key == 'q' || key == 'Q' || key == 27) break;
+    }
+
+    delwin(ptr_win);
+    endwin();
+
     return 0;
 }
 
