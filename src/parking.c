@@ -170,16 +170,21 @@ int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sims
         
         if (ptr_current_deck->free_spots > 0)
         {
+            // pop free spot from the stack
             ParkingSpot *ptr_spot = ptr_current_deck->ptr_stack[--ptr_current_deck->free_spots];
+            
+            // assign vehicle to selected spot
             ptr_spot->ptr_vehicle = ptr_vehicle;
             ptr_spot->occupied = 1;
-            ;
+            
+            // update occupied spots with current spot
+            ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count] = &ptr_spot;
 
-            // update occupied counts for parking and deck
+            // add this spot to the array of currently occupied spots
             ptr_parking->occupied_count++;               
             ptr_current_deck->occupied_count++;
             
-            // update stats
+            // update simulation statistics
             ptr_vehicle->entry_time = ptr_simstats->step_num;
             ptr_simstats->temp_entries++;
             ptr_simstats->total_entries++;
