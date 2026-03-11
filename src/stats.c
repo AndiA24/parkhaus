@@ -18,32 +18,36 @@ SimStats *init_simstats(){
 
 FILE *create_output_file(SimConfig *ptr_config)
 {
-    if (!ptr_config) {
+    // validate input pointer
+    if (ptr_config == NULL) {
         return NULL;
     }
 
     char user_input;
     FILE *ptr_output_file;
 
+    // loop until a valid, confirmed output filename is established
     while (1)
     {
+        // check if a file with the configured name already exists
         ptr_output_file = fopen(ptr_config->output_file_name, "r");
         if (ptr_output_file == NULL) {
             break;
         }
-
         fclose(ptr_output_file);
+
         printf("File already exists. Overwrite? (y/n): ");
         scanf(" %c", &user_input);
         if (user_input == 'y'){
-            break;
+            break;  // user confirmed overwrite, proceed
         }
 
+        // user declined overwrite, get new file name
         printf("Enter new file name: ");
         scanf("%69s", ptr_config->output_file_name);
         printf("Trying: '%s'\n", ptr_config->output_file_name);
     }
-
+    // open file for writing
     ptr_output_file = fopen(ptr_config->output_file_name, "w");
     if (ptr_output_file == NULL)
     {
@@ -51,11 +55,13 @@ FILE *create_output_file(SimConfig *ptr_config)
         return NULL;
     }
 
+    // write simulation config as a self-documenting header at the top of the CSV
     fprintf(ptr_output_file,
         "num_decks,spots_per_deck,initial_occupancy,max_parking_duration_steps,"
         "min_parking_duration_steps,sim_duration_steps,arrival_probability_percent,"
         "output_file_name,seed\n");
 
+    // write the config values
     fprintf(ptr_output_file, "%u,%u,%u,%u,%u,%u,%u,%s,%u\n",
         ptr_config->num_decks,
         ptr_config->spots_per_deck,
@@ -67,8 +73,10 @@ FILE *create_output_file(SimConfig *ptr_config)
         ptr_config->output_file_name,
         ptr_config->seed);
 
+    // write column headers for per-step statistics
     fprintf(ptr_output_file, "temp_exits,temp_entries,temp_rel_occupancy_percent,"
     "temp_queue_length,temp_free_spots,temp_time_left\n");
+    
     printf("Output file created successfully.\n");
     return ptr_output_file;
 }
@@ -187,7 +195,7 @@ int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 
 
 int close_output_file(FILE *ptr_output_file){
-    if(fclose(ptr_output_file) == EOF){
+    if(ptr_output_file == NULL || fclose(ptr_output_file) == EOF){
         printf("Error: Failed to close output file.\n");
         return -1;
     }
