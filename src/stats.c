@@ -7,7 +7,7 @@
 
 
 SimStats *init_simstats(){
-    SimStats *ptr_stats = calloc(1,sizeof(ptr_stats));
+    SimStats *ptr_stats = calloc(1,sizeof(*ptr_stats));
     if(ptr_stats == NULL){
         printf("Error: Failed to allocate memory for the Stats Struct.\n");
         return NULL;
@@ -68,7 +68,7 @@ FILE *create_output_file(SimConfig *ptr_config)
         ptr_config->seed);
 
     fprintf(ptr_output_file, "temp_exits,temp_entries,temp_rel_occupancy_percent,"
-    "temp_queue_length,temp_free_spots,temp_time_left");
+    "temp_queue_length,temp_free_spots,temp_time_left\n");
     printf("Output file created successfully.\n");
     return ptr_output_file;
 }
@@ -167,7 +167,7 @@ int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 
     fprintf(ptr_output_file, "total_exits,total_entries,total_queued,total_queue_time,"
     "total_parking_time,time_full_occupancy,peak_queue_length,step_longest_queue,"
-    "peak_rel_occupancy,step_highest_occupancy");
+    "peak_rel_occupancy,step_highest_occupancy\n");
 
     fprintf(ptr_output_file,
         "%u,%u,%u,%u,%u,%u,%u,%u,%.2f,%u\n",
@@ -181,6 +181,8 @@ int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
         ptr_stats->step_longest_queue,
         ptr_stats->peak_rel_occupancy,
         ptr_stats->step_highest_occupancy);
+
+        return 1;
 }
 
 
@@ -210,6 +212,7 @@ int reset_all_stats(SimStats *ptr_stats){
     ptr_stats->total_entries = 0;
     ptr_stats->total_queued = 0;
     ptr_stats->total_queue_time = 0;
+    ptr_stats->total_parking_time = 0;
     ptr_stats->time_full_occupancy = 0;
     ptr_stats->avg_rel_occupancy = 0;
     ptr_stats->peak_queue_length = 0;
