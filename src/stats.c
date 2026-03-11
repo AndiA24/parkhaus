@@ -135,10 +135,13 @@ int update_peak(SimStats *ptr_stats){
 
 
 int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
+    // valdate input pointers
     if(ptr_stats == NULL || ptr_output_file == NULL){
         printf("Error: Failed to save temp dataset. Invalid Argument.\n");
         return -1;
     }
+
+    // write per-step statistics 
     fprintf(ptr_output_file,
         "%u,%u,%.2f,%u,%u,%u\n",
         ptr_stats->temp_exits,
@@ -168,15 +171,18 @@ int reset_temp_dataset(SimStats *ptr_stats){
 
 
 int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
+    // valdate input pointers
     if(ptr_stats == NULL || ptr_output_file == NULL){
         printf("Error: Failed to save final dataset. Invalid argumant\n");
         return -1;
     }
 
+    // write column headers for final statistics
     fprintf(ptr_output_file, "total_exits,total_entries,total_queued,total_queue_time,"
     "total_parking_time,time_full_occupancy,peak_queue_length,step_longest_queue,"
     "peak_rel_occupancy,step_highest_occupancy\n");
 
+    // write final statistics
     fprintf(ptr_output_file,
         "%u,%u,%u,%u,%u,%u,%u,%u,%.2f,%u\n",
         ptr_stats->total_exits,
@@ -190,7 +196,7 @@ int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
         ptr_stats->peak_rel_occupancy,
         ptr_stats->step_highest_occupancy);
 
-        return 1;
+    return 1;
 }
 
 
