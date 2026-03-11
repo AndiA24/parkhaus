@@ -53,12 +53,37 @@ void prompt_uint(char *ptr_label, unsigned int *ptr_value, int min, int max) {
     char *ptr_end;
     unsigned long val = strtoul(buf, &ptr_end, 10);
     if(ptr_end == buf || *ptr_end != '\0' || val < min || val > max) {
-        print_col(19, 2, 2, 0, "Ungueltig! Der Bereich ist: %u-%u", min, max);
+        print_col(19, 2, 2, 0, "Ungueltig! Der erlaubte Bereich ist: %u-%u", min, max);
         wrefresh(ptr_win);
         wgetch(ptr_win);
     }
     else {
         *ptr_value = val;
+    }
+}
+
+void prompt_string(char *label, char *ptr_value, int size) {
+    char tmp[70] = {0};
+    //clear input line here as well
+    print_col(17, 2, 3, 0, "%s:", label);
+    print_col(18, 2, 3, 0, "> ");
+    wrefresh(ptr_win);
+
+    echo();
+    curs_set(1);
+    wmove(ptr_win, 18, 4);
+    wgetnstr(ptr_win, tmp, size-1);
+    noecho();
+    curs_set(0);
+
+    if(strlen(tmp) == 0) {
+        print_col(19, 2, 2, 0, "Ungueltig! Behalte alten Wert bei.");
+        wrefresh(ptr_win);
+        wgetch(ptr_win);
+    }
+    else {
+        strncpy(ptr_value, tmp, size - 1);
+        ptr_value[size - 1] = '\0';
     }
 }
 
@@ -197,7 +222,7 @@ void show_settings(SimConfig *ptr_config) {
                 render_settings(ptr_config);
                 break;
             case '5':
-                prompt_uint("Minimale Parkdauer eines Fahrzeuges", &ptr_config->min_parking_duration_steps, 1, ptr_config->sim_duration_steps);
+                prompt_uint("Minimale Parkdauer eines Fahrzeuges", &ptr_config->min_parking_duration_steps, 1, ptr_config->max_parking_duration_steps);
                 render_settings(ptr_config);
                 break;
             case '6':
@@ -213,7 +238,7 @@ void show_settings(SimConfig *ptr_config) {
                 render_settings(ptr_config);
                 break;
             case '9':
-                //prompt_input("Name der Ausgabedatei", &ptr_config->output_file_name, 1, sizeof(ptr_config->output_file_name));
+                prompt_string("Name der Ausgabedatei", ptr_config->output_file_name, sizeof(ptr_config->output_file_name));
                 render_settings(ptr_config);
                 break;
             case 'q':
@@ -237,7 +262,7 @@ void show_welcome(SimConfig *ptr_config) {
     curs_set(0);
 
     int win_height = 22;
-    int win_width = 64;
+    int win_width = 72;
     int sh, sw;
     getmaxyx(stdscr, sh, sw);
     ptr_win = newwin(win_height, win_width, (sh - win_height) / 2, (sw - win_width) / 2);
