@@ -22,6 +22,8 @@ typedef struct {
     unsigned int    capacity;   /**< Total number of parking spots on this deck. */
     unsigned int    occupied_count;  /**< Number of spots currently occupied. */
     ParkingSpot     *ptr_spots;  /**< Pointer to the array of parking spots on this deck. */
+    unsigned int    free_spots;
+    ParkingSpot     **ptr_stack;
 } ParkingDeck;
 
 /**
