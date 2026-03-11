@@ -56,6 +56,13 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
         return NULL;
     }
 
+    ptr_parking->ptr_occupied_spots = calloc(ptr_parking->total_capacity, sizeof(ParkingSpot));
+    if(ptr_parking->ptr_decks == NULL){
+        printf("Failed to allocate memory for array of occupied spots.\n");
+        free(ptr_parking);
+        return NULL;
+    }
+
     ParkingDeck *ptr_current_deck = NULL;
     for(int i = 0; i < ptr_parking->decks; i++){
         ptr_current_deck = (ptr_parking->ptr_decks + i);
@@ -166,6 +173,7 @@ int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sims
             ParkingSpot *ptr_spot = ptr_current_deck->ptr_stack[--ptr_current_deck->free_spots];
             ptr_spot->ptr_vehicle = ptr_vehicle;
             ptr_spot->occupied = 1;
+            ;
 
             // update occupied counts for parking and deck
             ptr_parking->occupied_count++;               
