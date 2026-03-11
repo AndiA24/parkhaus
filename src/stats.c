@@ -164,6 +164,23 @@ int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
         printf("Error: Failed to save final dataset. Invalid argumant\n");
         return -1;
     }
+
+    fprintf(ptr_output_file, "total_exits,total_entries,total_queued,total_queue_time,"
+    "total_parking_time,time_full_occupancy,peak_queue_length,step_longest_queue,"
+    "peak_rel_occupancy,step_highest_occupancy");
+
+    fprintf(ptr_output_file,
+        "%u,%u,%u,%u,%u,%u,%u,%u,%.2f,%u\n",
+        ptr_stats->total_exits,
+        ptr_stats->total_entries,
+        ptr_stats->total_queued,
+        ptr_stats->total_queue_time,
+        ptr_stats->total_parking_time,
+        ptr_stats->time_full_occupancy,
+        ptr_stats->peak_queue_length,
+        ptr_stats->step_longest_queue,
+        ptr_stats->peak_rel_occupancy,
+        ptr_stats->step_highest_occupancy);
 }
 
 
