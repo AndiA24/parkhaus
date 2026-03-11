@@ -1,6 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "../include/simulation.h"
 #include "../include/config.h"
+#include "../include/queue.h"
 #include "../include/stats.h"
+
+int rand_arrival(SimConfig *ptr_config){
+    if(ptr_config == NULL){
+        printf("Error: Failed to check arrival. Invalid Arguments.\n");
+        return 0;
+    }
+    int rand_i = (rand() % 100) + 1;
+    if(rand_i <= ptr_config->arrival_probability_percent){
+        return 1;
+    }
+    return 0;
+}
+
+int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats){
+    if(ptr_config == NULL || ptr_stats == NULL){
+        printf("Error: Failed to start simulation. Invalid Arguments.\n");
+        return -1;
+    }
+
+    srand(ptr_config->seed);
+    Parking *ptr_parking = init_parking(ptr_config, ptr_stats);
+    Queue *ptr_queue = init_queue();
+    FILE *ptr_output_file = create_output_file(ptr_config);
+
+    int total_steps = ptr_config->sim_duration_steps;
+    for(int i = 0; i < total_steps; i++){
+        if(rand_arrival(ptr_config) == 1){
+            enqueue(ptr_queue, create_vehicle(ptr_stats, ptr_config));
+        }
+
+        check_exit(ptr_parking, ptr_stats);
+
+        get_free_spots(ptr_parking, ptr_stats);
+        if(ptr_stats->temp_free_spots){
+            entry_parking(ptr_parking, dequeue(ptr_queue, ptr_stats), ptr_stats);
+        }
+
+        update_simstats(ptr_stats, ptr_parking, ptr_queue);
+        update_peak(ptr_stats);
+        save_temp_dataset(ptr_stats, ptr_output_file);
+        // show_running();
+        reset_temp_stats(ptr_stats);
+        increment_queue_time(ptr_queue);
+
+        ptr_stats->step_num ++;
+    }
+
+    delete_queue(ptr_queue, ptr_stats);
+    save_final_dataset(ptr_stats, ptr_output_file);
+    close_output_file(ptr_output_file);
+    // show_results();
+    reset_all_stats(ptr_stats);
+    free_parking(ptr_parking);
+    free_queue(ptr_queue);
+}
+
 
 /*
 PSEUDOCODE

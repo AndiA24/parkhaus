@@ -66,6 +66,6 @@ int save_config(SimConfig *ptr_config);
  *
  * @param[in] ptr_config Pointer to the SimConfig structure to be freed.
  */
-void free_config(SimConfig *ptr_config);
+int free_config(SimConfig *ptr_config);
 
 #endif
