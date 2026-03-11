@@ -38,7 +38,9 @@ FILE *create_output_file(SimConfig *ptr_config)
     while (1)
     {
         // check if a file with the configured name already exists
-        ptr_output_file = fopen(ptr_config->output_file_name, "r");
+        char temp_string[80];
+        snprintf(temp_string, sizeof(temp_string), "%s.txt", ptr_config->output_file_name); //always add .txt to end of a filename 
+        ptr_output_file = fopen(temp_string, "r");
         if (ptr_output_file == NULL) {
             break;
         }
@@ -56,7 +58,9 @@ FILE *create_output_file(SimConfig *ptr_config)
         printf("Trying: '%s'\n", ptr_config->output_file_name);
     }
     // open file for writing
-    ptr_output_file = fopen(ptr_config->output_file_name, "w");
+    char temp_string[80];
+    snprintf(temp_string, sizeof(temp_string), "%s.txt", ptr_config->output_file_name); //always add .txt to end of a filename 
+    ptr_output_file = fopen(temp_string, "w");
     if (ptr_output_file == NULL)
     {
         printf("Error: Could not open file '%s'\n", ptr_config->output_file_name);
