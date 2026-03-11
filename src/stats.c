@@ -16,8 +16,69 @@ SimStats *init_simstats(){
 }
 
 
-FILE *create_output_file(SimConfig *ptr_config){
+FILE *create_output_file(SimConfig *ptr_config)
+{
+    // validate input pointer
+    if (ptr_config == NULL) {
+        return NULL;
+    }
 
+    char user_input;
+    FILE *ptr_output_file;
+
+    // loop until a valid, confirmed output filename is established
+    while (1)
+    {
+        // check if a file with the configured name already exists
+        ptr_output_file = fopen(ptr_config->output_file_name, "r");
+        if (ptr_output_file == NULL) {
+            break;
+        }
+        fclose(ptr_output_file);
+
+        printf("File already exists. Overwrite? (y/n): ");
+        scanf(" %c", &user_input);
+        if (user_input == 'y'){
+            break;  // user confirmed overwrite, proceed
+        }
+
+        // user declined overwrite, get new file name
+        printf("Enter new file name: ");
+        scanf("%69s", ptr_config->output_file_name);
+        printf("Trying: '%s'\n", ptr_config->output_file_name);
+    }
+    // open file for writing
+    ptr_output_file = fopen(ptr_config->output_file_name, "w");
+    if (ptr_output_file == NULL)
+    {
+        printf("Error: Could not open file '%s'\n", ptr_config->output_file_name);
+        return NULL;
+    }
+
+    // write simulation config as a self-documenting header at the top of the CSV
+    fprintf(ptr_output_file,
+        "num_decks,spots_per_deck,initial_occupancy,max_parking_duration_steps,"
+        "min_parking_duration_steps,sim_duration_steps,arrival_probability_percent,"
+        "output_file_name,seed\n");
+
+    // write the config values
+    fprintf(ptr_output_file, "%u,%u,%u,%u,%u,%u,%u,%s,%u\n",
+        ptr_config->num_decks,
+        ptr_config->spots_per_deck,
+        ptr_config->initial_occupancy,
+        ptr_config->max_parking_duration_steps,
+        ptr_config->min_parking_duration_steps,
+        ptr_config->sim_duration_steps,
+        ptr_config->arrival_probability_percent,
+        ptr_config->output_file_name,
+        ptr_config->seed);
+
+    // write column headers for per-step statistics
+    fprintf(ptr_output_file, "temp_exits,temp_entries,temp_rel_occupancy_percent,"
+    "temp_queue_length,temp_free_spots,temp_time_left\n");
+    
+    printf("Output file created successfully.\n");
+    return ptr_output_file;
 }
 
 
@@ -74,10 +135,21 @@ int update_peak(SimStats *ptr_stats){
 
 
 int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
+    // valdate input pointers
     if(ptr_stats == NULL || ptr_output_file == NULL){
         printf("Error: Failed to save temp dataset. Invalid Argument.\n");
         return -1;
     }
+
+    // write per-step statistics 
+    fprintf(ptr_output_file,
+        "%u,%u,%.2f,%u,%u,%u\n",
+        ptr_stats->temp_exits,
+        ptr_stats->temp_entries,
+        ptr_stats->temp_rel_occupancy_percent,
+        ptr_stats->temp_queue_length,
+        ptr_stats->temp_free_spots,
+        ptr_stats->temp_time_left);
 
     return 1;
 }
@@ -99,10 +171,32 @@ int reset_temp_dataset(SimStats *ptr_stats){
 
 
 int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
+    // valdate input pointers
     if(ptr_stats == NULL || ptr_output_file == NULL){
         printf("Error: Failed to save final dataset. Invalid argumant\n");
         return -1;
     }
+
+    // write column headers for final statistics
+    fprintf(ptr_output_file, "total_exits,total_entries,total_queued,total_queue_time,"
+    "total_parking_time,time_full_occupancy,peak_queue_length,step_longest_queue,"
+    "peak_rel_occupancy,step_highest_occupancy\n");
+
+    // write final statistics
+    fprintf(ptr_output_file,
+        "%u,%u,%u,%u,%u,%u,%u,%u,%.2f,%u\n",
+        ptr_stats->total_exits,
+        ptr_stats->total_entries,
+        ptr_stats->total_queued,
+        ptr_stats->total_queue_time,
+        ptr_stats->total_parking_time,
+        ptr_stats->time_full_occupancy,
+        ptr_stats->peak_queue_length,
+        ptr_stats->step_longest_queue,
+        ptr_stats->peak_rel_occupancy,
+        ptr_stats->step_highest_occupancy);
+
+    return 1;
 }
 
 
@@ -132,6 +226,7 @@ int reset_all_stats(SimStats *ptr_stats){
     ptr_stats->total_entries = 0;
     ptr_stats->total_queued = 0;
     ptr_stats->total_queue_time = 0;
+    ptr_stats->total_parking_time = 0;
     ptr_stats->time_full_occupancy = 0;
     ptr_stats->avg_rel_occupancy = 0;
     ptr_stats->peak_queue_length = 0;
