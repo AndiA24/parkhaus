@@ -2,10 +2,9 @@
 #define STATS_H
 
 #include <stdio.h>
+#include "queue.h"
 #include "config.h"
 #include "parking.h"
-
-typedef struct Queue Queue;
 
 /**
  * @brief Holds the statistics collected during the simulation / one simulation step.

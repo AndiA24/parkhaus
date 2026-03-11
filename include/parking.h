@@ -73,8 +73,9 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats);
  * @param[in,out] parking  Pointer to the parking lot structure
  * @param[in]     vehicle  Pointer to the vehicle entering the parking lot
  * @param[in,out] simstats Pointer to the current simulation statistics
+ * @return 1 on success, 0 if vehicle cannot be assigned, -1 if any param is NULL
  */
-void entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_simstats);
+int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_simstats);
 
 /**
  * @brief Checks all parking spots for vehicles that have exceeded their parking duration.
@@ -85,8 +86,9 @@ void entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sim
  *
  * @param[in,out] parking  Pointer to the parking lot structure
  * @param[in,out] simstats Pointer to the current simulation statistics
+ * @return 1 on success, -1 if any param is NULL
  */
-void check_exit(Parking *ptr_parking, SimStats *ptr_simstats);
+int check_exit(Parking *ptr_parking, SimStats *ptr_simstats);
 
 
 /**
@@ -96,9 +98,9 @@ void check_exit(Parking *ptr_parking, SimStats *ptr_simstats);
  * that are currently free.
  *
  * @param[in] ptr_parking Pointer to the Parking structure
- *
+ * @return 1 on success, -1 if any param is NULL
  */
-void get_free_spots(Parking *ptr_parking, SimStats *ptr_stats);
+int get_free_spots(Parking *ptr_parking, SimStats *ptr_stats);
 
 /**
  * @brief Frees all dynamically allocated memory associated with the Parking structure.
@@ -106,7 +108,8 @@ void get_free_spots(Parking *ptr_parking, SimStats *ptr_stats);
  * Frees the Parking structure that was allocated by init_parking
  *
  * @param[in] ptr_parking Pointer to the Parking structure to be freed.
+ * @return 1 on success, -1 if ptr_parking is NULL
  */
-void free_parking(Parking *ptr_parking);
+int free_parking(Parking *ptr_parking);
 
 #endif
