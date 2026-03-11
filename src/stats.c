@@ -16,8 +16,61 @@ SimStats *init_simstats(){
 }
 
 
-FILE *create_output_file(SimConfig *ptr_config){
+FILE *create_output_file(SimConfig *ptr_config)
+{
+    if (!ptr_config) {
+        return NULL;
+    }
 
+    char user_input;
+    FILE *ptr_output_file;
+
+    while (1)
+    {
+        ptr_output_file = fopen(ptr_config->output_file_name, "r");
+        if (ptr_output_file == NULL) {
+            break;
+        }
+
+        fclose(ptr_output_file);
+        printf("File already exists. Overwrite? (y/n): ");
+        scanf(" %c", &user_input);
+
+        if (user_input == 'y'){
+            break;
+        }
+
+        printf("Enter new file name: ");
+        scanf("%69s", ptr_config->output_file_name);
+        printf("Trying: '%s'\n", ptr_config->output_file_name);
+    }
+
+    ptr_output_file = fopen(ptr_config->output_file_name, "w");
+    if (ptr_output_file == NULL)
+    {
+        printf("Error: Could not open file '%s'\n", ptr_config->output_file_name);
+        return NULL;
+    }
+
+    fprintf(ptr_output_file,
+        "num_decks,spots_per_deck,initial_occupancy,max_parking_duration_steps,"
+        "min_parking_duration_steps,sim_duration_steps,arrival_probability_percent,"
+        "output_file_name,seed\n");
+
+    fprintf(ptr_output_file, "%u,%u,%u,%u,%u,%u,%u,%s,%u\n",
+        ptr_config->num_decks,
+        ptr_config->spots_per_deck,
+        ptr_config->initial_occupancy,
+        ptr_config->max_parking_duration_steps,
+        ptr_config->min_parking_duration_steps,
+        ptr_config->sim_duration_steps,
+        ptr_config->arrival_probability_percent,
+        ptr_config->output_file_name,
+        ptr_config->seed);
+
+    printf("Output file created successfully.\n");
+
+    return ptr_output_file;
 }
 
 
