@@ -27,7 +27,6 @@ static void print_col(int y, int x, int pair, int attrs, const char *fmt, ...) {
     va_end(args);
 }
 
-
 static void draw_hline(int y) {
     int w = getmaxx(ptr_win);
     wattron(ptr_win, COLOR_PAIR(4) | A_BOLD);
@@ -36,7 +35,6 @@ static void draw_hline(int y) {
     mvwaddch(ptr_win, y, w - 1, ACS_RTEE);
     wattroff(ptr_win, COLOR_PAIR(4) | A_BOLD);
 }
-
 
 void render_welcome(SimConfig *ptr_config) {
     werase(ptr_win);
@@ -94,7 +92,60 @@ void render_welcome(SimConfig *ptr_config) {
 }
 
 void render_settings(SimConfig *ptr_config) {
+    werase(ptr_win);
+    int width = getmaxx(ptr_win);
 
+    wattron(ptr_win, COLOR_PAIR(4) | A_BOLD);
+    box(ptr_win, 0, 0);
+    wattroff(ptr_win, COLOR_PAIR(4) | A_BOLD);
+
+    print_col(1, (width - 13) / 2, 4, A_BOLD, "%s", "EINSTELLUNGEN");
+
+    draw_hline(2);
+
+    print_col(3,  2, 4, A_BOLD, "[1]"); 
+    print_col(3,  6, 3, 0, "Etagen:");          
+    print_col(3,  28, 1, A_BOLD, "%u", ptr_config->num_decks);
+
+    print_col(4,  2, 4, A_BOLD, "[2]"); 
+    print_col(4,  6, 3, 0, "Stellpl./Etage:");  
+    print_col(4,  28, 1, A_BOLD, "%u", ptr_config->spots_per_deck);
+
+    print_col(5,  2, 4, A_BOLD, "[3]"); 
+    print_col(5,  6, 3, 0, "Startbelegung:");   
+    print_col(5,  28, 1, A_BOLD, "%u", ptr_config->initial_occupancy);
+
+    print_col(6,  2, 4, A_BOLD, "[4]"); 
+    print_col(6,  6, 3, 0, "Max. Parkdauer:");  
+    print_col(6,  28, 1, A_BOLD, "%u", ptr_config->max_parking_duration_steps);
+
+    print_col(7,  2, 4, A_BOLD, "[5]"); 
+    print_col(7,  6, 3, 0, "Min. Parkdauer:");  
+    print_col(7,  28, 1, A_BOLD, "%u", ptr_config->min_parking_duration_steps);
+
+    print_col(8,  2, 4, A_BOLD, "[6]"); 
+    print_col(8,  6, 3, 0, "Sim.-Dauer:");      
+    print_col(8,  28, 1, A_BOLD, "%u", ptr_config->sim_duration_steps);
+
+    print_col(9,  2, 4, A_BOLD, "[7]"); 
+    print_col(9,  6, 3, 0, "Ankunftswahr.:");   
+    print_col(9,  28, 1, A_BOLD, "%u%%", ptr_config->arrival_probability_percent);
+
+    print_col(10, 2, 4, A_BOLD, "[8]"); 
+    print_col(10, 6, 3, 0, "Seed:");            
+    print_col(10, 28, 1, A_BOLD, "%u", ptr_config->seed);
+
+    print_col(11, 2, 4, A_BOLD, "[9]"); 
+    print_col(11, 6, 3, 0, "Ausgabedatei:");
+    print_col(11, 28, 1, A_BOLD, "%s", ptr_config->output_file_name);   
+    
+    draw_hline(13);
+
+    print_col(14, 2, 3, 0, "Zahl druecken um den entsprechenden Wert zu bearbeiten");
+    print_col(15, 2, 4, A_BOLD, "[Q]");
+    print_col(15, 6, 3, 0, "/");
+    print_col(15, 6, 3, 0, "[ENTER]");
+    print_col(15, 16, 3, 0, "Zurueck");
 }
 
 void show_settings(SimConfig *ptr_config) {
@@ -104,39 +155,39 @@ void show_settings(SimConfig *ptr_config) {
         int key = wgetch(ptr_win);
         switch (key) {
             case '1':
-                prompt_input("Anzahl der Etagen des Parkhauses", &ptr_config->num_decks, 1, 99);
+                //prompt_input("Anzahl der Etagen des Parkhauses", &ptr_config->num_decks, 1, 99);
                 render_settings(ptr_config);
                 break;
             case '2':
-                prompt_input("Anzahl der Stellplätze pro Etage", &ptr_config->spots_per_deck, 1, 999);
+                //prompt_input("Anzahl der Stellplätze pro Etage", &ptr_config->spots_per_deck, 1, 999);
                 render_settings(ptr_config);
                 break;
             case '3':
-                prompt_input("Anzahl der Fahrzeuge im Parkhaus zum Beginn der Simulation", &ptr_config->initial_occupancy, 0, ptr_config->num_decks*ptr_config->spots_per_deck);
+                //prompt_input("Anzahl der Fahrzeuge im Parkhaus zum Beginn der Simulation", &ptr_config->initial_occupancy, 0, ptr_config->num_decks*ptr_config->spots_per_deck);
                 render_settings(ptr_config);
                 break;
             case '4':
-                prompt_input("Maximal Parkdauer eines Fahrzeuges", &ptr_config->max_parking_duration_steps, 1, ptr_config->sim_duration_steps);
+                //prompt_input("Maximal Parkdauer eines Fahrzeuges", &ptr_config->max_parking_duration_steps, 1, ptr_config->sim_duration_steps);
                 render_settings(ptr_config);
                 break;
             case '5':
-                prompt_input("Minimale Parkdauer eines Fahrzeuges", &ptr_config->min_parking_duration_steps, 1, ptr_config->sim_duration_steps);
+                //prompt_input("Minimale Parkdauer eines Fahrzeuges", &ptr_config->min_parking_duration_steps, 1, ptr_config->sim_duration_steps);
                 render_settings(ptr_config);
                 break;
             case '6':
-                prompt_input("Dauer der Simulation in Schritten", &ptr_config->sim_duration_steps, 1, UINT_MAX);
+                //prompt_input("Dauer der Simulation in Schritten", &ptr_config->sim_duration_steps, 1, UINT_MAX);
                 render_settings(ptr_config);
                 break;
             case '7':
-                prompt_input("Wahrscheinlichkeit für das Ankommen eines Fahrzeuges pro Schritt", &ptr_config->arrival_probability_percent, 1, 100);
+                //prompt_input("Wahrscheinlichkeit für das Ankommen eines Fahrzeuges pro Schritt", &ptr_config->arrival_probability_percent, 1, 100);
                 render_settings(ptr_config);
                 break;
             case '8':
-                prompt_input("RNG Seed der Simulation", &ptr_config->seed, 0, UINT_MAX);
+                //prompt_input("RNG Seed der Simulation", &ptr_config->seed, 0, UINT_MAX);
                 render_settings(ptr_config);
                 break;
             case '9':
-                prompt_input("Name der Ausgabedatei", &ptr_config->output_file_name, 1, sizeof(ptr_config->output_file_name));
+                //prompt_input("Name der Ausgabedatei", &ptr_config->output_file_name, 1, sizeof(ptr_config->output_file_name));
                 render_settings(ptr_config);
                 break;
             case 'q':
@@ -160,7 +211,7 @@ void show_welcome(SimConfig *ptr_config) {
     curs_set(0);
 
     int win_height = 22;
-    int win_width = 52;
+    int win_width = 64;
     int sh, sw;
     getmaxyx(stdscr, sh, sw);
     ptr_win = newwin(win_height, win_width, (sh - win_height) / 2, (sw - win_width) / 2);
@@ -184,7 +235,7 @@ void show_welcome(SimConfig *ptr_config) {
             break;
         case 's':
         case 'S':
-            //show_settings(ptr_config);
+            show_settings(ptr_config);
             render_welcome(ptr_config);
             break;
         case '\n':
