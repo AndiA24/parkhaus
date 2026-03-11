@@ -156,30 +156,27 @@ int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sims
         printf("Error: Failed to park vehicle. Invalid argument.\n");
         return -1; 
     }
-    
     // search for the first free spot across all decks
     for (int i = 0; i < ptr_parking->decks; i++)
     {
-        for (int j = 0; j < ptr_parking->ptr_decks[i].capacity; j++)
+        ParkingDeck *ptr_current_deck = &ptr_parking->ptr_decks[i];
+        
+        if (ptr_current_deck->free_spots > 0)
         {
-            if (!ptr_parking->ptr_decks[i].ptr_spots[j].occupied)
-            {
-                // assign vehicle to the free spot and mark it occupied
-                ptr_parking->ptr_decks[i].ptr_spots[j].ptr_vehicle = ptr_vehicle;
-                ptr_parking->ptr_decks[i].ptr_spots[j].occupied = 1;
+            ParkingSpot *ptr_spot = ptr_current_deck->ptr_stack[--ptr_current_deck->free_spots];
+            ptr_spot->ptr_vehicle = ptr_vehicle;
+            ptr_spot->occupied = 1;
 
-                // update occupied counts for parking and deck
-                ptr_parking->occupied_count++;               
-                ptr_parking->ptr_decks[i].occupied_count++;
-                
-                ptr_vehicle->entry_time = ptr_simstats->step_num;
+            // update occupied counts for parking and deck
+            ptr_parking->occupied_count++;               
+            ptr_current_deck->occupied_count++;
+            
+            // update stats
+            ptr_vehicle->entry_time = ptr_simstats->step_num;
+            ptr_simstats->temp_entries++;
+            ptr_simstats->total_entries++;
 
-                // update stats
-                ptr_simstats->temp_entries++;
-                ptr_simstats->total_entries++;
-
-                return 1;
-            }
+            return 1;
         }
     }
     // should not happen because capacity is checked before calling this function
