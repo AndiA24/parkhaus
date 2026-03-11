@@ -201,7 +201,7 @@ int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 
 
 int close_output_file(FILE *ptr_output_file){
-    if(ptr_output_file == NULL || fclose(ptr_output_file) == EOF){
+    if(fclose(ptr_output_file) == EOF){
         printf("Error: Failed to close output file.\n");
         return -1;
     }
