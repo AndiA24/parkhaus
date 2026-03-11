@@ -52,7 +52,7 @@ void prompt_uint(char *ptr_label, unsigned int *ptr_value, int min, int max) {
 
     char *ptr_end;
     unsigned long val = strtoul(buf, &ptr_end, 10);
-    if(ptr_end == buf || val < min || val > max) {
+    if(ptr_end == buf || *ptr_end != '\0' || val < min || val > max) {
         print_col(19, 2, 2, 0, "Ungueltig! Der Bereich ist: %u-%u", min, max);
         wrefresh(ptr_win);
         wgetch(ptr_win);
@@ -181,35 +181,35 @@ void show_settings(SimConfig *ptr_config) {
         int key = wgetch(ptr_win);
         switch (key) {
             case '1':
-                //prompt_input("Anzahl der Etagen des Parkhauses", &ptr_config->num_decks, 1, 99);
+                prompt_uint("Anzahl der Etagen des Parkhauses", &ptr_config->num_decks, 1, 99);
                 render_settings(ptr_config);
                 break;
             case '2':
-                //prompt_input("Anzahl der Stellplätze pro Etage", &ptr_config->spots_per_deck, 1, 999);
+                prompt_uint("Anzahl der Stellplätze pro Etage", &ptr_config->spots_per_deck, 1, 999);
                 render_settings(ptr_config);
                 break;
             case '3':
-                //prompt_input("Anzahl der Fahrzeuge im Parkhaus zum Beginn der Simulation", &ptr_config->initial_occupancy, 0, ptr_config->num_decks*ptr_config->spots_per_deck);
+                prompt_uint("Anzahl der Fahrzeuge im Parkhaus zum Beginn der Simulation", &ptr_config->initial_occupancy, 0, ptr_config->num_decks*ptr_config->spots_per_deck);
                 render_settings(ptr_config);
                 break;
             case '4':
-                //prompt_input("Maximal Parkdauer eines Fahrzeuges", &ptr_config->max_parking_duration_steps, 1, ptr_config->sim_duration_steps);
+                prompt_uint("Maximal Parkdauer eines Fahrzeuges", &ptr_config->max_parking_duration_steps, 1, ptr_config->sim_duration_steps);
                 render_settings(ptr_config);
                 break;
             case '5':
-                //prompt_input("Minimale Parkdauer eines Fahrzeuges", &ptr_config->min_parking_duration_steps, 1, ptr_config->sim_duration_steps);
+                prompt_uint("Minimale Parkdauer eines Fahrzeuges", &ptr_config->min_parking_duration_steps, 1, ptr_config->sim_duration_steps);
                 render_settings(ptr_config);
                 break;
             case '6':
-                //prompt_input("Dauer der Simulation in Schritten", &ptr_config->sim_duration_steps, 1, UINT_MAX);
+                prompt_uint("Dauer der Simulation in Schritten", &ptr_config->sim_duration_steps, 1, UINT_MAX);
                 render_settings(ptr_config);
                 break;
             case '7':
-                //prompt_input("Wahrscheinlichkeit für das Ankommen eines Fahrzeuges pro Schritt", &ptr_config->arrival_probability_percent, 1, 100);
+                prompt_uint("Wahrscheinlichkeit für das Ankommen eines Fahrzeuges pro Schritt", &ptr_config->arrival_probability_percent, 1, 100);
                 render_settings(ptr_config);
                 break;
             case '8':
-                //prompt_input("RNG Seed der Simulation", &ptr_config->seed, 0, UINT_MAX);
+                prompt_uint("RNG Seed der Simulation", &ptr_config->seed, 0, UINT_MAX);
                 render_settings(ptr_config);
                 break;
             case '9':
