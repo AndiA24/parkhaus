@@ -168,7 +168,7 @@ int reset_all_stats(SimStats *ptr_stats);
  * Frees the SimStats structure that was allocated by init_simstats
  *
  * @param[in] ptr_stats Pointer to the SimStats structure to be freed.
- * @return 1 on success, -1 if ptr_stats is NULL.
+ * @return 0 on success, -1 if ptr_stats is NULL.
  */
 int free_stats(SimStats *ptr_stats);
 
