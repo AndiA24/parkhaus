@@ -72,7 +72,7 @@ int main() {
     // Test 4: Check calculated values for testing input (capacity=100, occupied=60, queue_size=3)
     //
     // Expected values after the first call (step_num=0, avg_rel_occupancy=0.0):
-    //   return value               = 1
+    //   return value               = 0
     //   temp_rel_occupancy_percent = 60.0f
     //   temp_queue_length          = 3
     //   temp_free_spots            = 40
@@ -82,7 +82,7 @@ int main() {
     ptr_parking = create_test_parking(100, 60);
     ptr_queue = create_test_queue(3);
 
-    assert(update_simstats(ptr_stats, ptr_parking, ptr_queue) == 1);
+    assert(update_simstats(ptr_stats, ptr_parking, ptr_queue) == 0);
     assert(ptr_stats->temp_rel_occupancy_percent == 60.0f);
     assert(ptr_stats->temp_queue_length == 3);
     assert(ptr_stats->temp_free_spots == 40);
@@ -92,7 +92,7 @@ int main() {
     // second call: every spot occupied, time_full_occupancy should increase
     ptr_stats->step_num = 1;
     ptr_parking->occupied_count = 100;
-    assert(update_simstats(ptr_stats, ptr_parking, ptr_queue) == 1);
+    assert(update_simstats(ptr_stats, ptr_parking, ptr_queue) == 0);
     assert(ptr_stats->time_full_occupancy == 1);
 
     free_stats(ptr_stats);

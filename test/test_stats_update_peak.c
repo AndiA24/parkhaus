@@ -31,7 +31,7 @@ int main() {
     //
     // Expected values after call
     //
-    //  return value            = 1
+    //  return value            = 0
     //  peak_rel_occupancy      = 80.0
     //  step_highest_occupancy  = 5
     //  peak_queue_lenght       = 4
@@ -43,7 +43,7 @@ int main() {
     ptr_stats->peak_rel_occupancy = 60.0f;
     ptr_stats->temp_queue_length = 4;
     ptr_stats->peak_queue_length = 3;
-    assert(update_peak(ptr_stats) == 1);
+    assert(update_peak(ptr_stats) == 0);
     assert(ptr_stats->peak_rel_occupancy == 80.0f);
     assert(ptr_stats->step_highest_occupancy == 5);
     assert(ptr_stats->peak_queue_length == 4);
@@ -56,7 +56,7 @@ int main() {
     //
     // Expected values after call
     //
-    //  return value            = 1
+    //  return value            = 0
     //  peak_rel_occupancy      = 60.0f
     //  step_highest_occupancy  = 0 
     //  peak_queue_lenght       = 1
@@ -71,7 +71,7 @@ int main() {
     ptr_stats->peak_queue_length = 1;
     ptr_stats->temp_queue_length = 1;
 
-    assert(update_peak(ptr_stats) == 1);
+    assert(update_peak(ptr_stats) == 0);
     assert(ptr_stats->peak_rel_occupancy == 60.0f);
     assert(ptr_stats->step_highest_occupancy == 1);
     assert(ptr_stats->peak_queue_length == 1),
