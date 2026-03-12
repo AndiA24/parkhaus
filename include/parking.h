@@ -47,9 +47,9 @@ typedef struct {
  *                            the initial occupancy count.
  * @param[in,out] ptr_stats   Pointer to the Stats structure to get current Vehicle
  *                            ID and increment.
- * @return Pointer to the populated Parking structure, or NULL on failure.
+ * @return Integer: 0 for success, -1 for fatal error, -2 for error because of missing spots
  */
-Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats);
+int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats);
 
 /**
  * @brief Create Parking Struct containing Parking decks and spots
