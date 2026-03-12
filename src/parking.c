@@ -8,7 +8,7 @@
 
 Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_parking == NULL || ptr_config == NULL || ptr_stats == NULL){
-        printf("Error: Failed to create initial occupancy. Invalid Argumant.\n");
+        printf("Error: Failed to create initial occupancy. Invalid Argument.\n");
         return ptr_parking;
     }    
     if(ptr_config->initial_occupancy > ptr_parking->total_capacity){
@@ -29,6 +29,7 @@ Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats
         }
         // set the spot to occupied and increment the occupied_count of the deck and the parking
         ptr_spot->occupied = 1;
+        ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count] = ptr_spot;
         ptr_current_deck->occupied_count = ptr_current_deck->occupied_count + 1;
         ptr_parking->occupied_count = ptr_parking->occupied_count + 1;
     }
