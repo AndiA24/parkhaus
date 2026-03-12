@@ -45,6 +45,10 @@ int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr
 
 
 Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
+    if(ptr_config == NULL || ptr_stats == NULL){
+        printf("Error: Failed to create Parking. Invalid Arguments.\n");
+        return NULL;
+    }
     Parking *ptr_parking = malloc(sizeof(*ptr_parking));
     if(ptr_parking == NULL){
         printf("Failed to allocate memory for the Parking-Struct.\n");
