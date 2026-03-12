@@ -18,6 +18,8 @@ Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats
     }
     for(int i = 0; i < ptr_config->initial_occupancy; i++){
         ParkingDeck *ptr_current_deck =((ptr_parking->ptr_decks) + (i / ptr_config->spots_per_deck));
+        
+        // pop the next free spot from the deck's stack
         ParkingSpot *ptr_spot = ptr_current_deck->ptr_stack[--ptr_current_deck->free_spots];
         ptr_spot->ptr_vehicle = create_vehicle(ptr_stats, ptr_config);
 
@@ -27,9 +29,11 @@ Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats
             free_parking(ptr_parking);
             return NULL;
         }
-        // set the spot to occupied and increment the occupied_count of the deck and the parking
+        // register spot in occupied spots array
         ptr_spot->occupied = 1;
         ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count] = ptr_spot;
+
+        // update occupied counts for deck and parking
         ptr_current_deck->occupied_count = ptr_current_deck->occupied_count + 1;
         ptr_parking->occupied_count = ptr_parking->occupied_count + 1;
     }
@@ -73,7 +77,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
         ptr_current_deck->deck_id = i;
         ptr_current_deck->capacity = ptr_config->spots_per_deck;
         ptr_current_deck->free_spots = 0;
-        
+
         // allocate spot array and free spot stack for this deck
         ptr_current_deck->ptr_spots = calloc((ptr_config->spots_per_deck), sizeof(ParkingSpot));
         ptr_current_deck->ptr_stack = calloc((ptr_config->spots_per_deck), sizeof(ParkingSpot*));
