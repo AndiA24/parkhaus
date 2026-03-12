@@ -135,7 +135,7 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
                 free_vehicle(ptr_vehicle);
                 ptr_spot->ptr_vehicle = NULL;
                 ptr_spot->occupied = 0;
-                
+
                 ptr_current_deck->ptr_stack[ptr_current_deck->free_spots] = ptr_spot;
                 ptr_current_deck->free_spots++;
 
@@ -229,11 +229,13 @@ int free_parking(Parking *ptr_parking) {
                 free_vehicle(ptr_parking->ptr_decks[i].ptr_spots[j].ptr_vehicle);
             }
         }
-        // free the spot array for this deck
+        // free the spot array and the stack for this deck
+        free(ptr_parking->ptr_decks[i].ptr_stack);
         free(ptr_parking->ptr_decks[i].ptr_spots);
     }
     
-    // free the deck array and the parking struct itself
+    // free deck array, occupied spots array and the parking struct itself
+    free(ptr_parking->ptr_occupied_spots);
     free(ptr_parking->ptr_decks);
     free(ptr_parking);
     return 1;
