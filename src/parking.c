@@ -37,6 +37,7 @@ Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats
 }
 
 
+
 Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     Parking *ptr_parking = malloc(sizeof(*ptr_parking));
     if(ptr_parking == NULL){
@@ -72,7 +73,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
         ptr_current_deck->capacity = ptr_config->spots_per_deck;
         ptr_current_deck->free_spots = 0;
         ptr_current_deck->ptr_spots = calloc((ptr_config->spots_per_deck), sizeof(ParkingSpot));
-        ptr_current_deck->ptr_stack = calloc(ptr_config->spots_per_deck, sizeof(ParkingSpot*));
+        ptr_current_deck->ptr_stack = calloc((ptr_config->spots_per_deck), sizeof(ParkingSpot*));
 
         if(ptr_current_deck->ptr_spots == NULL || ptr_current_deck->ptr_stack == NULL){
             printf("Failed to allocate memory for the spots in the %d Deck.\n", i);
@@ -80,22 +81,20 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
             for(int j = 0; j <= i; j++){
                 free((ptr_parking->ptr_decks + j)->ptr_stack);
                 free((ptr_parking->ptr_decks + j)->ptr_spots);
+                (ptr_parking->ptr_decks + j)->ptr_stack = NULL;
                 (ptr_parking->ptr_decks + j)->ptr_spots = NULL;
             }
             // free memeory allocated for Decks and Parking
             free(ptr_parking->ptr_occupied_spots);
-            ptr_parking->ptr_occupied_spots = NULL;
             free(ptr_parking->ptr_decks);
-            ptr_parking->ptr_decks = NULL;
             free(ptr_parking);
-            ptr_parking = NULL;
             return NULL;
         }
 
         for(int j = 0; j < ptr_config->spots_per_deck; j++){
             // Global spot ID: deck index * spots per deck + local spot index 
             // this way every spot got an unique ID across all decks
-            (((ptr_parking->ptr_decks) + i)->ptr_spots + j)->id = (i * ptr_config->spots_per_deck) + j;
+            (ptr_current_deck->ptr_spots + j)->id = (i * ptr_config->spots_per_deck) + j;
 
             ptr_current_deck->ptr_stack[ptr_current_deck->free_spots] = &ptr_parking->ptr_decks[i].ptr_spots[j];
             ptr_current_deck->free_spots++;
@@ -111,6 +110,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     }
     return ptr_parking;
 }
+
 
 
 int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
@@ -160,6 +160,8 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
     return 1;
 }
 
+
+
 int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_simstats)
 {
     // validate input pointers
@@ -202,6 +204,8 @@ int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sims
     return 0; 
 }
 
+
+
 int get_free_spots(Parking *ptr_parking, SimStats *ptr_simstats)
 {
     // validate input pointers
@@ -216,31 +220,38 @@ int get_free_spots(Parking *ptr_parking, SimStats *ptr_simstats)
     return 1;
 }
 
+
+
 int free_parking(Parking *ptr_parking) {
-    // validate input pointer
-    if (ptr_parking == NULL)
-    {
-        printf("Error: Failed to free memory allocated for parking. Invalid argument.\n");
+    if (ptr_parking == NULL) {
+        printf("Error: Failed to free momory of parking struct");
         return -1;
     }
 
-    // free all vehicles and spot arrays for each deck
-    for (int i = 0; i < ptr_parking->decks; i++) {
-        // free any vehicles still parked in this deck
-        for (int j = 0; j < ptr_parking->ptr_decks[i].capacity; j++) {
-            if (ptr_parking->ptr_decks[i].ptr_spots[j].ptr_vehicle != NULL) {
-                free_vehicle(ptr_parking->ptr_decks[i].ptr_spots[j].ptr_vehicle);
-            }
+    // 1. Free all occupied vehicles 
+    for (int i = 0; i < ptr_parking->occupied_count; i++) {
+        if (ptr_parking->ptr_occupied_spots[i]->ptr_vehicle != NULL) {
+            free_vehicle(ptr_parking->ptr_occupied_spots[i]->ptr_vehicle);
+            ptr_parking->ptr_occupied_spots[i]->ptr_vehicle = NULL;
+            ptr_parking->ptr_occupied_spots[i]->occupied = 0;
         }
-        // free the spot array and the stack for this deck
-        free(ptr_parking->ptr_decks[i].ptr_stack);
-        free(ptr_parking->ptr_decks[i].ptr_spots);
     }
-    
-    // free deck array, occupied spots array and the parking struct itself
+
+    // 2. Free each deck's spot array and stack
+    for (int i = 0; i < ptr_parking->decks; i++) {
+        free(ptr_parking->ptr_decks[i].ptr_spots);
+        free(ptr_parking->ptr_decks[i].ptr_stack);
+        ptr_parking->ptr_decks[i].ptr_spots = NULL;
+        ptr_parking->ptr_decks[i].ptr_stack = NULL;
+    }
+
+    // 3. Free remaining arrays and struct
     free(ptr_parking->ptr_occupied_spots);
+    ptr_parking->ptr_occupied_spots = NULL;
     free(ptr_parking->ptr_decks);
+    ptr_parking->ptr_decks = NULL;
     free(ptr_parking);
+
     return 1;
 }
 
