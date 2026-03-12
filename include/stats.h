@@ -12,7 +12,8 @@
 #include <stdio.h>
 #include "queue.h"
 #include "config.h"
-#include "parking.h"
+
+typedef struct Parking Parking; // forward Declaration to avoid circular include
 
 /**
  * @brief Holds the statistics collected during the simulation / one simulation step.
