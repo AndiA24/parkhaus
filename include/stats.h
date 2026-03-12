@@ -76,7 +76,7 @@ FILE *create_output_file(SimConfig *ptr_config);
  * @param[in,out] ptr_stats   Pointer to the SimStats structure to be updated
  * @param[in]     ptr_parking Pointer to the current parking lot state
  * @param[in]     ptr_queue   Pointer to the current waiting queue state
- * @return 1 on success, -1 if any argument is NULL.
+ * @return 0 on success, -1 if any argument is NULL.
  */
 int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue);
 
@@ -91,7 +91,7 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
  *
  * @param[in,out] ptr_stats Pointer to the SimStats structure whose peak fields
  *                             and step markers may be updated.
- * @return 1 on success, -1 if ptr_stats is NULL.
+ * @return 0 on success, -1 if ptr_stats is NULL.
  */
 int update_peak(SimStats *ptr_stats);
 
@@ -115,7 +115,7 @@ int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file);
  *
  * @param[in,out] ptr_stats Pointer to the SimStats structure whose temporary
  *                             fields are to be reset.
- * @return 1 on success, -1 if ptr_stats is NULL.
+ * @return 0 on success, -1 if ptr_stats is NULL.
  */
 int reset_temp_stats(SimStats *ptr_stats);
 
