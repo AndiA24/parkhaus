@@ -12,6 +12,7 @@
 #include "../include/stats.h"
 #include "../include/queue.h"
 #include "../include/config.h"
+#include "../include/parking.h"
 
 
 SimStats *init_simstats(){
