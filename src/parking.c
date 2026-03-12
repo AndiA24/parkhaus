@@ -237,7 +237,7 @@ int free_parking(Parking *ptr_parking) {
     // free the deck array and the parking struct itself
     free(ptr_parking->ptr_decks);
     free(ptr_parking);
-    return 1;
+    return 0;
 }
 
 
