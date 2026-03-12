@@ -58,6 +58,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
         return NULL;
     }
 
+    // allocate memory for an array of occupied spots 
     ptr_parking->ptr_occupied_spots = calloc(ptr_parking->total_capacity, sizeof(ParkingSpot*));
     if(ptr_parking->ptr_occupied_spots == NULL){
         printf("Failed to allocate memory for array of occupied spots.\n");
@@ -72,6 +73,8 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
         ptr_current_deck->deck_id = i;
         ptr_current_deck->capacity = ptr_config->spots_per_deck;
         ptr_current_deck->free_spots = 0;
+        
+        // allocate spot array and free spot stack for this deck
         ptr_current_deck->ptr_spots = calloc((ptr_config->spots_per_deck), sizeof(ParkingSpot));
         ptr_current_deck->ptr_stack = calloc((ptr_config->spots_per_deck), sizeof(ParkingSpot*));
 
@@ -96,6 +99,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
             // this way every spot got an unique ID across all decks
             (ptr_current_deck->ptr_spots + j)->id = (i * ptr_config->spots_per_deck) + j;
 
+            // push spot pointer onto the free spot stack
             ptr_current_deck->ptr_stack[ptr_current_deck->free_spots] = &ptr_parking->ptr_decks[i].ptr_spots[j];
             ptr_current_deck->free_spots++;
         }
