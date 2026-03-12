@@ -158,7 +158,7 @@ int close_output_file(FILE *ptr_output_file);
  * Clears every field.
  *
  * @param[in,out] ptr_stats Pointer to the SimStats structure to be fully reset.
- * @return 1 on success, -1 if ptr_stats is NULL.
+ * @return 0 on success, -1 if ptr_stats is NULL.
  */
 int reset_all_stats(SimStats *ptr_stats);
 

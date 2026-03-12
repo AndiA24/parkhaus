@@ -177,7 +177,7 @@ int reset_temp_stats(SimStats *ptr_stats){
     ptr_stats->temp_queue_length = 0;
     ptr_stats->temp_rel_occupancy_percent = 0;
     ptr_stats->temp_time_left = 0;
-    
+
     return 0;
 }
 
@@ -246,7 +246,7 @@ int reset_all_stats(SimStats *ptr_stats){
     ptr_stats->peak_rel_occupancy = 0;
     ptr_stats->step_highest_occupancy = 0;
 
-    return 1;
+    return 0;
 }
 
 
