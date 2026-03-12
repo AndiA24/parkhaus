@@ -18,21 +18,18 @@ int run = 1;
 int main(){
 
     SimConfig *ptr_config = create_config();
-    if(create_config() == NULL){
-        printf("Error: Failed to create Config Struct. Simulation Stopped.\n");
-        return 1;
+    if(create_config == NULL){
+        show_message(2, "Error: Failed to create Config Struct. Simulation Stopped.", 2, 1, NULL);
+        return -1;
     }
 
     switch (get_config(ptr_config)){
     case 1:
         printf("Info: Succesfully imported config from config-file.\n");
+        show_message(2, "Info: Succesfully imported config from config-file.", 4, 0, ptr_config);
         break;
     case 0:
-        printf("Info: Failed to read config-file. Starting with default config.\n");
-        break;
-    case -1:
-        printf("Error: Failed to load config. Simulation Stopped.\n");
-        return -1;
+        show_message(2, "Error: Failed to read config-file. Starting with default config.", 2, 0, ptr_config);
         break;
     }
 
