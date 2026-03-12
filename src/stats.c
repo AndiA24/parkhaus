@@ -122,7 +122,7 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
         ptr_stats->time_full_occupancy ++;
     }
 
-    return 1;
+    return 0;
 }
 
 
@@ -141,7 +141,7 @@ int update_peak(SimStats *ptr_stats){
         ptr_stats->peak_queue_length = ptr_stats->temp_queue_length;
         ptr_stats->step_longest_queue = ptr_stats->step_num;
     }
-    return 1;
+    return 0;
 }
 
 
@@ -177,7 +177,8 @@ int reset_temp_stats(SimStats *ptr_stats){
     ptr_stats->temp_queue_length = 0;
     ptr_stats->temp_rel_occupancy_percent = 0;
     ptr_stats->temp_time_left = 0;
-    return 1;
+    
+    return 0;
 }
 
 
