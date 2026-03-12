@@ -56,12 +56,12 @@ int main(){
     SimStats *ptr_stats = NULL;
     Parking *ptr_parking = NULL;
 
-    // all args NULL
+    // Test 1: all args NULL
     printf("Test 1: All args NULL:  ");
     assert(initial_occupancy(NULL, NULL, NULL) == -1);
     printf("OK\n");
 
-    // parking pointer NULL
+    // Test 2: parking pointer NULL
     printf("Test 2: Parking Pointer is NULL: ");
     ptr_config = create_test_config();
     ptr_stats = create_test_stats();
@@ -72,7 +72,7 @@ int main(){
     ptr_stats = NULL;
     printf("OK\n");
 
-    // stats pointer NULL
+    // Test 3: stats pointer NULL
     printf("Test 3: Stats Pointer is NULL: ");
     ptr_parking= create_test_parking(10,20);
     ptr_config = create_test_config();
@@ -83,7 +83,7 @@ int main(){
     ptr_config = NULL;
     printf("OK\n");
 
-    // config Pointer NULL
+    // Test 4: config Pointer NULL
     printf("Test 4: Config Ponter is NULL: ");
     ptr_parking = create_test_parking(10, 20);
     ptr_stats = create_test_stats();
@@ -94,7 +94,7 @@ int main(){
     ptr_stats = NULL;
     printf("OK\n");
 
-    // higher occupancy then spots
+    // Test 5: higher occupancy then spots
     printf("Test 5: Initial Occ is higher then free spots: ");
     ptr_parking = create_test_parking(4, 10);
     ptr_config = create_test_config();
@@ -109,7 +109,7 @@ int main(){
     printf("OK\n");
 
 
-    // correct Inputs
+    // Test 6: correct Inputs
     printf("Test 6: All inputs correct: ");
     ptr_parking = create_test_parking(10, 20);
     ptr_config = create_test_config();
