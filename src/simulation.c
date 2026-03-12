@@ -5,6 +5,7 @@
 #include "../include/config.h"
 #include "../include/queue.h"
 #include "../include/stats.h"
+#include "../include/parking.h"
 
 int rand_arrival(SimConfig *ptr_config){
     if(ptr_config == NULL){
