@@ -139,7 +139,7 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
         ParkingDeck *ptr_current_deck = (ptr_parking->ptr_decks) + (ptr_spot->id / ptr_parking->ptr_decks->capacity);
         Vehicle *ptr_vehicle = ptr_spot->ptr_vehicle;
 
-        // safety check: only process occupied spots with a valid vehicle pointer
+        // only process occupied spots with a valid vehicle pointer
         if (ptr_spot->occupied == 1 && ptr_vehicle != NULL)
         {
             // check if the vehicle has exceeded its parking duration
@@ -149,7 +149,7 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
                 ptr_current_deck->ptr_stack[ptr_current_deck->free_spots] = ptr_spot;
                 ptr_current_deck->free_spots++;
 
-                // swap-and-pop: replace current entry with last entry to avoid gaps
+                // replace current entry with last entry to avoid gaps
                 ptr_parking->ptr_occupied_spots[i] = ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count - 1];
                 ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count - 1] = NULL;
                 i = i - 1;  // recheck index i since it now holds a new entry after the swap
@@ -243,7 +243,7 @@ int free_parking(Parking *ptr_parking) {
         return -1;
     }
 
-    // 1. Free all occupied vehicles 
+    // free all occupied vehicles 
     for (int i = 0; i < ptr_parking->occupied_count; i++) {
         if (ptr_parking->ptr_occupied_spots[i]->ptr_vehicle != NULL) {
             free_vehicle(ptr_parking->ptr_occupied_spots[i]->ptr_vehicle);
@@ -252,7 +252,7 @@ int free_parking(Parking *ptr_parking) {
         }
     }
 
-    // 2. Free each deck's spot array and stack
+    // free each deck's spot array and stack
     for (int i = 0; i < ptr_parking->decks; i++) {
         free(ptr_parking->ptr_decks[i].ptr_spots);
         free(ptr_parking->ptr_decks[i].ptr_stack);
@@ -260,7 +260,7 @@ int free_parking(Parking *ptr_parking) {
         ptr_parking->ptr_decks[i].ptr_stack = NULL;
     }
 
-    // 3. Free remaining arrays and struct
+    // free remaining arrays and struct
     free(ptr_parking->ptr_occupied_spots);
     ptr_parking->ptr_occupied_spots = NULL;
     free(ptr_parking->ptr_decks);
