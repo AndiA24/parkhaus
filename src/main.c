@@ -10,7 +10,7 @@ int run = 1;
 int main(){
 
     SimConfig *ptr_config = create_config();
-    if(create_config == NULL){
+    if(create_config() == NULL){
         printf("Error: Failed to create Config Struct. Simulation Stopped.\n");
         return -1;
     }
