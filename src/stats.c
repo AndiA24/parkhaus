@@ -248,7 +248,7 @@ int free_stats(SimStats *ptr_stats){
         return -1;
     }
     free(ptr_stats);
-    return 1;
+    return 0;
 }
 
 /*
