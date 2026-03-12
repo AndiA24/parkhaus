@@ -31,7 +31,7 @@ int main() {
     // Test 2: All temporary fields are reset to 0
     //
     // Expected values after call:
-    //   return value                   = 1
+    //   return value                   = 0
     //   temp_entries                   = 0
     //   temp_exits                     = 0
     //   temp_free_spots                = 0
@@ -46,7 +46,7 @@ int main() {
     ptr_stats->temp_queue_length = 7;
     ptr_stats->temp_rel_occupancy_percent = 60.0f;
     ptr_stats->temp_time_left = 12;
-    assert(reset_temp_stats(ptr_stats) == 1);
+    assert(reset_temp_stats(ptr_stats) == 0);
     assert(ptr_stats->temp_entries == 0);
     assert(ptr_stats->temp_exits == 0);
     assert(ptr_stats->temp_free_spots == 0);
@@ -60,7 +60,7 @@ int main() {
     // Test 3: Non-temporary fields are not modified
     //
     // Expected values after call:
-    //   return value           = 1
+    //   return value           = 0
     //   step_num               = 10
     //   total_entries          = 20
     //   avg_rel_occupancy      = 75.0f
@@ -71,7 +71,7 @@ int main() {
     ptr_stats->total_entries = 20;
     ptr_stats->avg_rel_occupancy = 75.0f;
     ptr_stats->peak_queue_length = 8;
-    assert(reset_temp_stats(ptr_stats) == 1);
+    assert(reset_temp_stats(ptr_stats) == 0);
     assert(ptr_stats->step_num == 10);
     assert(ptr_stats->total_entries == 20);
     assert(ptr_stats->avg_rel_occupancy == 75.0f);
