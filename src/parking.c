@@ -16,7 +16,7 @@ Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats
         printf("Parking initialized without initial occupancy.\n");
         return ptr_parking;
     }
-    for(int i = 0; i < ptr_config->initial_occupancy; i++){
+    for(int i = 0; i < (int)ptr_config->initial_occupancy; i++){
         ParkingDeck *ptr_current_deck =((ptr_parking->ptr_decks) + (i / ptr_config->spots_per_deck));
         ParkingSpot *ptr_current_spot = ptr_current_deck->ptr_spots + (i % ptr_config->spots_per_deck);
 
@@ -26,8 +26,8 @@ Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats
         if(ptr_current_spot->ptr_vehicle == NULL){
                 printf("Error: Failed to create Car. Stopping Simulation.\n");
                 // clean-up loop
-                for(int j = 0; j < ptr_config->num_decks; j++){
-                    for(int k = 0; k < ptr_config->spots_per_deck; k++){
+                for(int j = 0; j < (int)ptr_config->num_decks; j++){
+                    for(int k = 0; k < (int)ptr_config->spots_per_deck; k++){
                         ParkingSpot *ptr_itt_spot = ((ptr_parking->ptr_decks + j)->ptr_spots + k);
                         free(ptr_itt_spot->ptr_vehicle);
                         ptr_itt_spot->ptr_vehicle = NULL;
@@ -71,7 +71,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     }
 
     ParkingDeck *ptr_current_deck = NULL;
-    for(int i = 0; i < ptr_parking->decks; i++){
+    for(int i = 0; i < (int)ptr_parking->decks; i++){
         ptr_current_deck = (ptr_parking->ptr_decks + i);
 
         ptr_current_deck->deck_id = i;
@@ -92,7 +92,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
             return NULL;
         }
 
-        for(int j = 0; j < ptr_config->spots_per_deck; j++){
+        for(int j = 0; j < (int)ptr_config->spots_per_deck; j++){
             // Global spot ID: deck index * spots per deck + local spot index 
             // this way every spot got an unique ID across all decks
             (((ptr_parking->ptr_decks) + i)->ptr_spots + j)->id = (i * ptr_config->spots_per_deck) + j;
@@ -122,9 +122,9 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
     int sim_step = ptr_simstats->step_num;
 
     // iterate over all decks and spots to check for expired parking durations
-    for (int i = 0; i < ptr_parking->decks; i++)
+    for (int i = 0; i < (int)ptr_parking->decks; i++)
     {
-        for (int j = 0; j < ptr_parking->ptr_decks[i].capacity; j++)
+        for (int j = 0; j < (int)ptr_parking->ptr_decks[i].capacity; j++)
         {
             ParkingSpot *ptr_spot = &ptr_parking->ptr_decks[i].ptr_spots[j];
             Vehicle *ptr_vehicle = ptr_spot->ptr_vehicle;
@@ -165,9 +165,9 @@ int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sims
     }
     
     // search for the first free spot across all decks
-    for (int i = 0; i < ptr_parking->decks; i++)
+    for (int i = 0; i < (int)ptr_parking->decks; i++)
     {
-        for (int j = 0; j < ptr_parking->ptr_decks[i].capacity; j++)
+        for (int j = 0; j < (int)ptr_parking->ptr_decks[i].capacity; j++)
         {
             if (!ptr_parking->ptr_decks[i].ptr_spots[j].occupied)
             {
@@ -217,9 +217,9 @@ int free_parking(Parking *ptr_parking) {
     }
 
     // free all vehicles and spot arrays for each deck
-    for (int i = 0; i < ptr_parking->decks; i++) {
+    for (int i = 0; i < (int)ptr_parking->decks; i++) {
         // free any vehicles still parked in this deck
-        for (int j = 0; j < ptr_parking->ptr_decks[i].capacity; j++) {
+        for (int j = 0; j < (int)ptr_parking->ptr_decks[i].capacity; j++) {
             if (ptr_parking->ptr_decks[i].ptr_spots[j].ptr_vehicle != NULL) {
                 free_vehicle(ptr_parking->ptr_decks[i].ptr_spots[j].ptr_vehicle);
             }
