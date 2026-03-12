@@ -82,6 +82,8 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
                 (ptr_parking->ptr_decks + j)->ptr_spots = NULL;
             }
             // free memeory allocated for Decks and Parking
+            free(ptr_parking->ptr_occupied_spots);
+            ptr_parking->ptr_occupied_spots = NULL;
             free(ptr_parking->ptr_decks);
             ptr_parking->ptr_decks = NULL;
             free(ptr_parking);
@@ -124,18 +126,13 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
     for (int i = 0; i < ptr_parking->occupied_count; i++)
     {
         ParkingSpot *ptr_spot = ptr_parking->ptr_occupied_spots[i];
-        ParkingDeck *ptr_current_deck = (ptr_parking->ptr_decks) + (ptr_spot->id / (ptr_parking->total_capacity / ptr_parking->decks));
+        ParkingDeck *ptr_current_deck = (ptr_parking->ptr_decks) + (ptr_spot->id / ptr_parking->ptr_decks->capacity);
         Vehicle *ptr_vehicle = ptr_spot->ptr_vehicle;
 
         if (ptr_spot->occupied == 1 && ptr_vehicle != NULL)
         {
             if ((sim_step - ptr_vehicle->entry_time) >= ptr_vehicle->parking_duration)
             {
-                // free vehicle memory and clear spot
-                free_vehicle(ptr_vehicle);
-                ptr_spot->ptr_vehicle = NULL;
-                ptr_spot->occupied = 0;
-
                 ptr_current_deck->ptr_stack[ptr_current_deck->free_spots] = ptr_spot;
                 ptr_current_deck->free_spots++;
 
@@ -151,6 +148,11 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
                 ptr_simstats->temp_exits++;
                 ptr_simstats->total_exits++;
                 ptr_simstats->total_parking_time += ptr_vehicle->parking_duration;
+
+                // free vehicle memory and clear spot
+                free_vehicle(ptr_vehicle);
+                ptr_spot->ptr_vehicle = NULL;
+                ptr_spot->occupied = 0;
             }
         }
     }
