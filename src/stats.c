@@ -155,7 +155,7 @@ int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 }
 
 
-int reset_temp_dataset(SimStats *ptr_stats){
+int reset_temp_stats(SimStats *ptr_stats){
     if(ptr_stats == NULL){
         printf("Error: Failed to reset temp Stats. Invalid Arguments.\n");
         return -1;
