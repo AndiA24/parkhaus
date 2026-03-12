@@ -121,34 +121,36 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
     
     int sim_step = ptr_simstats->step_num;
 
-    // iterate over all decks and spots to check for expired parking durations
-    for (int i = 0; i < ptr_parking->decks; i++)
+    for (int i = 0; i < ptr_parking->occupied_count; i++)
     {
-        for (int j = 0; j < ptr_parking->ptr_decks[i].capacity; j++)
+        ParkingSpot *ptr_spot = &ptr_parking->ptr_occupied_spots[i];
+        ParkingDeck *ptr_current_deck = (ptr_parking->ptr_decks) + (ptr_spot->id / (ptr_parking->total_capacity / ptr_parking->decks));
+        Vehicle *ptr_vehicle = ptr_spot->ptr_vehicle;
+
+        if (ptr_spot->occupied == 1 && ptr_vehicle != NULL)
         {
-            ParkingSpot *ptr_spot = &ptr_parking->ptr_decks[i].ptr_spots[j];
-            Vehicle *ptr_vehicle = ptr_spot->ptr_vehicle;
-
-            // only process occupied spots with a valid vehicle pointer
-            if (ptr_spot->occupied == 1 && ptr_vehicle != NULL)
+            if ((sim_step - ptr_vehicle->entry_time) >= ptr_vehicle->parking_duration)
             {
-                // check if the vehicle has exceeded its parking duration
-                if ((sim_step - ptr_vehicle->entry_time) >= ptr_vehicle->parking_duration)
-                {
-                    // update stats
-                    ptr_simstats->temp_exits++;
-                    ptr_simstats->total_exits++;
-                    ptr_simstats->total_parking_time += ptr_vehicle->parking_duration;
+                ptr_current_deck->ptr_stack[ptr_current_deck->free_spots] = ptr_spot;
+                ptr_current_deck->free_spots++;
 
-                    // free vehicle memory and clear spot
-                    //free_vehicle(ptr_vehicle);
-                    ptr_spot->ptr_vehicle = NULL;
-                    ptr_spot->occupied = 0;
-                    
-                    // update occupied counts for parking and deck
-                    ptr_parking->occupied_count--;
-                    ptr_parking->ptr_decks[i].occupied_count--;
-                }
+                ptr_parking->ptr_occupied_spots[i] = ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count - 1];
+                ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count - 1] = NULL;
+                i = i - 1;
+
+                // update occupied counts for parking and deck
+                ptr_parking->occupied_count--;
+                ptr_current_deck->occupied_count--;
+
+                // free vehicle memory and clear spot
+                free_vehicle(ptr_vehicle);
+                ptr_spot->ptr_vehicle = NULL;
+                ptr_spot->occupied = 0;
+
+                // update stats
+                ptr_simstats->temp_exits++;
+                ptr_simstats->total_exits++;
+                ptr_simstats->total_parking_time += ptr_vehicle->parking_duration;
             }
         }
     }
