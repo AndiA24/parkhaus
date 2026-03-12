@@ -8,7 +8,7 @@
 
 int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_parking == NULL || ptr_config == NULL || ptr_stats == NULL){
-        printf("Error: Failed to create initial occupancy. Invalid Argumant.\n");
+        printf("Error: Failed to create initial occupancy. Invalid Argument.\n");
         return -1;
     }    
     if(ptr_config->initial_occupancy > ptr_parking->total_capacity){
@@ -97,7 +97,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_config->initial_occupancy){
         if(initial_occupancy(ptr_parking, ptr_config, ptr_stats) == -1){
             printf("Error: Failed during creating initial occupancy.\n");
-            for(int i = 0; i < ptr_config->num_decks; i++){
+            for(int i = 0; i < (int)ptr_config->num_decks; i++){
                 free((ptr_parking->ptr_decks + i)->ptr_spots);
                 (ptr_parking->ptr_decks + i)->ptr_spots = NULL;
             }
