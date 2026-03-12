@@ -16,13 +16,8 @@
 
 int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_parking == NULL || ptr_config == NULL || ptr_stats == NULL){
-<<<<<<< HEAD
         printf("Error: Failed to create initial occupancy. Invalid Argument.\n");
-        return ptr_parking;
-=======
-        printf("Error: Failed to create initial occupancy. Invalid Argumant.\n");
         return -1;
->>>>>>> 24cf4dd (Change initial_occupancy Parking* to int)
     }    
     if(ptr_config->initial_occupancy > ptr_parking->total_capacity){
         printf("Error: Initial Occupancy exceeds total capacity of Parking. ");
@@ -37,24 +32,10 @@ int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr
         ptr_spot->ptr_vehicle = create_vehicle(ptr_stats, ptr_config);
 
         // check return of create_vehicle
-<<<<<<< HEAD
         if(ptr_spot->ptr_vehicle == NULL){
             printf("Error: Failed to create Vehicle. Stopping Simulation.\n");
             free_parking(ptr_parking);
-            return NULL;
-=======
-        if(ptr_current_spot->ptr_vehicle == NULL){
-                printf("Error: Failed to create Car. Stopping Simulation.\n");
-                // clean-up loop
-                for(int j = 0; j < (int)ptr_config->num_decks; j++){
-                    for(int k = 0; k < (int)ptr_config->spots_per_deck; k++){
-                        ParkingSpot *ptr_itt_spot = ((ptr_parking->ptr_decks + j)->ptr_spots + k);
-                        free(ptr_itt_spot->ptr_vehicle);
-                        ptr_itt_spot->ptr_vehicle = NULL;
-                    }
-                }
-                return -1;
->>>>>>> 24cf4dd (Change initial_occupancy Parking* to int)
+            return -1;
         }
         // register spot in occupied spots array
         ptr_spot->occupied = 1;
@@ -140,7 +121,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_config->initial_occupancy){
         if(initial_occupancy(ptr_parking, ptr_config, ptr_stats) == -1){
             printf("Error: Failed during creating initial occupancy.\n");
-            for(int i = 0; i < ptr_config->num_decks; i++){
+            for(int i = 0; i < (int)ptr_config->num_decks; i++){
                 free((ptr_parking->ptr_decks + i)->ptr_spots);
                 (ptr_parking->ptr_decks + i)->ptr_spots = NULL;
             }
