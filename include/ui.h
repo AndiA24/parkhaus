@@ -108,7 +108,7 @@ void prompt_string(char *label, char *ptr_value, int size);
  *
  * @param[in]     col        Row at which to print the message.
  * @param[in]     ptr_msg    Message string to display.
- * @param[in]     color      Color pair index to use for the message.
+ * @param[in]     color      Color pair index to use for the message. 1 = green, 2 = red, 3 = white 4 = cyan
  * @param[in]     kill       If non-zero, quit the program after the user confirms.
  * @param[in] ptr_config Pointer to the simulation configuration (passed to quit()).
  */
