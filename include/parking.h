@@ -119,7 +119,7 @@ int get_free_spots(Parking *ptr_parking, SimStats *ptr_stats);
  * Frees the Parking structure that was allocated by init_parking
  *
  * @param[in] ptr_parking Pointer to the Parking structure to be freed.
- * @return 1 on success, -1 if ptr_parking is NULL
+ * @return 0 on success, -1 if ptr_parking is NULL
  */
 int free_parking(Parking *ptr_parking);
 
