@@ -56,8 +56,8 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
         return NULL;
     }
 
-    ptr_parking->ptr_occupied_spots = calloc(ptr_parking->total_capacity, sizeof(ParkingSpot));
-    if(ptr_parking->ptr_decks == NULL){
+    ptr_parking->ptr_occupied_spots = calloc(ptr_parking->total_capacity, sizeof(ParkingSpot*));
+    if(ptr_parking->ptr_occupied_spots == NULL){
         printf("Failed to allocate memory for array of occupied spots.\n");
         free(ptr_parking);
         return NULL;
@@ -123,7 +123,7 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
 
     for (int i = 0; i < ptr_parking->occupied_count; i++)
     {
-        ParkingSpot *ptr_spot = &ptr_parking->ptr_occupied_spots[i];
+        ParkingSpot *ptr_spot = ptr_parking->ptr_occupied_spots[i];
         ParkingDeck *ptr_current_deck = (ptr_parking->ptr_decks) + (ptr_spot->id / (ptr_parking->total_capacity / ptr_parking->decks));
         Vehicle *ptr_vehicle = ptr_spot->ptr_vehicle;
 
@@ -131,6 +131,11 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
         {
             if ((sim_step - ptr_vehicle->entry_time) >= ptr_vehicle->parking_duration)
             {
+                // free vehicle memory and clear spot
+                free_vehicle(ptr_vehicle);
+                ptr_spot->ptr_vehicle = NULL;
+                ptr_spot->occupied = 0;
+                
                 ptr_current_deck->ptr_stack[ptr_current_deck->free_spots] = ptr_spot;
                 ptr_current_deck->free_spots++;
 
@@ -141,11 +146,6 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
                 // update occupied counts for parking and deck
                 ptr_parking->occupied_count--;
                 ptr_current_deck->occupied_count--;
-
-                // free vehicle memory and clear spot
-                free_vehicle(ptr_vehicle);
-                ptr_spot->ptr_vehicle = NULL;
-                ptr_spot->occupied = 0;
 
                 // update stats
                 ptr_simstats->temp_exits++;
@@ -180,7 +180,7 @@ int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sims
             ptr_spot->occupied = 1;
             
             // update occupied spots with current spot
-            ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count] = &ptr_spot;
+            ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count] = ptr_spot;
 
             // add this spot to the array of currently occupied spots
             ptr_parking->occupied_count++;               
