@@ -35,7 +35,7 @@ int free_vehicle(Vehicle *ptr_vehicle){
         return -1;
     }
     free(ptr_vehicle);
-    return 1;
+    return 0;
 }
 
 /*
