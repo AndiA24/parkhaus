@@ -15,10 +15,11 @@
 #include "../include/queue.h"
 #include "../include/stats.h"
 #include "../include/ui.h"
+#include "../include/utils.h"
 
 int rand_arrival(SimConfig *ptr_config){
     if(ptr_config == NULL){
-        printf("Error: Failed to check arrival. Invalid Arguments.\n");
+        output(2, "Error: Failed to check arrival. Invalid Arguments.\n", 2, 0, NULL);
         return 0;
     }
     int rand_i = (rand() % 100) + 1;
@@ -30,7 +31,7 @@ int rand_arrival(SimConfig *ptr_config){
 
 int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_config == NULL || ptr_stats == NULL){
-        printf("Error: Failed to start simulation. Invalid Arguments.\n");
+        output(2, "Error: Failed to start simulation. Invalid Arguments.\n", 2, 1, ptr_config);
         return -1;
     }
 
@@ -64,7 +65,7 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats){
 
     delete_queue(ptr_queue, ptr_stats);
     save_final_dataset(ptr_stats, ptr_output_file);
-    close_output_file(ptr_output_file);
+    close_output_file(ptr_output_file, ptr_config);
     show_results(ptr_stats);
     reset_all_stats(ptr_stats);
     free_parking(ptr_parking);

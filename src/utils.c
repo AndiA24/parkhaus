@@ -8,7 +8,7 @@
 
 void output(int col, const char *ptr_msg, int color, int kill, SimConfig *ptr_config) {
 #ifdef UNIT_TEST
-    printf("%s\n", ptr_msg);
+    printf("%s", ptr_msg);
 #else
     show_message(col, ptr_msg, color, kill, ptr_config);
 #endif

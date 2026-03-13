@@ -12,6 +12,7 @@
 #include "../include/stats.h"
 #include "../include/ui.h"
 #include "../include/simulation.h"
+#include "../include/utils.h"
 
 int run = 1;
 
@@ -20,21 +21,20 @@ int main(){
     initialize_ui();
     SimConfig *ptr_config = create_config();
     if(ptr_config == NULL){
-        show_message(2, "Error: Failed to create Config Struct. Simulation Stopped.", 2, 1, NULL);
+        output(2, "Error: Failed to create Config Struct. Simulation Stopped.", 2, 1, NULL);
         return -1;
     }
 
     switch (get_config(ptr_config)){
     case 1:
-        printf("Info: Succesfully imported config from config-file.\n");
-        show_message(2, "Info: Succesfully imported config from config-file.", 4, 0, ptr_config);
+        output(2, "Info: Succesfully imported config from config-file.\n", 1, 0, NULL);
         break;
     case 0:
-        show_message(2, "Error: Failed to read config-file. Starting with default config.", 2, 0, ptr_config);
+        output(2, "Error: Failed to read config-file. Starting with default config.", 2, 0, ptr_config);
         break;
     }
 
-    SimStats *ptr_stats = init_simstats();
+    SimStats *ptr_stats = init_simstats(ptr_config);
 
     while(run == 1){
         show_welcome(ptr_config);

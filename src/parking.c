@@ -13,15 +13,15 @@
 #include "../include/stats.h"
 #include "../include/config.h"
 #include "../include/parking.h"
+#include "../include/utils.h"
 
 Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_parking == NULL || ptr_config == NULL || ptr_stats == NULL){
-        printf("Error: Failed to create initial occupancy. Invalid Argument.\n");
+        output(2, "Error: Failed to create initial occupancy. Invalid Argument.\n", 2, 0, NULL);
         return ptr_parking;
     }    
     if(ptr_config->initial_occupancy > ptr_parking->total_capacity){
-        printf("Error: Initial Occupancy exceeds total capacity of Parking. ");
-        printf("Parking initialized without initial occupancy.\n");
+        output(2, "Error: Initial Occupancy exceeds total capacity of Parking.\n Starting without initial occupancy.\n", 2, 0, NULL);
         return ptr_parking;
     }
     for(int i = 0; i < (int)ptr_config->initial_occupancy; i++){
@@ -33,7 +33,7 @@ Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats
 
         // check return of create_vehicle
         if(ptr_spot->ptr_vehicle == NULL){
-            printf("Error: Failed to create Vehicle. Stopping Simulation.\n");
+            output(2, "Error: Failed to create Vehicle.\n", 2, 0, NULL);
             free_parking(ptr_parking);
             return NULL;
         }
@@ -53,7 +53,7 @@ Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats
 Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     Parking *ptr_parking = malloc(sizeof(*ptr_parking));
     if(ptr_parking == NULL){
-        printf("Failed to allocate memory for the Parking-Struct.\n");
+        output(2, "Failed to allocate memory for the Parking-Struct.\n", 2, 1, ptr_config);
         return NULL;
     }
 
@@ -65,16 +65,16 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     // allocate memory for an array of N Decks
     ptr_parking->ptr_decks = calloc((ptr_parking->decks), (sizeof(ParkingDeck)));
     if(ptr_parking->ptr_decks == NULL){
-        printf("Failed to allocate memory for the ParkingDecks.\n");
-        free(ptr_parking);
+        output(2, "Failed to allocate memory for the ParkingDecks.\n", 2, 1, ptr_config);
+        //free(ptr_parking); not needed because exit frees all memory
         return NULL;
     }
 
     // allocate memory for an array of occupied spots 
     ptr_parking->ptr_occupied_spots = calloc(ptr_parking->total_capacity, sizeof(ParkingSpot*));
     if(ptr_parking->ptr_occupied_spots == NULL){
-        printf("Failed to allocate memory for array of occupied spots.\n");
-        free(ptr_parking);
+        output(2, "Failed to allocate memory for array of occupied spots.\n", 2, 1, ptr_config);
+        //free(ptr_parking); not needed because exit frees all memory
         return NULL;
     }
 
@@ -91,7 +91,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
         ptr_current_deck->ptr_stack = calloc((ptr_config->spots_per_deck), sizeof(ParkingSpot*));
 
         if(ptr_current_deck->ptr_spots == NULL || ptr_current_deck->ptr_stack == NULL){
-            printf("Failed to allocate memory for the spots in the %d Deck.\n", i);
+            output(2, "Failed to allocate memory for the spots in a Deck.\n", 2, 1, ptr_config);
             // free memory of already allocated spots
             for(int j = 0; j <= i; j++){
                 free((ptr_parking->ptr_decks + j)->ptr_stack);
@@ -121,7 +121,8 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_config->initial_occupancy){
         ptr_parking = initial_occupancy(ptr_parking, ptr_config, ptr_stats);
         if(ptr_parking == NULL){
-            printf("Error: Failed during creating initial occupancy.\n");
+            output(2, "Error: Failed during creating initial occupancy.\n", 2, 0, NULL);
+            return NULL;
         }
     }
     return ptr_parking;
@@ -134,7 +135,7 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
     // validate input pointers
     if (ptr_parking == NULL || ptr_simstats == NULL)
     {
-        printf("Error: Failed to check vehicle exits. Invalid argument.\n");
+        output(2, "Error: Failed to check vehicle exits. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
     
@@ -188,7 +189,7 @@ int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sims
     // validate input pointers
     if (ptr_parking == NULL || ptr_vehicle == NULL || ptr_simstats == NULL)
     {
-        printf("Error: Failed to park vehicle. Invalid argument.\n");
+        output(2, "Error: Failed to park vehicle. Invalid argument.\n", 2, 0, NULL);
         return -1; 
     }
     // search for the first free spot across all decks
@@ -221,7 +222,7 @@ int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sims
         }
     }
     // should not happen because capacity is checked before calling this function
-    printf("Error: No free parking spot found although capacity check passed.\n");
+    output(2, "Error: No free parking spot found although capacity check passed.\n", 2, 0, NULL);
     return 0; 
 }
 
@@ -232,7 +233,7 @@ int get_free_spots(Parking *ptr_parking, SimStats *ptr_simstats)
     // validate input pointers
     if (ptr_parking == NULL || ptr_simstats == NULL)
     {
-        printf("Error: Failed to determine free spots. Invalid argument.\n");
+        output(2, "Error: Failed to get free spots. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
 
@@ -247,7 +248,7 @@ int free_parking(Parking *ptr_parking) {
     // validate input pointer
     if (ptr_parking == NULL)
     {
-        printf("Error: Failed to free memory allocated for parking. Invalid argument.\n");
+        output(2, "Error: Failed to free memory allocated for parking. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
 

@@ -8,6 +8,7 @@
  */
 
 #include "../include/config.h"
+#include "../include/utils.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -96,7 +97,8 @@ int save_config(SimConfig *ptr_config) {
 
 int free_config(SimConfig *ptr_config) {
     if(ptr_config == NULL){
-        printf("Error: Failed to free config Struct. Invalid Argument\n");
+        //commented it out because the user is already closing when this is called so doesn't really matter but left it here if we decide to add it back.
+        //output(2, "Error: Failed to free config Struct. Invalid Argument\n", 2, 0, NULL);
         return -1;
     }
     free(ptr_config);
