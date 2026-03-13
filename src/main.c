@@ -1,3 +1,11 @@
+/**
+ * @file main.c
+ * @brief Main Function of the Simulation.
+ *
+ * Function contains initialisation of the config, the programm loop
+ * for the ui and a cleanup of memory after quit. 
+ */
+
 #include <stdio.h>
 
 #include "../include/config.h"

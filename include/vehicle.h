@@ -1,3 +1,11 @@
+/**
+ * @file vehicle.h
+ * @brief Vehicle structure and interface.
+ *
+ * Declares the Vehicle struct and functions for creating and
+ * freeing vehicle instances used during the parking simulation.
+ */
+
 #ifndef VEHICLE_H
 #define VEHICLE_H
 

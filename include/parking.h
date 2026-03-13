@@ -1,3 +1,11 @@
+/**
+ * @file parking.h
+ * @brief Parking garage structure and interface.
+ *
+ * Declares the ParkingSpot, ParkingDeck, and Parking structs as well as
+ * functions for creating, pre-filling, and managing the parking garage.
+ */
+
 #ifndef PARKING_H
 #define PARKING_H
 

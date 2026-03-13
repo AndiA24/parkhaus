@@ -1,3 +1,11 @@
+/**
+ * @file ui.h
+ * @brief User interface processing.
+ *
+ * Declares functions for rendering the terminal UI, including the
+ * welcome screen, configuration menu, and results display.
+ */
+
 #ifndef UI_H
 #define UI_H
 
