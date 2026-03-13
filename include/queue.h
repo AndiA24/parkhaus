@@ -14,16 +14,15 @@
 typedef struct SimStats SimStats;
 
 /**
- * @brief A node in the doubled-linked waiting queue.
+ * @brief A node in the singly-linked waiting queue.
  */
 typedef struct QueueNode {
     Vehicle             *ptr_vehicle;   /**< Pointer to the vehicle held by this node. */
-    struct QueueNode    *ptr_previous; /**< Pointer to the previous node in the queue, or NULL if this is the head. Not sure if it's going to be used yet. Probably not but we'll leave it here for now.*/
     struct QueueNode    *ptr_next;     /**< Pointer to the next node in the queue, or NULL if this is the tail. */
 } QueueNode;
 
 /**
- * @brief A doubled-linked FIFO queue of waiting vehicles.
+ * @brief A singly-linked FIFO queue of waiting vehicles.
  */
 typedef struct Queue{
     QueueNode *ptr_head; /**< Pointer to the first node in the queue, or NULL if empty. */
