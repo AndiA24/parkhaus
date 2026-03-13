@@ -48,7 +48,7 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats){
         check_exit(ptr_parking, ptr_stats);
 
         get_free_spots(ptr_parking, ptr_stats);
-        if(ptr_stats->temp_free_spots){
+        if(ptr_stats->temp_free_spots && ptr_queue->size > 0){
             entry_parking(ptr_parking, dequeue(ptr_queue, ptr_stats), ptr_stats);
         }
 
