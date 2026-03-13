@@ -1,3 +1,11 @@
+/**
+ * @file simulation.c
+ * @brief Simulation loop and step logic.
+ *
+ * Handles each simulation step, including random vehicle arrivals,
+ * parking, queue management, exit processing and stats updates.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -12,7 +20,7 @@ int rand_arrival(SimConfig *ptr_config){
         return 0;
     }
     int rand_i = (rand() % 100) + 1;
-    if(rand_i <= ptr_config->arrival_probability_percent){
+    if(rand_i <= (int)ptr_config->arrival_probability_percent){
         return 1;
     }
     return 0;
@@ -59,6 +67,8 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats){
     reset_all_stats(ptr_stats);
     free_parking(ptr_parking);
     free_queue(ptr_queue);
+
+    return 1;
 }
 
 

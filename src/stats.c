@@ -1,3 +1,11 @@
+/**
+ * @file stats.c
+ * @brief Simulation statistics collection, processing and output.
+ *
+ * Provides functions to initialise, update, print, save and free the
+ * statistics collected during the parking simulation.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -155,7 +163,7 @@ int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 }
 
 
-int reset_temp_dataset(SimStats *ptr_stats){
+int reset_temp_stats(SimStats *ptr_stats){
     if(ptr_stats == NULL){
         printf("Error: Failed to reset temp Stats. Invalid Arguments.\n");
         return -1;

@@ -1,3 +1,11 @@
+/**
+ * @file parking.c
+ * @brief Parking structure management.
+ *
+ * Provides functions to create, initialise, and manage the parking garage,
+ * including vehicle entry, exit, and occupancy handling.
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -16,7 +24,7 @@ Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats
         printf("Parking initialized without initial occupancy.\n");
         return ptr_parking;
     }
-    for(int i = 0; i < ptr_config->initial_occupancy; i++){
+    for(int i = 0; i < (int)ptr_config->initial_occupancy; i++){
         ParkingDeck *ptr_current_deck =((ptr_parking->ptr_decks) + (i / ptr_config->spots_per_deck));
         
         // pop the next free spot from the deck's stack
@@ -71,7 +79,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     }
 
     ParkingDeck *ptr_current_deck = NULL;
-    for(int i = 0; i < ptr_parking->decks; i++){
+    for(int i = 0; i < (int)ptr_parking->decks; i++){
         ptr_current_deck = (ptr_parking->ptr_decks + i);
 
         ptr_current_deck->deck_id = i;
@@ -98,7 +106,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
             return NULL;
         }
 
-        for(int j = 0; j < ptr_config->spots_per_deck; j++){
+        for(int j = 0; j < (int)ptr_config->spots_per_deck; j++){
             // Global spot ID: deck index * spots per deck + local spot index 
             // this way every spot got an unique ID across all decks
             (ptr_current_deck->ptr_spots + j)->id = (i * ptr_config->spots_per_deck) + j;
@@ -184,7 +192,7 @@ int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sims
         return -1; 
     }
     // search for the first free spot across all decks
-    for (int i = 0; i < ptr_parking->decks; i++)
+    for (int i = 0; i < (int)ptr_parking->decks; i++)
     {
         ParkingDeck *ptr_current_deck = &ptr_parking->ptr_decks[i];
         
@@ -243,7 +251,7 @@ int free_parking(Parking *ptr_parking) {
         return -1;
     }
 
-    // free all occupied vehicles 
+    // free all vehicles in occupied spots 
     for (int i = 0; i < ptr_parking->occupied_count; i++) {
         if (ptr_parking->ptr_occupied_spots[i]->ptr_vehicle != NULL) {
             free_vehicle(ptr_parking->ptr_occupied_spots[i]->ptr_vehicle);

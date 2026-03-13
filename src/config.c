@@ -1,3 +1,12 @@
+/**
+ * @file config.c
+ * @brief Simulation configuration management.
+ *
+ * Provides functions to create, load from external config file, save, 
+ * and free the simulation configuration.
+ * If no config file is found, default values are used.
+ */
+
 #include "../include/config.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -31,7 +40,7 @@ void populate_with_default(SimConfig *ptr_config) {
 SimConfig *create_config() {
     SimConfig *ptr_config = calloc(1, sizeof(*ptr_config));
     if(ptr_config == NULL) {
-        return -1;
+        return NULL;
     }
     return ptr_config;
 }
@@ -85,8 +94,13 @@ int save_config(SimConfig *ptr_config) {
     return 1;
 }
 
-void free_config(SimConfig *ptr_config) {
+int free_config(SimConfig *ptr_config) {
+    if(ptr_config == NULL){
+        printf("Error: Failed to free config Struct. Invalid Argument\n");
+        return -1;
+    }
     free(ptr_config);
+    return 1;
 }
 
 /*

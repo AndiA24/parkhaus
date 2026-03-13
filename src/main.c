@@ -1,3 +1,11 @@
+/**
+ * @file main.c
+ * @brief Main Function of the Simulation.
+ *
+ * Function contains initialisation of the config, the programm loop
+ * for the ui and a cleanup of memory after quit. 
+ */
+
 #include <stdio.h>
 
 #include "../include/config.h"
@@ -10,9 +18,9 @@ int run = 1;
 int main(){
 
     SimConfig *ptr_config = create_config();
-    if(create_config == NULL){
+    if(create_config() == NULL){
         printf("Error: Failed to create Config Struct. Simulation Stopped.\n");
-        return -1;
+        return 1;
     }
 
     switch (get_config(ptr_config)){
@@ -36,6 +44,7 @@ int main(){
 
     free_stats(ptr_stats);
     free_config(ptr_config);
+    return 0;
 }
 
 /*
