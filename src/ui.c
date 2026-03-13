@@ -362,57 +362,79 @@ void show_results(SimStats *ptr_stats) {
     const char *title = "ERGEBNISSE DER SIMULATION";
     print_col(1, (w - (int)strlen(title)) / 2, 4, A_BOLD, "%s", title);
 
-    draw_hline(2);
+    draw_hline(3);
 
     print_col(4,  2, 3, 0,      "Anzahl der Autos die das Parkhaus verlassen haben:");
     print_col(4, 70, 1, A_BOLD, "%u", ptr_stats->total_exits);
     print_col(5,  2, 3, 0,      "Anzahl der Autos die in das Parkhaus gefahren sind:");
     print_col(5, 70, 1, A_BOLD, "%u",  ptr_stats->total_entries);
 
-    draw_hline(7);
+    draw_hline(6);
 
-    print_col(9, 2, 3, 0,       "Anzahl aller Autos in der Warteschlange waren:");
-    print_col(9, 70, 1, A_BOLD, "%u",  ptr_stats->total_queued);
-    print_col(10,  2, 3, 0,      "Summierte Zeit aller Autos in der Warteschlane:");
-    print_col(10, 70, 1, A_BOLD, "%u",  ptr_stats->total_queue_time);
-    print_col(11,  2, 3, 0,      "Laengste Warteschlange waehrend der Simulation:");
-    print_col(11, 70, 1, A_BOLD, "%u Schr.", ptr_stats->peak_queue_length);
-    print_col(12,  2, 3, 0,      "Der Schritt an dem die Warteschlange am laengsten war:");
-    print_col(12, 70, 1, A_BOLD, "%u", ptr_stats->step_longest_queue);
+    print_col(7, 2, 3, 0,       "Anzahl aller Autos in der Warteschlange waren:");
+    print_col(7, 70, 1, A_BOLD, "%u",  ptr_stats->total_queued);
+
+    print_col(8,  2, 3, 0,      "Summierte Zeit aller Autos in der Warteschlane:");
+    print_col(8, 70, 1, A_BOLD, "%u",  ptr_stats->total_queue_time);
+
+    print_col(9,  2, 3, 0,      "Laengste Warteschlange waehrend der Simulation:");
+    print_col(9, 70, 1, A_BOLD, "%u Schr.", ptr_stats->peak_queue_length);
+
+    print_col(10,  2, 3, 0,      "Der Schritt an dem die Warteschlange am laengsten war:");
+    print_col(10, 70, 1, A_BOLD, "%u", ptr_stats->step_longest_queue);
+
+    print_col(11, 2, 3, 0,     "Durchschnittliche Schritte in der Warteschlange pro Auto");
     if(ptr_stats->total_queued == 0) {
-        print_col(13, 2, 3, 0,     "Durchschnittliche Schritte in der Warteschlange pro Auto");
-        print_col(13, 70, 1, A_BOLD, "%u", 0u);
+        print_col(11, 70, 1, A_BOLD, "%u", 0u);
     }
     else {
-        print_col(13, 2, 3, 0,     "Durchschnittliche Schritte in der Warteschlange pro Auto");
-        print_col(13, 70, 1, A_BOLD, "%u", ptr_stats->total_queue_time/ptr_stats->total_queued);
+        print_col(11, 70, 1, A_BOLD, "%u", ptr_stats->total_queue_time/ptr_stats->total_queued);
     }
-    if(ptr_stats->total_entries == 0 || ptr_stats->total_queued == 0) {
-        print_col(14, 2, 3, 0,     "Anteil aller Autos, die in der Warteschlange waren:");
-        print_col(14, 70, 1, A_BOLD, "%u %%", 0u);
+
+    print_col(12, 2, 3, 0,     "Anteil aller Autos, die in der Warteschlange waren:");
+    if(ptr_stats->total_entries == 0) {
+        print_col(12, 70, 1, A_BOLD, "%u %%", 0);
     }
     else {
-        print_col(14, 2, 3, 0,     "Anteil aller Autos, die in der Warteschlange waren:");
-        print_col(14, 70, 1, A_BOLD, "%u %%", (ptr_stats->total_queued*100)/ptr_stats->total_entries);
+        print_col(12, 70, 1, A_BOLD, "%u %%", (ptr_stats->total_queued*100)/ptr_stats->total_entries);
     }
 
-    draw_hline(16);
+    draw_hline(13);
 
-    print_col(18, 2, 3, 0,      "Summierte Anzahl der Schritte die Autos im Parkaus verbracht haben:");
-    print_col(18, 70, 1, A_BOLD, "%u",  ptr_stats->total_parking_time);
+    print_col(14, 2, 3, 0,     "Durchschnittliche Parkdauer:");
+    unsigned int average_parking_duration = 0;
+    if(ptr_stats->total_exits) {
+        average_parking_duration = ptr_stats->total_parking_time/ptr_stats->total_exits;
+    }
+    print_col(14, 70, 1, A_BOLD, "%u",  average_parking_duration);
 
-    print_col(19,  2, 3, 0,      "Hoechste Auslastung waehrend der Simulation:");
-    print_col(19, 70, 1, A_BOLD, "%.1f%%", ptr_stats->peak_rel_occupancy);
+    print_col(15, 2, 3, 0,      "Summierte Anzahl der Schritte die Autos im Parkaus verbracht haben:");
+    print_col(15, 70, 1, A_BOLD, "%u",  ptr_stats->total_parking_time);
+
+    print_col(16, 2, 3, 0,      "Durchschnittliche Auslastung des Parkhaus:");
+    print_col(16, 70, 1, A_BOLD, "%u",  ptr_stats->avg_rel_occupancy);
+    if(ptr_stats->avg_rel_occupancy >= 85.0f) {
+        draw_bar(17, 2, 68, ptr_stats->avg_rel_occupancy, 2); //rot
+    }
+    else {
+        draw_bar(17, 2, 68, ptr_stats->avg_rel_occupancy, 1); //grün
+    }
+
+    print_col(18,  2, 3, 0,      "Hoechste Auslastung waehrend der Simulation:");
+    print_col(18, 70, 1, A_BOLD, "%.1f%%", ptr_stats->peak_rel_occupancy);
 
     if(ptr_stats->peak_rel_occupancy >= 85.0f) {
-        draw_bar(20, 2, 68, ptr_stats->peak_rel_occupancy, 2); //rot
+        draw_bar(19, 2, 68, ptr_stats->peak_rel_occupancy, 2); //rot
     }
     else {
-        draw_bar(20, 2, 68, ptr_stats->peak_rel_occupancy, 1); //grün
+        draw_bar(19, 2, 68, ptr_stats->peak_rel_occupancy, 1); //grün
     }
 
-    print_col(21, 2, 3, 0,      "Schritt an dem diese hoechste Auslastung war:");
-    print_col(21, 70, 1, A_BOLD, "%u", ptr_stats->step_highest_occupancy);
+    print_col(20, 2, 3, 0,      "Schritt an dem diese hoechste Auslastung war:");
+    print_col(20, 70, 1, A_BOLD, "%u", ptr_stats->step_highest_occupancy);
+
+    print_col(21, 2, 3, 0,      "Anzahl an Schritten die das Parkhaus voll war:");
+    print_col(21, 70, 1, A_BOLD, "%u", ptr_stats->time_full_occupancy);
 
     draw_hline(22);
 
