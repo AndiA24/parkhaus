@@ -7,6 +7,7 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "../include/queue.h"
 #include "../include/vehicle.h"
@@ -28,13 +29,19 @@ Queue* init_queue()
     return ptr_queue;                                           // return initialized queue                                              
 }
 
-void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle)
+int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle)
 {
+    if (ptr_queue == NULL || ptr_vehicle == NULL)
+    {
+        printf("Error: Failed to enqueue vehicle. Invalid argument.\n");
+        return -1;
+    }
     QueueNode *ptr_new_node = malloc(sizeof *ptr_new_node);     // allocate memory for new node
 
     if (ptr_new_node == NULL)
     {
-        return;
+        printf("Error: Failed to allocate memory for new node.");
+        return -1;
     }
     
     ptr_new_node->ptr_vehicle = ptr_vehicle;                    // store vehicle in node
@@ -49,10 +56,16 @@ void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle)
 
     ptr_queue->ptr_tail = ptr_new_node;                         // update tail to new node
     ptr_queue->size++;                                          // increment queue size
+    return 1;
 }
 
 Vehicle* dequeue(Queue *ptr_queue, SimStats *ptr_simstats) 
 {
+    if (ptr_queue == NULL || ptr_simstats == NULL)
+    {
+        printf("Error: Failed to dequeue vehicle. Invalid argument.\n");
+        return NULL;
+    }
     if (ptr_queue->ptr_head == NULL) 
     {
         return NULL;
@@ -81,28 +94,53 @@ Vehicle* dequeue(Queue *ptr_queue, SimStats *ptr_simstats)
     return ptr_vehicle;                                         // return dequeued vehicle
 }
 
-void increment_queue_time(Queue *ptr_queue) 
+int increment_queue_time(Queue *ptr_queue) 
 {
+    if (ptr_queue == NULL)
+    {
+        printf("Error: Failed to increment queue time. Invalid argument.");
+        return -1;
+    }
+    
     QueueNode *ptr_temp_node = ptr_queue->ptr_head;
     while (ptr_temp_node != NULL)                               // iterate through queue
     {
         ptr_temp_node->ptr_vehicle->queue_time++;               // increment queue time
         ptr_temp_node = ptr_temp_node->ptr_next;                // move to next node in queue
     }
+    return 1;
 }
 
-void delete_queue(Queue *ptr_queue, SimStats *ptr_simstats)
+int delete_queue(Queue *ptr_queue, SimStats *ptr_simstats) 
 {
-    while (ptr_queue->ptr_head != NULL)
+    if (ptr_queue == NULL || ptr_simstats == NULL)
+    {
+        printf("Error: Failed to delete queue. Invalid argument.");
+        return -1;
+    }
+
+    while (ptr_queue->ptr_head != NULL)                         
     {
         Vehicle *ptr_vehicle = dequeue(ptr_queue, ptr_simstats); // dequeue each node until queue is empty
-        free_vehicle(ptr_vehicle);                            // free vehicle memory
+        if (ptr_vehicle != NULL)
+        {
+            free_vehicle(ptr_vehicle);                          // free vehicle memory                                                            
+        }                           
     }
+
+    free_queue(ptr_queue);
+    return 1;
 }
 
-void free_queue(Queue *ptr_queue) 
+int free_queue(Queue *ptr_queue) 
 {
+    if (ptr_queue == NULL)
+    {
+        printf("Error: Failed to free memory allocated for queue. Invalid argument.");
+        return -1;
+    }
     free(ptr_queue);                                            // free queue memory
+    return 1;
 }
 
 /* 
