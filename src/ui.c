@@ -14,6 +14,7 @@
     #include <windows.h>
 #else
     #include <ncurses.h>
+    #include <limits.h>
 #endif
 
 #define UNIT_TEST
