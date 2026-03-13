@@ -30,7 +30,7 @@ int main(){
         output(2, "Info: Succesfully imported config from config-file.\n", 1, 0, NULL);
         break;
     case 0:
-        output(2, "Error: Failed to read config-file. Starting with default config.", 2, 0, ptr_config);
+        output(2, "Couldn't find a config file. Falling back to default values\n", 4, 0, ptr_config);
         break;
     }
 
