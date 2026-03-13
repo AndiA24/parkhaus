@@ -21,3 +21,8 @@ if(WIN32)
 else()
     target_link_libraries(parkhaus PRIVATE ncurses)
 endif()
+
+option(UNIT_TEST "Build without UI for unit testing" OFF)
+if(UNIT_TEST)
+    target_compile_definitions(parkhaus PRIVATE UNIT_TEST)
+endif()
