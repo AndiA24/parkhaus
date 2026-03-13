@@ -36,11 +36,11 @@ int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle)
         printf("Error: Failed to enqueue vehicle. Invalid argument.\n");
         return -1;
     }
-    QueueNode *ptr_new_node = malloc(sizeof *ptr_new_node);     // allocate memory for new node
 
+    QueueNode *ptr_new_node = malloc(sizeof *ptr_new_node);     // allocate memory for new node
     if (ptr_new_node == NULL)
     {
-        printf("Error: Failed to allocate memory for new node.");
+        printf("Error: Failed to allocate memory for new node.\n");
         return -1;
     }
     
@@ -98,7 +98,7 @@ int increment_queue_time(Queue *ptr_queue)
 {
     if (ptr_queue == NULL)
     {
-        printf("Error: Failed to increment queue time. Invalid argument.");
+        printf("Error: Failed to increment queue time. Invalid argument.\n");
         return -1;
     }
     
@@ -115,7 +115,7 @@ int delete_queue(Queue *ptr_queue, SimStats *ptr_simstats)
 {
     if (ptr_queue == NULL || ptr_simstats == NULL)
     {
-        printf("Error: Failed to delete queue. Invalid argument.");
+        printf("Error: Failed to delete queue. Invalid argument.\n");
         return -1;
     }
 
@@ -136,7 +136,7 @@ int free_queue(Queue *ptr_queue)
 {
     if (ptr_queue == NULL)
     {
-        printf("Error: Failed to free memory allocated for queue. Invalid argument.");
+        printf("Error: Failed to free memory allocated for queue. Invalid argument.\n");
         return -1;
     }
     free(ptr_queue);                                            // free queue memory
