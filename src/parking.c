@@ -1,3 +1,11 @@
+/**
+ * @file parking.c
+ * @brief Parking structure management.
+ *
+ * Provides functions to create, initialise, and manage the parking garage,
+ * including vehicle entry, exit, and occupancy handling.
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 
