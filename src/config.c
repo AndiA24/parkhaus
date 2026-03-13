@@ -43,6 +43,7 @@ SimConfig *create_config() {
     if(ptr_config == NULL) {
         return NULL;
     }
+    strcpy(ptr_config->config_file_name, CONFIG_FILE_NAME_DEFAULT);
     return ptr_config;
 }
 
