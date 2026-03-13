@@ -59,7 +59,7 @@ typedef struct SimStats{
  * @return Pointer to the newly allocated and initialized SimStats structure,
  *         or NULL if memory allocation fails.
  */
-SimStats *init_simstats();
+SimStats *init_simstats(SimConfig *ptr_config);
 
 /**
  * @brief Creates the CSV output file using the filename specified in the config.
