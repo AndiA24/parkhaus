@@ -10,6 +10,7 @@
 #include <stdlib.h>
 
 #include "../include/stats.h"
+#include "../include/parking.h"
 #include "../include/queue.h"
 #include "../include/config.h"
 
@@ -31,39 +32,14 @@ FILE *create_output_file(SimConfig *ptr_config)
         return NULL;
     }
 
-    char user_input;
     FILE *ptr_output_file;
 
-    // loop until a valid, confirmed output filename is established
-    while (1)
-    {
-        // check if a file with the configured name already exists
-        char temp_string[80];
-        snprintf(temp_string, sizeof(temp_string), "%s.txt", ptr_config->output_file_name); //always add .txt to end of a filename 
-        ptr_output_file = fopen(temp_string, "r");
-        if (ptr_output_file == NULL) {
-            break;
-        }
-        fclose(ptr_output_file);
-
-        printf("File already exists. Overwrite? (y/n): ");
-        scanf(" %c", &user_input);
-        if (user_input == 'y'){
-            break;  // user confirmed overwrite, proceed
-        }
-
-        // user declined overwrite, get new file name
-        printf("Enter new file name: ");
-        scanf("%69s", ptr_config->output_file_name);
-        printf("Trying: '%s'\n", ptr_config->output_file_name);
-    }
-    // open file for writing
+    // open file for writing (silently overwrite if it already exists)
     char temp_string[80];
-    snprintf(temp_string, sizeof(temp_string), "%s.txt", ptr_config->output_file_name); //always add .txt to end of a filename 
-    ptr_output_file = fopen(temp_string, "w");
+    snprintf(temp_string, sizeof(temp_string), "%s.txt", ptr_config->output_file_name); //always add .txt to end of a filename
+    ptr_output_file = fopen(temp_string, "a");
     if (ptr_output_file == NULL)
     {
-        printf("Error: Could not open file '%s'\n", ptr_config->output_file_name);
         return NULL;
     }
 
@@ -89,7 +65,6 @@ FILE *create_output_file(SimConfig *ptr_config)
     fprintf(ptr_output_file, "temp_exits,temp_entries,temp_rel_occupancy_percent,"
     "temp_queue_length,temp_free_spots,temp_time_left\n");
     
-    printf("Output file created successfully.\n");
     return ptr_output_file;
 }
 
