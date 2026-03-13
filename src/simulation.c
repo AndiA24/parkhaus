@@ -39,8 +39,8 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats){
     Queue *ptr_queue = init_queue();
     FILE *ptr_output_file = create_output_file(ptr_config);
 
-    int total_steps = ptr_config->sim_duration_steps;
-    for(int i = 0; i < total_steps; i++){
+    unsigned int total_steps = ptr_config->sim_duration_steps;
+    for(unsigned int i = 0; i < total_steps; i++){
         if(rand_arrival(ptr_config) == 1){
             enqueue(ptr_queue, create_vehicle(ptr_stats, ptr_config));
         }
