@@ -1,5 +1,5 @@
 {
     "name": "Parkhaus",
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-    "postCreateCommand": "sudo apt-get update && sudo apt-get install -y gcc make libncurses-dev"
+    "postCreateCommand": "sudo apt-get update && sudo apt-get install -y gcc make cmake libncurses-dev"
 }
