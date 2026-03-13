@@ -49,8 +49,10 @@ Queue *init_queue();
  *
  * @param[in,out] ptr_queue   Pointer to the waiting queue
  * @param[in]     vehicle Pointer to the vehicle to be enqueued
+ * 
+ * @return 1 on success, -1 if any param is NULL
  */
-void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle);
+int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle);
 
 /**
  * @brief Removes and returns the first vehicle from the waiting queue.
@@ -63,7 +65,7 @@ void enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle);
  * @param[in,out] ptr_stats Pointer to the simulation stats
  *
  * @return Pointer to the next vehicle allowed to enter the parking lot,
- *         or NULL if the queue is empty
+ *         or NULL if the queue is empty / if any param is NULL
  */
 Vehicle *dequeue(Queue *ptr_queue, SimStats *ptr_stats);
 
@@ -75,8 +77,10 @@ Vehicle *dequeue(Queue *ptr_queue, SimStats *ptr_stats);
  * Does nothing if the queue is empty.
  *
  * @param[in,out] ptr_queue Pointer to the waiting queue
+ * 
+ * @return 1 on success, -1 if ptr_queue is NULL
  */
-void increment_queue_time(Queue *ptr_queue);
+int increment_queue_time(Queue *ptr_queue);
 
 /**
  * @brief Frees all resources associated with the queue.
@@ -88,8 +92,10 @@ void increment_queue_time(Queue *ptr_queue);
  *
  * @param[in,out] ptr_queue Pointer to the queue to be deleted
  * @param[in,out] ptr_stats Pointer to the stats to have the data from the vehicles safed inside of
+ * 
+ * @return 1 on success, -1 if any param is NULL
  */
-void delete_queue(Queue *ptr_queue, SimStats *ptr_stats);
+int delete_queue(Queue *ptr_queue, SimStats *ptr_stats);
 
 /**
  * @brief Frees all dynamically allocated memory associated with the Queue structure.
@@ -97,7 +103,9 @@ void delete_queue(Queue *ptr_queue, SimStats *ptr_stats);
  * Frees the Queue structure that was allocated by init_queue
  *
  * @param[in] ptr_queue Pointer to the Queue structure to be freed.
+ * 
+ * @return 1 on success, -1 if ptr_queue is NULL
  */
-void free_queue(Queue *ptr_queue);
+int free_queue(Queue *ptr_queue);
 
 #endif
