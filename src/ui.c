@@ -16,8 +16,10 @@
     #include <ncurses.h>
 #endif
 
+#define UNIT_TEST
+
 #define WIN_HEIGHT 25
-#define WIN_WIDTH 80
+#define WIN_WIDTH 86
 
 
 static WINDOW *ptr_win;
@@ -372,22 +374,22 @@ void show_results(SimStats *ptr_stats) {
     print_col(11,  2, 3, 0,      "Laengste Warteschlange waehrend der Simulation:");
     print_col(11, 70, 1, A_BOLD, "%u Schr.", ptr_stats->peak_queue_length);
     print_col(12,  2, 3, 0,      "Der Schritt an dem die Warteschlange am laengsten war:");
-    print_col(12, 70, 1, A_BOLD, "%.1f%%", ptr_stats->step_longest_queue);
+    print_col(12, 70, 1, A_BOLD, "%u", ptr_stats->step_longest_queue);
     if(ptr_stats->total_queued == 0) {
         print_col(13, 2, 3, 0,     "Durchschnittliche Schritte in der Warteschlange pro Auto");
-        print_col(13, 70, 1, A_BOLD, "%u", ptr_stats->total_queued);
+        print_col(13, 70, 1, A_BOLD, "%u", 0u);
     }
     else {
         print_col(13, 2, 3, 0,     "Durchschnittliche Schritte in der Warteschlange pro Auto");
-        print_col(13, 70, 1, A_BOLD, "%u", ptr_stats->total_queued/ptr_stats->total_parking_time);
+        print_col(13, 70, 1, A_BOLD, "%u", ptr_stats->total_queue_time/ptr_stats->total_queued);
     }
-    if(ptr_stats->total_entries == 0) {
+    if(ptr_stats->total_entries == 0 || ptr_stats->total_queued == 0) {
         print_col(14, 2, 3, 0,     "Anteil aller Autos, die in der Warteschlange waren:");
-        print_col(14, 70, 1, A_BOLD, "%u %", ptr_stats->total_entries);
+        print_col(14, 70, 1, A_BOLD, "%u %%", 0u);
     }
     else {
         print_col(14, 2, 3, 0,     "Anteil aller Autos, die in der Warteschlange waren:");
-        print_col(14, 70, 1, A_BOLD, "%u %", (ptr_stats->total_queued*100)/ptr_stats->total_queued);
+        print_col(14, 70, 1, A_BOLD, "%u %%", (ptr_stats->total_queued*100)/ptr_stats->total_entries);
     }
 
     draw_hline(16);
@@ -398,15 +400,15 @@ void show_results(SimStats *ptr_stats) {
     print_col(19,  2, 3, 0,      "Hoechste Auslastung waehrend der Simulation:");
     print_col(19, 70, 1, A_BOLD, "%.1f%%", ptr_stats->peak_rel_occupancy);
 
-    print_col(20, 2, 3, 0,      "Schritt an dem diese hoechste Auslastung war:");
-    print_col(20, 70, 1, A_BOLD, "%u", ptr_stats->step_highest_occupancy);
-
     if(ptr_stats->peak_rel_occupancy >= 85.0f) {
         draw_bar(20, 2, 68, ptr_stats->peak_rel_occupancy, 2); //rot
     }
     else {
         draw_bar(20, 2, 68, ptr_stats->peak_rel_occupancy, 1); //grün
     }
+
+    print_col(21, 2, 3, 0,      "Schritt an dem diese hoechste Auslastung war:");
+    print_col(21, 70, 1, A_BOLD, "%u", ptr_stats->step_highest_occupancy);
 
     draw_hline(22);
 
@@ -461,7 +463,8 @@ void show_running(SimStats *ptr_stats) {
         bar_color = 1;
     }
     draw_bar(16, 2, 68, ptr_stats->temp_rel_occupancy_percent, bar_color);
-} 
+    wrefresh(ptr_win);
+}
 
 //MARK: Pseudocode
 
