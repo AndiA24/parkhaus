@@ -17,8 +17,9 @@ int run = 1;
 
 int main(){
 
+    initialize_ui();
     SimConfig *ptr_config = create_config();
-    if(create_config == NULL){
+    if(ptr_config == NULL){
         show_message(2, "Error: Failed to create Config Struct. Simulation Stopped.", 2, 1, NULL);
         return -1;
     }
@@ -36,7 +37,9 @@ int main(){
     SimStats *ptr_stats = init_simstats();
 
     while(run == 1){
-        
+        show_welcome(ptr_config);
+        save_config(ptr_config);
+        run_simulation(ptr_config, ptr_stats);
     }
 
     free_stats(ptr_stats);
