@@ -47,7 +47,7 @@ void initialize_ui() {
     init_pair(3, COLOR_WHITE, COLOR_BLACK);     //neutral info text
     init_pair(4, COLOR_CYAN, COLOR_BLACK);      //boxes and borders
 
-    wbkgd(ptr_win, COLOR_PAIR(3));
+    wbkgd(ptr_win, COLOR_PAIR(4));
 }
 
 void end() {
