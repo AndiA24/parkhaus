@@ -1,3 +1,11 @@
+/**
+ * @file config.h
+ * @brief Simulation configuration structure and interface.
+ *
+ * Declares the SimConfig struct and functions for creating, loading,
+ * saving, and freeing the simulation configuration.
+ */
+
 #ifndef CONFIG_H
 #define CONFIG_H
 
