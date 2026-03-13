@@ -40,11 +40,14 @@ void initialize_ui() {
     ptr_win = newwin(win_height, win_width, (sh - win_height) / 2, (sw - win_width) / 2);
     keypad(ptr_win, TRUE);
     start_color();
+    use_default_colors();
 
     init_pair(1, COLOR_GREEN, COLOR_BLACK);     //good results (no queue, high but not full occupancy)
     init_pair(2, COLOR_RED, COLOR_BLACK);       //bad results (full car park, long queue)
     init_pair(3, COLOR_WHITE, COLOR_BLACK);     //neutral info text
     init_pair(4, COLOR_CYAN, COLOR_BLACK);      //boxes and borders
+
+    wbkgd(ptr_win, COLOR_PAIR(3));
 }
 
 void end() {
