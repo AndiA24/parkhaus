@@ -27,12 +27,12 @@ int main() {
     SimStats *ptr_stats = NULL;
 
     // Test 1: Both Args are NULL
-    printf("Test 1: Both Args are NULL:  ");
+    printf("Test 1: delete_queue(NULL, NULL)           → returns -1:  ");
     assert(delete_queue(NULL, NULL) == -1);
     printf("OK\n");
 
     // Test 2: stats pointer is NULL
-    printf("Test 2: stats pointer is NULL:  ");
+    printf("Test 2: delete_queue(valid_queue, NULL)    → returns -1:  ");
     ptr_queue = init_queue();
     assert(delete_queue(ptr_queue, NULL) == -1);
     free_queue(ptr_queue);
@@ -40,7 +40,7 @@ int main() {
     printf("OK\n");
 
     // Test 3: queue pointer is NULL
-    printf("Test 3: queue pointer is NULL:  ");
+    printf("Test 3: delete_queue(NULL, valid_stats)    → returns -1:  ");
     ptr_stats = create_test_stats();
     assert(delete_queue(NULL, ptr_stats) == -1);
     free(ptr_stats);
@@ -48,7 +48,7 @@ int main() {
     printf("OK\n");
 
     // Test 4: pointers are valid
-    printf("Test 4: Both args are valid:  ");
+    printf("Test 4: delete_queue(empty_queue, stats)   → returns  1:  ");
     ptr_queue = init_queue();
     ptr_stats = create_test_stats();
     assert(delete_queue(ptr_queue, ptr_stats) == 1);
@@ -58,17 +58,16 @@ int main() {
     printf("OK\n");
 
     // Test 5: delete queue with multiple vehicles
-    printf("Test 5: delete queue with multiple vehicles:  ");
-    ptr_queue    = init_queue();
-    ptr_stats    = create_test_stats();
+    printf("Test 5: delete_queue(2 vehicles, stats)    → returns  1:  ");
+    ptr_queue = init_queue();
+    ptr_stats = create_test_stats();
     ptr_vehicle1 = create_test_vehicle();
-    ptr_vehicle2  = create_test_vehicle();
+    ptr_vehicle2 = create_test_vehicle();
     enqueue(ptr_queue, ptr_vehicle1);
     enqueue(ptr_queue, ptr_vehicle2);
     assert(delete_queue(ptr_queue, ptr_stats) == 1);
-    free(ptr_stats);   ptr_stats = NULL;
-    ptr_queue = NULL;
+    free(ptr_stats);   
     printf("OK\n");
 
-
+    return 0;
 }
