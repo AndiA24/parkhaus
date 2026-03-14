@@ -26,12 +26,12 @@ int main() {
     Vehicle *ptr_vehicle2 = NULL;
 
     // Test 1: queue pointer is NULL
-    printf("Test 1: queue pointer is NULL:  ");
+    printf("Test 1: increment_queue_time(NULL)        → returns -1:        ");
     assert(increment_queue_time(ptr_queue) == -1);
     printf("OK \n");
 
     // Test 2: increment queue time one vehicle
-    printf("Test 2: increment queue time of one vehicle:  ");
+    printf("Test 2: one vehicle, 1x increment         → queue_time +1:     ");
     ptr_queue = init_queue();
     ptr_vehicle1 = create_test_vehicle();
     enqueue(ptr_queue, ptr_vehicle1);
@@ -41,8 +41,8 @@ int main() {
     free(ptr_vehicle1);
     printf("OK \n");
 
-    // Test 3: increment queue time multiple
-    printf("Test 3: increment queue time of multiple vehicles:  ");
+    // Test 3: increment queue time multiple vehicles
+    printf("Test 3: two vehicles, 1x increment        → queue_time +1:     ");
     ptr_queue = init_queue();
     ptr_vehicle1 = create_test_vehicle();
     ptr_vehicle2 = create_test_vehicle();
