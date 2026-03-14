@@ -56,6 +56,18 @@ int main() {
     free(ptr_vehicle2);
     printf("OK \n");
 
+    // Test 4: double increment queue time one vehicles
+    printf("Test 4: one vehicle, 2x increment         → queue_time +2:     ");
+    ptr_queue = init_queue();
+    ptr_vehicle1 = create_test_vehicle();
+    enqueue(ptr_queue, ptr_vehicle1);
+    assert(increment_queue_time(ptr_queue) == 1);
+    assert(increment_queue_time(ptr_queue) == 1);
+    assert(ptr_vehicle1->queue_time == 2);
+    free_queue(ptr_queue);
+    free(ptr_vehicle1);
+    printf("OK \n");
+
     return 0;
 }
 
