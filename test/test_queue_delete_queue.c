@@ -1,6 +1,6 @@
 /**
- * @file test_queue_increment_queuetime.c
- * @brief Unit tests for the increment_queue_time() function.
+ * @file test_queue_delete_queue.c
+ * @brief Unit tests for the delete_queue() function.
  */
 
 #include <assert.h>
@@ -22,7 +22,8 @@ SimStats *create_test_stats(){
 
 int main() {
     Queue   *ptr_queue   = NULL;
-    Vehicle *ptr_vehicle = NULL;
+    Vehicle *ptr_vehicle1 = NULL;
+    Vehicle *ptr_vehicle2 = NULL;
     SimStats *ptr_stats = NULL;
 
     // Test 1: Both Args are NULL
@@ -54,6 +55,19 @@ int main() {
     free(ptr_stats);
     ptr_queue = NULL;
     ptr_stats = NULL;
+    printf("OK\n");
+
+    // Test 5: delete queue with multiple vehicles
+    printf("Test 5: delete queue with multiple vehicles:  ");
+    ptr_queue    = init_queue();
+    ptr_stats    = create_test_stats();
+    ptr_vehicle1 = create_test_vehicle();
+    ptr_vehicle2  = create_test_vehicle();
+    enqueue(ptr_queue, ptr_vehicle1);
+    enqueue(ptr_queue, ptr_vehicle2);
+    assert(delete_queue(ptr_queue, ptr_stats) == 1);
+    free(ptr_stats);   ptr_stats = NULL;
+    ptr_queue = NULL;
     printf("OK\n");
 
 
