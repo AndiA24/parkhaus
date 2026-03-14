@@ -27,12 +27,12 @@ int main() {
     Vehicle *ptr_result = NULL;
 
     // Test 1: Both Args are NULL
-    printf("Test 1: Both Args are NULL:  ");
+    printf("Test 1: dequeue(NULL, NULL)           → returns NULL:  ");
     assert(dequeue(NULL, NULL) == NULL);
     printf("OK\n");
 
     // Test 2: stats pointer is NULL
-    printf("Test 2: stats pointer is NULL:  ");
+    printf("Test 2: dequeue(valid queue, NULL)    → returns NULL:  ");
     ptr_queue = init_queue();
     assert(dequeue(ptr_queue, NULL) == NULL);
     free_queue(ptr_queue);
@@ -40,7 +40,7 @@ int main() {
     printf("OK\n");
 
     // Test 3: queue pointer is NULL
-    printf("Test 3: queue pointer is NULL:  ");
+    printf("Test 3: dequeue(NULL, valid stats)    → returns NULL:  ");
     ptr_stats = create_test_stats();
     assert(dequeue(NULL, ptr_stats) == NULL);
     free(ptr_stats);
@@ -48,7 +48,7 @@ int main() {
     printf("OK\n");
 
     // Test 4: queue head is NULL
-    printf("Test 4: queue head is NULL:  ");
+    printf("Test 4: dequeue(empty queue, stats)   → returns NULL:  ");
     ptr_queue = init_queue();
     ptr_stats = create_test_stats();
     assert(dequeue(ptr_queue, ptr_stats) == NULL);
@@ -57,7 +57,7 @@ int main() {
     printf("OK\n");
 
     // Test 5: dequeue one vehicle
-    printf("Test 5: dequeue one vehicle:  ");
+    printf("Test 5: dequeue(one vehicle, stats)   → returns dequeued vehicle:  ");
     ptr_queue   = init_queue();
     ptr_vehicle = create_test_vehicle();
     ptr_stats   = create_test_stats();
@@ -76,7 +76,7 @@ int main() {
     printf("OK\n");
 
     // Test 6: stats updated after dequeue
-    printf("Test 6: stats updated after dequeue:  ");
+    printf("Test 6: dequeue(one vehicle, stats)   → updates stats correctly:  ");
     ptr_queue    = init_queue();
     ptr_vehicle  = create_test_vehicle();
     ptr_vehicle->queue_time = 5;

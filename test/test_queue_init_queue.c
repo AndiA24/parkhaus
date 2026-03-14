@@ -14,7 +14,7 @@ int main() {
     Queue *ptr_queue2 = NULL;
 
     // Test 1: Return value is not NULL
-    printf("Test 1: Return value is not NULL: ");
+    printf("Test 1: init_queue()                   → returns valid queue:  ");
     ptr_queue1 = init_queue();
     assert(ptr_queue1 != NULL);
     free_queue(ptr_queue1);
@@ -22,7 +22,7 @@ int main() {
     printf("OK\n");
 
     // Test 2: All fields are zero/null-initialized
-    printf("Test 2: All fields are zero after init: ");
+    printf("Test 2: init_queue()                   → fields initialized:  ");
     ptr_queue1 = init_queue();
     assert(ptr_queue1 != NULL);
     assert(ptr_queue1->ptr_head == NULL);
@@ -34,7 +34,7 @@ int main() {
     printf("OK\n");
 
     // Test 3: Two calls return independent pointers
-    printf("Test 3: Two calls return different pointers: ");
+    printf("Test 3: init_queue() called twice      → different pointers:  ");
     ptr_queue1  = init_queue();
     ptr_queue2 = init_queue();
     assert(ptr_queue1  != NULL);

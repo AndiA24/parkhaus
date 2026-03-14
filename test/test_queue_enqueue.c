@@ -28,12 +28,12 @@ int main() {
     SimStats *ptr_stats = test_stats();
 
     // Test 1: Both Args are NULL
-    printf("Test 1: Both Args are NULL:  ");
+    printf("Test 1: enqueue(NULL, NULL)           → returns -1:  ");
     assert(enqueue(NULL, NULL) == -1);
     printf("OK\n");
 
     // Test 2: vehicle pointer is NULL
-    printf("Test 2: vehicle pointer is NULL:  ");
+    printf("Test 2: enqueue(valid queue, NULL)    → returns -1:  ");
     ptr_queue = init_queue();
     assert(enqueue(ptr_queue, NULL) == -1);
     delete_queue(ptr_queue, ptr_stats);
@@ -41,7 +41,7 @@ int main() {
     printf("OK\n");
 
     // Test 3: queue pointer is NULL
-    printf("Test 3: queue pointer is NULL:  ");
+    printf("Test 3: enqueue(NULL, valid vehicle)  → returns -1:  ");
     ptr_vehicle1 = test_vehicle();
     assert(enqueue(NULL, ptr_vehicle1) == -1);
     free(ptr_vehicle1);
@@ -50,7 +50,7 @@ int main() {
 
 
     // Test 4: Enqueue one element
-    printf("Test 4: Enqueue single element: ");
+    printf("Test 4: enqueue(queue, one vehicle)   → size=1, head==tail:   ");
     ptr_queue    = init_queue();
     ptr_vehicle1 = test_vehicle();
 
@@ -69,7 +69,7 @@ int main() {
     printf("OK\n");
 
     // Test 5: Enqueue two elements
-    printf("Test 5: Enqueue two elements - FIFO order: ");
+    printf("Test 5: enqueue(queue, 2x vehicles)   → FIFO order maintained:   ");
     ptr_queue    = init_queue();
     ptr_vehicle1 = test_vehicle();
     ptr_vehicle2 = test_vehicle();
@@ -91,7 +91,7 @@ int main() {
     printf("OK\n");
 
     // Test 6: Enqueue three elements
-    printf("Test 6: Enqueue three elements - tail always updated: ");
+    printf("Test 6: enqueue(queue, 3x vehicles)   → tail updated correctly:   ");
     ptr_queue    = init_queue();
     ptr_vehicle1 = test_vehicle();
     ptr_vehicle2 = test_vehicle();
