@@ -12,7 +12,9 @@
 #include <stdio.h>
 #include "queue.h"
 #include "config.h"
-#include "parking.h"
+
+typedef struct Queue Queue;
+typedef struct Parking Parking;
 
 /**
  * @brief Holds the statistics collected during the simulation / one simulation step.
@@ -57,7 +59,7 @@ typedef struct SimStats{
  * @return Pointer to the newly allocated and initialized SimStats structure,
  *         or NULL if memory allocation fails.
  */
-SimStats *init_simstats();
+SimStats *init_simstats(SimConfig *ptr_config);
 
 /**
  * @brief Creates the CSV output file using the filename specified in the config.
@@ -149,7 +151,7 @@ int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file);
  * 
  * @return Returns 1 for success or -1 for fail
  */
-int close_output_file(FILE *ptr_output_file);
+int close_output_file(FILE *ptr_output_file, SimConfig *ptr_config);
 
 /**
  * @brief Resets all fields in the SimStats structure to zero.

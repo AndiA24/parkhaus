@@ -8,6 +8,7 @@
  */
 
 #include "../include/config.h"
+#include "../include/utils.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -20,7 +21,7 @@
 #define SIM_DURATION_STEPS_DEFAULT 1000
 #define ARRIVAL_PERCENT_DEFAULT 70
 #define OUTPUT_FILE_NAME_DEFAULT "parkhaus_results.csv"
-#define CONFIG_FILE_NAME_DEFAULT "parkhaus_config.csv"
+#define CONFIG_FILE_NAME_DEFAULT "parkhaus_config"
 #define SEED_DEFAULT 69
 
 
@@ -42,6 +43,7 @@ SimConfig *create_config() {
     if(ptr_config == NULL) {
         return NULL;
     }
+    strcpy(ptr_config->config_file_name, CONFIG_FILE_NAME_DEFAULT);
     return ptr_config;
 }
 
@@ -96,7 +98,8 @@ int save_config(SimConfig *ptr_config) {
 
 int free_config(SimConfig *ptr_config) {
     if(ptr_config == NULL){
-        printf("Error: Failed to free config Struct. Invalid Argument\n");
+        //commented it out because the user is already closing when this is called so doesn't really matter but left it here if we decide to add it back.
+        //output(2, "Error: Failed to free config Struct. Invalid Argument\n", 2, 0, NULL);
         return -1;
     }
     free(ptr_config);

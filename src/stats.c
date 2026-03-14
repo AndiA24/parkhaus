@@ -10,14 +10,16 @@
 #include <stdlib.h>
 
 #include "../include/stats.h"
+#include "../include/parking.h"
 #include "../include/queue.h"
 #include "../include/config.h"
+#include "../include/utils.h"
 
 
-SimStats *init_simstats(){
+SimStats *init_simstats(SimConfig *ptr_config){
     SimStats *ptr_stats = calloc(1,sizeof(*ptr_stats));
     if(ptr_stats == NULL){
-        printf("Error: Failed to allocate memory for the Stats Struct.\n");
+        output(2, "Error: Failed to allocate memory for the Stats Struct.\n", 2, 1, ptr_config);
         return NULL;
     }
     return ptr_stats;
@@ -31,35 +33,14 @@ FILE *create_output_file(SimConfig *ptr_config)
         return NULL;
     }
 
-    char user_input;
     FILE *ptr_output_file;
 
-    // loop until a valid, confirmed output filename is established
-    while (1)
-    {
-        // check if a file with the configured name already exists
-        ptr_output_file = fopen(ptr_config->output_file_name, "r");
-        if (ptr_output_file == NULL) {
-            break;
-        }
-        fclose(ptr_output_file);
-
-        printf("File already exists. Overwrite? (y/n): ");
-        scanf(" %c", &user_input);
-        if (user_input == 'y'){
-            break;  // user confirmed overwrite, proceed
-        }
-
-        // user declined overwrite, get new file name
-        printf("Enter new file name: ");
-        scanf("%69s", ptr_config->output_file_name);
-        printf("Trying: '%s'\n", ptr_config->output_file_name);
-    }
-    // open file for writing
-    ptr_output_file = fopen(ptr_config->output_file_name, "w");
+    // open file for writing (silently overwrite if it already exists)
+    char temp_string[80];
+    snprintf(temp_string, sizeof(temp_string), "%s.csv", ptr_config->output_file_name); //always add .csv to end of a filename
+    ptr_output_file = fopen(temp_string, "a");
     if (ptr_output_file == NULL)
     {
-        printf("Error: Could not open file '%s'\n", ptr_config->output_file_name);
         return NULL;
     }
 
@@ -85,14 +66,13 @@ FILE *create_output_file(SimConfig *ptr_config)
     fprintf(ptr_output_file, "temp_exits,temp_entries,temp_rel_occupancy_percent,"
     "temp_queue_length,temp_free_spots,temp_time_left\n");
     
-    printf("Output file created successfully.\n");
     return ptr_output_file;
 }
 
 
 int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue){
     if(ptr_stats == NULL || ptr_parking == NULL || ptr_queue == NULL){
-        printf("Error: Failed to update Stats. Invalid argument.\n");
+        output(2, "Error: Failed to update Stats. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
 
@@ -125,7 +105,7 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
 
 int update_peak(SimStats *ptr_stats){
     if(ptr_stats == NULL){
-        printf("Error: Failed to update peak-values. Invalid arguments.\n");
+        output(2, "Error: Failed to update peak-values. Invalid arguments.\n", 2, 0, NULL);
         return -1;
     }
 
@@ -145,7 +125,7 @@ int update_peak(SimStats *ptr_stats){
 int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
     // valdate input pointers
     if(ptr_stats == NULL || ptr_output_file == NULL){
-        printf("Error: Failed to save temp dataset. Invalid Argument.\n");
+        output(2, "Error: Failed to save temp dataset. Invalid Argument.\n", 2, 0, NULL);
         return -1;
     }
 
@@ -165,7 +145,7 @@ int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 
 int reset_temp_stats(SimStats *ptr_stats){
     if(ptr_stats == NULL){
-        printf("Error: Failed to reset temp Stats. Invalid Arguments.\n");
+        output(2, "Error: Failed to reset temp Stats. Invalid Argument.\n", 2, 0, NULL);
         return -1;
     }
     ptr_stats->temp_entries = 0;
@@ -181,7 +161,7 @@ int reset_temp_stats(SimStats *ptr_stats){
 int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
     // valdate input pointers
     if(ptr_stats == NULL || ptr_output_file == NULL){
-        printf("Error: Failed to save final dataset. Invalid argumant\n");
+        output(2, "Error: Failed to save final dataset. Invalid argumant\n", 2, 0, NULL);
         return -1;
     }
 
@@ -208,9 +188,10 @@ int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 }
 
 
-int close_output_file(FILE *ptr_output_file){
+int close_output_file(FILE *ptr_output_file, SimConfig *ptr_config){
     if(fclose(ptr_output_file) == EOF){
-        printf("Error: Failed to close output file.\n");
+        //kill in order to not corrupt files and program may crash anyway because of file in use next time
+        output(2, "Error: Failed to close output file.\n", 2, 1, ptr_config);
         return -1;
     }
     return 1;
@@ -219,7 +200,7 @@ int close_output_file(FILE *ptr_output_file){
 
 int reset_all_stats(SimStats *ptr_stats){
     if(ptr_stats == NULL){
-        printf("Error: Failed to reset Stats. Invalid Argument.\n");
+        output(2, "Error: Failed to reset Stats. Invalid Argument.\n", 2, 0, NULL);
         return -1;
     }
     ptr_stats->step_num = 0;
@@ -248,7 +229,7 @@ int reset_all_stats(SimStats *ptr_stats){
 
 int free_stats(SimStats *ptr_stats){
     if(ptr_stats == NULL){
-        printf("Error: Failed to free memory allocated for Stats. Invalid Argument\n");
+        output(2, "Error: Failed to free memory allocated for Stats. Invalid Argument\n", 2, 0, NULL);
         return -1;
     }
     free(ptr_stats);
