@@ -15,11 +15,6 @@ Vehicle *create_test_vehicle(){
     return ptr_vehicle;
 }
 
-SimStats *create_test_stats(){
-    SimStats *ptr_stats = calloc(1, sizeof *ptr_stats);
-    return ptr_stats;
-}
-
 int main() {
     Queue *ptr_queue = NULL;
     Vehicle *ptr_vehicle1 = NULL;
@@ -56,7 +51,7 @@ int main() {
     free(ptr_vehicle2);
     printf("OK \n");
 
-    // Test 4: double increment queue time one vehicles
+    // Test 4: double increment queue time one vehicle
     printf("Test 4: one vehicle, 2x increment         → queue_time +2:     ");
     ptr_queue = init_queue();
     ptr_vehicle1 = create_test_vehicle();
