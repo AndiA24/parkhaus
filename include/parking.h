@@ -1,3 +1,11 @@
+/**
+ * @file parking.h
+ * @brief Parking garage structure and interface.
+ *
+ * Declares the ParkingSpot, ParkingDeck, and Parking structs as well as
+ * functions for creating, pre-filling, and managing the parking garage.
+ */
+
 #ifndef PARKING_H
 #define PARKING_H
 
@@ -22,6 +30,8 @@ typedef struct ParkingDeck{
     unsigned int    capacity;   /**< Total number of parking spots on this deck. */
     unsigned int    occupied_count;  /**< Number of spots currently occupied. */
     ParkingSpot     *ptr_spots;  /**< Pointer to the array of parking spots on this deck. */
+    unsigned int    free_spots;  /**< Number of free spots on this deck. */
+    ParkingSpot     **ptr_stack;    /**< Array of pointers to free ParkingSpots, used as a stack. */
 } ParkingDeck;
 
 /**
@@ -31,6 +41,7 @@ typedef struct Parking{
     unsigned int    total_capacity;  /**< Total number of parking spots across all decks. */
     unsigned int    decks;           /**< Total number of parking decks in the parking. */
     unsigned int    occupied_count;  /**< Number of spots currently occupied. */
+    ParkingSpot     **ptr_occupied_spots;  /**< Array of pointers to all currently occupied spots. */
     ParkingDeck     *ptr_decks;      /**< Pointer to the array of decks in the garage. */
 } Parking;
 

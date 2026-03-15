@@ -1,3 +1,12 @@
+/**
+ * @file config.c
+ * @brief Simulation configuration management.
+ *
+ * Provides functions to create, load from external config file, save, 
+ * and free the simulation configuration.
+ * If no config file is found, default values are used.
+ */
+
 #include "../include/config.h"
 #include <stdlib.h>
 #include <stdio.h>

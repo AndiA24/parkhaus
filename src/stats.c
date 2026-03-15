@@ -1,3 +1,11 @@
+/**
+ * @file stats.c
+ * @brief Simulation statistics collection, processing and output.
+ *
+ * Provides functions to initialise, update, print, save and free the
+ * statistics collected during the parking simulation.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

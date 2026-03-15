@@ -1,3 +1,11 @@
+/**
+ * @file vehicle.c
+ * @brief Vehicle creation and management.
+ *
+ * Provides functions to create and free vehicle structs used
+ * during the parking simulation.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 

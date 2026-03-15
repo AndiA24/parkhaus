@@ -1,3 +1,11 @@
+/**
+ * @file simulation.c
+ * @brief Simulation loop and step logic.
+ *
+ * Handles each simulation step, including random vehicle arrivals,
+ * parking, queue management, exit processing and stats updates.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 

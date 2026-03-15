@@ -1,3 +1,11 @@
+/**
+ * @file stats.h
+ * @brief Simulation statistics structure stats processing.
+ *
+ * Declares the SimStats struct and functions for initialising, updating,
+ * processinf, printing, and freeing simulation statistics.
+ */
+
 #ifndef STATS_H
 #define STATS_H
 

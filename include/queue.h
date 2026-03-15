@@ -1,3 +1,11 @@
+/**
+ * @file queue.h
+ * @brief Vehicle waiting queue structure and interface.
+ *
+ * Declares the QueueNode and Queue structs as well as functions for
+ * initialising, enqueuing, dequeuing, and freeing the waiting queue.
+ */
+
 #ifndef QUEUE_H
 #define QUEUE_H
 

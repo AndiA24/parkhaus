@@ -1,3 +1,11 @@
+/**
+ * @file queue.c
+ * @brief Vehicle waiting queue management.
+ *
+ * Provides functions to initialise, enqueue, dequeue, and free the
+ * waiting queue after simulation end.
+ */
+
 #include <stdlib.h>
 
 #include "../include/queue.h"
