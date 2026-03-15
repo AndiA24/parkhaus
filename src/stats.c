@@ -217,7 +217,7 @@ int close_output_file(FILE *ptr_output_file){
         printf("Error: Failed to close output file.\n");
         return -1;
     }
-    return 1;
+    return 0;
 }
 
 
