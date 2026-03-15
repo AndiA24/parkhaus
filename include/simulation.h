@@ -1,3 +1,11 @@
+/**
+ * @file simulation.h
+ * @brief Simulation loop and step function interface.
+ *
+ * Declares functions for running the parking simulation, including
+ * random arrival checks, and the main simulation loop.
+ */
+
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
