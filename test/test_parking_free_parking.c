@@ -2,10 +2,6 @@
  * @file test_parking_free_parking.c
  * @brief Unit tests for the free_parking() function, covering NULL
  *        guards and successful memory release.
- * 
- *        IMPORTANT: Unit test is not final. free_praking() needs to be edited 
- *                   to also free contained vehicles and add them to the stats 
- *                   after simulation end
  */
 #include <stdio.h>
 #include <stdlib.h>
