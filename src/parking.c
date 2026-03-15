@@ -286,12 +286,7 @@ int free_parking(Parking *ptr_parking) {
     free(ptr_parking->ptr_decks);
     ptr_parking->ptr_decks = NULL;
     free(ptr_parking);
-<<<<<<< HEAD
-
-    return 1;
-=======
     return 0;
->>>>>>> 2888f6b (Adapt return value of free_parking)
 }
 
 
