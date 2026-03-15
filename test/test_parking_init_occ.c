@@ -23,8 +23,8 @@ Parking *create_test_parking(unsigned int decks, unsigned int spots_per_deck){
     ptr_parking->total_capacity = (decks * spots_per_deck);
     ptr_parking->occupied_count = 0;
     ptr_parking->decks = decks;
-    ptr_parking->ptr_decks = calloc(decks, sizeof(ParkingDeck));
-    ptr_parking->ptr_occupied_spots = calloc(decks * spots_per_deck, sizeof(ParkingSpot*));
+    ptr_parking->ptr_decks = calloc(decks, sizeof(*ptr_parking->ptr_decks));
+    ptr_parking->ptr_occupied_spots = calloc(decks * spots_per_deck, sizeof(*ptr_parking->ptr_occupied_spots));
 
     for(int i = 0; i < (int)decks; i++){
         ParkingDeck *ptr_deck = ptr_parking->ptr_decks + i;
@@ -32,8 +32,8 @@ Parking *create_test_parking(unsigned int decks, unsigned int spots_per_deck){
         ptr_deck->capacity = spots_per_deck;
         ptr_deck->occupied_count = 0;
         ptr_deck->free_spots = 0;
-        ptr_deck->ptr_spots = calloc(spots_per_deck, sizeof(ParkingSpot));
-        ptr_deck->ptr_stack = calloc(spots_per_deck, sizeof(ParkingSpot*));
+        ptr_deck->ptr_spots = calloc(spots_per_deck, sizeof(*ptr_deck->ptr_spots));
+        ptr_deck->ptr_stack = calloc(spots_per_deck, sizeof(*ptr_deck->ptr_stack));
 
         for(int j = 0; j < (int)spots_per_deck; j++){
             ptr_deck->ptr_spots[j].id = (i * spots_per_deck) + j;
