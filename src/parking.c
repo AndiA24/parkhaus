@@ -153,7 +153,7 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
     int sim_step = ptr_simstats->step_num;
 
     // iterate through all currently occupied spots
-    for (int i = 0; i < ptr_parking->occupied_count; i++)
+    for (int i = 0; i < (int)ptr_parking->occupied_count; i++)
     {
         ParkingSpot *ptr_spot = ptr_parking->ptr_occupied_spots[i];
         ParkingDeck *ptr_current_deck = (ptr_parking->ptr_decks) + (ptr_spot->id / ptr_parking->ptr_decks->capacity);
@@ -264,7 +264,7 @@ int free_parking(Parking *ptr_parking) {
     }
 
     // free all vehicles in occupied spots 
-    for (int i = 0; i < ptr_parking->occupied_count; i++) {
+    for (int i = 0; i < (int)ptr_parking->occupied_count; i++) {
         if (ptr_parking->ptr_occupied_spots[i]->ptr_vehicle != NULL) {
             free_vehicle(ptr_parking->ptr_occupied_spots[i]->ptr_vehicle);
             ptr_parking->ptr_occupied_spots[i]->ptr_vehicle = NULL;
@@ -273,7 +273,7 @@ int free_parking(Parking *ptr_parking) {
     }
 
     // free each deck's spot array and stack
-    for (int i = 0; i < ptr_parking->decks; i++) {
+    for (int i = 0; i < (int)ptr_parking->decks; i++) {
         free(ptr_parking->ptr_decks[i].ptr_spots);
         free(ptr_parking->ptr_decks[i].ptr_stack);
         ptr_parking->ptr_decks[i].ptr_spots = NULL;
