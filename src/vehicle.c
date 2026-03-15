@@ -13,6 +13,10 @@
 #include "../include/stats.h"
 
 Vehicle *create_vehicle(SimStats *ptr_stats, SimConfig *ptr_config){
+    if(ptr_stats == NULL || ptr_config == NULL){
+        printf("Error: Failed to create vehicle. Invalid Arguments.\n");
+        return NULL;
+    }
     Vehicle *ptr_vehicle = malloc(sizeof(*ptr_vehicle));
     if(ptr_vehicle == NULL){
         printf("Error: Failed to allocate memory to generate vehicle. Invalid argument.\n");
@@ -39,7 +43,7 @@ int free_vehicle(Vehicle *ptr_vehicle){
         return -1;
     }
     free(ptr_vehicle);
-    return 1;
+    return 0;
 }
 
 /*

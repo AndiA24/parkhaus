@@ -16,7 +16,7 @@
 /**
  * @brief Represents a single parking spot within a deck.
  */
-typedef struct {
+typedef struct ParkingSpot{
     int         id;           /**< Unique identifier of the parking spot. */
     char        occupied;     /**< Flag indicating whether the spot is occupied (1) or free (0). */
     Vehicle     *ptr_vehicle;  /**< Pointer to the vehicle currently occupying the spot, or NULL if free. */
@@ -25,7 +25,7 @@ typedef struct {
 /**
  * @brief Represents one deck (floor) of the parking garage.
  */
-typedef struct {
+typedef struct ParkingDeck{
     unsigned int    deck_id;    /**< Unique identifier of this deck. */
     unsigned int    capacity;   /**< Total number of parking spots on this deck. */
     unsigned int    occupied_count;  /**< Number of spots currently occupied. */
@@ -37,7 +37,7 @@ typedef struct {
 /**
  * @brief Represents the entire parking garage.
  */
-typedef struct {
+typedef struct Parking{
     unsigned int    total_capacity;  /**< Total number of parking spots across all decks. */
     unsigned int    decks;           /**< Total number of parking decks in the parking. */
     unsigned int    occupied_count;  /**< Number of spots currently occupied. */
@@ -58,9 +58,9 @@ typedef struct {
  *                            the initial occupancy count.
  * @param[in,out] ptr_stats   Pointer to the Stats structure to get current Vehicle
  *                            ID and increment.
- * @return Pointer to the populated Parking structure, or NULL on failure.
+ * @return Integer: 0 for success, -1 for fatal error, -2 for error because of missing spots
  */
-Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats);
+int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats);
 
 /**
  * @brief Create Parking Struct containing Parking decks and spots
@@ -119,7 +119,7 @@ int get_free_spots(Parking *ptr_parking, SimStats *ptr_stats);
  * Frees the Parking structure that was allocated by init_parking
  *
  * @param[in] ptr_parking Pointer to the Parking structure to be freed.
- * @return 1 on success, -1 if ptr_parking is NULL
+ * @return 0 on success, -1 if ptr_parking is NULL
  */
 int free_parking(Parking *ptr_parking);
 
