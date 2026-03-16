@@ -96,10 +96,10 @@ target_include_directories(test_free_vehicle PRIVATE include)
 target_compile_definitions(test_free_vehicle PRIVATE UNIT_TEST)
 add_test(NAME test_free_vehicle COMMAND test_free_vehicle)
 
-add_executable(test_entry_parking test/test_parking_entry_parking.c src/parking.c src/vehicle.c src/stats.c src/config.c src/utils.c)
-target_include_directories(test_entry_parking PRIVATE include)
-target_compile_definitions(test_entry_parking PRIVATE UNIT_TEST)
-add_test(NAME test_entry_parking COMMAND test_entry_parking)
+add_executable(test_parking_entry_parking test/test_parking_entry_parking.c src/parking.c src/vehicle.c src/stats.c src/config.c src/utils.c)
+target_include_directories(test_parking_entry_parking PRIVATE include)
+target_compile_definitions(test_parking_entry_parking PRIVATE UNIT_TEST)
+add_test(NAME test_parking_entry_parking COMMAND test_parking_entry_parking)
 
 add_executable(test_check_exits test/test_parking_check_exits.c src/parking.c src/vehicle.c src/stats.c src/config.c src/utils.c)
 target_include_directories(test_check_exits PRIVATE include)
@@ -135,3 +135,33 @@ add_executable(test_run_simulation test/test_simulation_run_simulation.c src/sim
 target_include_directories(test_run_simulation PRIVATE include)
 target_compile_definitions(test_run_simulation PRIVATE UNIT_TEST)
 add_test(NAME test_run_simulation COMMAND test_run_simulation)
+
+add_executable(test_queue_init_queue test/test_queue_init_queue.c src/queue.c)
+target_include_directories(test_queue_init_queue PRIVATE include)
+target_compile_definitions(test_queue_init_queue PRIVATE UNIT_TEST)
+add_test(NAME test_queue_init_queue COMMAND test_queue_init_queue)
+
+add_executable(test_queue_free_queue test/test_queue_free_queue.c src/queue.c)
+target_include_directories(test_queue_free_queue PRIVATE include)
+target_compile_definitions(test_queue_free_queue PRIVATE UNIT_TEST)
+add_test(NAME test_queue_free_queue COMMAND test_queue_free_queue)
+
+add_executable(test_queue_delete_queue test/test_queue_delete_queue.c src/queue.c src/vehicle.c src/stats.c)
+target_include_directories(test_queue_delete_queue PRIVATE include)
+target_compile_definitions(test_queue_delete_queue PRIVATE UNIT_TEST)
+add_test(NAME test_queue_delete_queue COMMAND test_queue_delete_queue)
+
+add_executable(test_queue_enqueue test/test_queue_enqueue.c src/queue.c src/vehicle.c src/stats.c)
+target_include_directories(test_queue_enqueue PRIVATE include)
+target_compile_definitions(test_queue_enqueue PRIVATE UNIT_TEST)
+add_test(NAME test_queue_enqueue COMMAND test_queue_enqueue)
+
+add_executable(test_queue_dequeue test/test_queue_dequeue.c src/queue.c src/vehicle.c src/stats.c)
+target_include_directories(test_queue_dequeue PRIVATE include)
+target_compile_definitions(test_queue_dequeue PRIVATE UNIT_TEST)
+add_test(NAME test_queue_dequeue COMMAND test_queue_dequeue)
+
+add_executable(test_queue_increment_queue test/test_queue_increment_queuetime.c src/queue.c src/vehicle.c)
+target_include_directories(test_queue_increment_queue PRIVATE include)
+target_compile_definitions(test_queue_increment_queue PRIVATE UNIT_TEST)
+add_test(NAME test_queue_increment_queue COMMAND test_queue_increment_queue)
