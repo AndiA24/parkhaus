@@ -100,7 +100,7 @@ static void clear_prompt_area() {
 
 //MARK: prompt functions
 
-void prompt_uint(char *ptr_label, unsigned int *ptr_value, int min, int max) {
+void prompt_uint(char *ptr_label, unsigned int *ptr_value, unsigned int min, unsigned int max) {
     char buf[16] = {0};
     clear_prompt_area();
     print_col(17, 2, 3, 0, "%s (%u-%u):", ptr_label, min, max);
@@ -115,7 +115,7 @@ void prompt_uint(char *ptr_label, unsigned int *ptr_value, int min, int max) {
     curs_set(0);
 
     char *ptr_end;
-    int val = strtoul(buf, &ptr_end, 10);
+    unsigned long val = strtoul(buf, &ptr_end, 10);
     if(ptr_end == buf || *ptr_end != '\0' || val < min || val > max) {
         print_col(19, 2, 2, 0, "Ungueltig! Der erlaubte Bereich ist: %u-%u", min, max);
         wrefresh(ptr_win);
@@ -412,7 +412,7 @@ void show_results(SimStats *ptr_stats) {
     print_col(15, 70, 1, A_BOLD, "%u",  ptr_stats->total_parking_time);
 
     print_col(16, 2, 3, 0,      "Durchschnittliche Auslastung des Parkhaus:");
-    print_col(16, 70, 1, A_BOLD, "%u",  ptr_stats->avg_rel_occupancy);
+    print_col(16, 70, 1, A_BOLD, "%.2f",  ptr_stats->avg_rel_occupancy);
     if(ptr_stats->avg_rel_occupancy >= 85.0f) {
         draw_bar(17, 2, 68, ptr_stats->avg_rel_occupancy, 2); //rot
     }

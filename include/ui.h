@@ -84,7 +84,7 @@ void render_settings(SimConfig *ptr_config);
  * @param[in]  min        Minimum accepted value (inclusive).
  * @param[in]  max        Maximum accepted value (inclusive).
  */
-void prompt_uint(char *ptr_label, unsigned int *ptr_value, int min, int max);
+void prompt_uint(char *ptr_label, unsigned int *ptr_value, unsigned int min, unsigned int max);
 
 /**
  * @brief Prompts the user to enter a non-empty string.
