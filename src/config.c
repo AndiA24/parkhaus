@@ -25,7 +25,10 @@
 #define SEED_DEFAULT 69
 
 
-void populate_with_default(SimConfig *ptr_config) {
+int populate_with_default(SimConfig *ptr_config) {
+    if(ptr_config == NULL) {
+        return -1;
+    }
     ptr_config->num_decks = NUM_DECKS_DEFAULT;
     ptr_config->spots_per_deck = SPOTS_PER_DECK_DEFAULT;
     ptr_config->initial_occupancy = INITIAL_OCCUPANCY_DEFAULT;
@@ -36,6 +39,7 @@ void populate_with_default(SimConfig *ptr_config) {
     strcpy(ptr_config->output_file_name, OUTPUT_FILE_NAME_DEFAULT);
     strcpy(ptr_config->config_file_name, CONFIG_FILE_NAME_DEFAULT);
     ptr_config->seed = SEED_DEFAULT;
+    return 0;
 }
 
 SimConfig *create_config() {
