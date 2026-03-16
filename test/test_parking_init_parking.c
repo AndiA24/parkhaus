@@ -12,10 +12,6 @@
 #include "../include/stats.h"
 #include "../include/config.h"
 #include "../include/vehicle.h"
-#include "../src/parking.c"
-#include "../src/stats.c"
-#include "../src/config.c"
-#include "../src/vehicle.c"
 
 
 SimConfig *create_test_config(){

@@ -12,10 +12,6 @@
 #include "../include/config.h"
 #include "../include/queue.h"
 #include "../include/parking.h"
-#include "../src/stats.c"
-#include "../src/config.c"
-#include "../src/parking.c"
-#include "../src/vehicle.c"
 
 int main(){
     SimStats *ptr_stats  = NULL;

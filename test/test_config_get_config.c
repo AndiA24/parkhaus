@@ -9,7 +9,6 @@
 #include <assert.h>
 
 #include "../include/config.h"
-#include "../src/config.c"
 
 int main() {
     SimConfig *ptr_config = NULL;
