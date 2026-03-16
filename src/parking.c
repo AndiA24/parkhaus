@@ -17,7 +17,7 @@
 
 int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_parking == NULL || ptr_config == NULL || ptr_stats == NULL){
-        output(2, "Error: Failed to create initial occupancy. Invalid Argument.\n", 2, 1, ptr_config); // kills program
+        output(2, "Error: Failed to create initial occupancy. Invalid Argument.\n", 2, 0, NULL);
         return -1;
     }    
     if(ptr_config->initial_occupancy > ptr_parking->total_capacity){
@@ -59,12 +59,12 @@ int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr
 
 Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_config == NULL || ptr_stats == NULL){
-        output(2, "Error: Failed to create Parking. Invalid Arguments.\n",2 , 1, ptr_config);
+        output(2, "Error: Failed to create Parking. Invalid Arguments.\n", 2, 0, NULL);
         return NULL;
     }
     Parking *ptr_parking = malloc(sizeof(*ptr_parking));
     if(ptr_parking == NULL){
-        output(2, "Failed to allocate memory for the Parking-Struct.\n", 2, 1, ptr_config);
+        output(2, "Failed to allocate memory for the Parking-Struct.\n", 2, 0, NULL);
         return NULL;
     }
 
@@ -76,7 +76,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     // allocate memory for an array of N Decks
     ptr_parking->ptr_decks = calloc((ptr_parking->decks), (sizeof(ParkingDeck)));
     if(ptr_parking->ptr_decks == NULL){
-        output(2, "Failed to allocate memory for the ParkingDecks.\n", 2, 1, ptr_config);
+        output(2, "Failed to allocate memory for the ParkingDecks.\n", 2, 0, NULL);
         //free(ptr_parking); not needed because exit frees all memory
         return NULL;
     }
@@ -84,7 +84,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     // allocate memory for an array of occupied spots 
     ptr_parking->ptr_occupied_spots = calloc(ptr_parking->total_capacity, sizeof(ParkingSpot*));
     if(ptr_parking->ptr_occupied_spots == NULL){
-        output(2, "Failed to allocate memory for array of occupied spots.\n", 2, 1, ptr_config);
+        output(2, "Failed to allocate memory for array of occupied spots.\n", 2, 0, NULL);
         //free(ptr_parking); not needed because exit frees all memory
         return NULL;
     }
@@ -102,7 +102,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
         ptr_current_deck->ptr_stack = calloc((ptr_config->spots_per_deck), sizeof(ParkingSpot*));
 
         if(ptr_current_deck->ptr_spots == NULL || ptr_current_deck->ptr_stack == NULL){
-            output(2, "Failed to allocate memory for the spots in a Deck.\n", 2, 1, ptr_config);
+            output(2, "Failed to allocate memory for the spots in a Deck.\n", 2, 0, NULL);
             // free memory of already allocated spots
             for(int j = 0; j <= i; j++){
                 free((ptr_parking->ptr_decks + j)->ptr_stack);
@@ -130,19 +130,16 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     
     // fill with initial occupancy
     if(ptr_config->initial_occupancy){
-        if(initial_occupancy(ptr_parking, ptr_config, ptr_stats) == -2){
-            output(2, "Error: Failed during creating initial occupancy. Initial Occupancy exceeds the capacity of the Parking. Simulation starts without initial occupancy.\n", 2, 0, NULL);
-            /*
-            for(int i = 0; i < (int)ptr_config->num_decks; i++){
-                free((ptr_parking->ptr_decks + i)->ptr_spots);
-                (ptr_parking->ptr_decks + i)->ptr_spots = NULL;
-            }
-            free(ptr_parking->ptr_decks);
-            ptr_parking->ptr_decks = NULL;
-            free(ptr_parking);
-            ptr_parking = NULL;
+        switch (initial_occupancy(ptr_parking, ptr_config, ptr_stats))
+        {
+        case -1:
+            free_parking(ptr_parking);
             return NULL;
-            */
+            break;
+        
+        case -2:
+            output(2, "Error: Failed during creating initial occupancy. Initial Occupancy exceeds the capacity of the Parking. Simulation starts without initial occupancy.\n", 2, 0, NULL);
+            break;
         }
     }
     return ptr_parking;

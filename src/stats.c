@@ -20,7 +20,7 @@
 SimStats *init_simstats(SimConfig *ptr_config){
     SimStats *ptr_stats = calloc(1,sizeof(*ptr_stats));
     if(ptr_stats == NULL){
-        output(2, "Error: Failed to allocate memory for the Stats Struct.\n", 2, 1, ptr_config);
+        output(2, "Error: Failed to allocate memory for the Stats Struct.\n", 2, 0, NULL);
         return NULL;
     }
     return ptr_stats;
@@ -64,7 +64,7 @@ FILE *create_output_file(SimConfig *ptr_config)
         ptr_config->seed);
 
     // write column headers for per-step statistics
-    fprintf(ptr_output_file, "temp_exits,temp_entries,temp_rel_occupancy_percent,"
+    fprintf(ptr_output_file, "step_num,temp_exits,temp_entries,temp_rel_occupancy_percent,"
     "temp_queue_length,temp_free_spots,temp_time_left\n");
     
     return ptr_output_file;
@@ -141,7 +141,8 @@ int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 
     // write per-step statistics 
     fprintf(ptr_output_file,
-        "%u,%u,%.2f,%u,%u,%.2f\n",
+        "%u,%u,%u,%.2f,%u,%u,%u\n",
+        ptr_stats->step_num,
         ptr_stats->temp_exits,
         ptr_stats->temp_entries,
         ptr_stats->temp_rel_occupancy_percent,
@@ -204,8 +205,7 @@ int close_output_file(FILE *ptr_output_file, SimConfig *ptr_config){
         return -1;
     }
     if(fclose(ptr_output_file) == EOF){
-        //kill in order to not corrupt files and program may crash anyway because of file in use next time
-        output(2, "Error: Failed to close output file.\n", 2, 1, ptr_config);
+        output(2, "Error: Failed to close output file.\n", 2, 0, NULL);
         return -1;
     }
     return 0;

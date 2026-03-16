@@ -22,7 +22,7 @@
 int rand_arrival(SimConfig *ptr_config){
     if(ptr_config == NULL){
         output(2, "Error: Failed to check arrival. Invalid Arguments.\n", 2, 0, NULL);
-        return 0;
+        return -1;
     }
     int rand_i = (rand() % 100) + 1;
     if(rand_i <= (int)ptr_config->arrival_probability_percent){
@@ -39,42 +39,97 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats){
 
     srand(ptr_config->seed);
     Parking *ptr_parking = init_parking(ptr_config, ptr_stats);
+    if (ptr_parking == NULL)
+    {
+        output(2, "Error: Failed to initialize parking. Simulation aborted.\n", 2, 1, ptr_config);
+        return -1;
+    }
+    
     Queue *ptr_queue = init_queue();
+    if (ptr_queue == NULL)
+    {
+        output(2, "Error: Failed to initialize queue. Simulation aborted.\n", 2, 1, ptr_config);
+        return -1;
+    }
     FILE *ptr_output_file = create_output_file(ptr_config);
+    if (ptr_output_file == NULL)
+    {
+        output(2, "Error: Failed to create output file. Simulation aborted.\n", 2, 1, ptr_config);
+        return -1;
+    }
 
     unsigned int total_steps = ptr_config->sim_duration_steps;
     for(unsigned int i = 0; i < total_steps; i++){
         if(rand_arrival(ptr_config) == 1){
-            enqueue(ptr_queue, create_vehicle(ptr_stats, ptr_config));
+            if(enqueue(ptr_queue, create_vehicle(ptr_stats, ptr_config)) == -1) {
+                output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
+                return -1;
+            }
         }
 
-        check_exit(ptr_parking, ptr_stats);
+        if(check_exit(ptr_parking, ptr_stats) == -1){
+            output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
+            return -1;
+        }
 
         get_free_spots(ptr_parking, ptr_stats);
         if(ptr_stats->temp_free_spots && ptr_queue->size > 0){
-            entry_parking(ptr_parking, dequeue(ptr_queue, ptr_stats), ptr_stats);
+            if(entry_parking(ptr_parking, dequeue(ptr_queue, ptr_stats), ptr_stats) == -1) {
+                output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
+                return -1;
+            }
         }
 
-        update_simstats(ptr_stats, ptr_parking, ptr_queue);
-        update_peak(ptr_stats);
-        save_temp_dataset(ptr_stats, ptr_output_file);
+        if(update_simstats(ptr_stats, ptr_parking, ptr_queue) == -1){
+            output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
+            return -1;
+        }
+        if(update_peak(ptr_stats) == -1){
+            output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
+            return -1;
+        }
+        if(save_temp_dataset(ptr_stats, ptr_output_file) == -1){
+            output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
+            return -1;
+        }
 #ifndef UNIT_TEST
         show_running(ptr_stats);
 #endif
-        reset_temp_stats(ptr_stats);
-        increment_queue_time(ptr_queue);
-
+        if(reset_temp_stats(ptr_stats) == -1){
+            output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
+            return -1;
+        }
+        if(increment_queue_time(ptr_queue) == -1){
+            output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
+            return -1;
+        }
         ptr_stats->step_num ++;
     }
 
-    delete_queue(ptr_queue, ptr_stats);
-    save_final_dataset(ptr_stats, ptr_output_file);
-    close_output_file(ptr_output_file, ptr_config);
+    if(delete_queue(ptr_queue, ptr_stats) == -1){
+            output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
+            return -1;
+    }
+    if(save_final_dataset(ptr_stats, ptr_output_file) == -1){
+            output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
+            return -1;
+    }
+    if(close_output_file(ptr_output_file, ptr_config) == -1){
+            output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
+            return -1;
+    }
 #ifndef UNIT_TEST
     show_results(ptr_stats);
 #endif
-    reset_all_stats(ptr_stats);
-    free_parking(ptr_parking);
+    if(reset_all_stats(ptr_stats) == -1){
+            output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
+            return -1;
+    }
+    if(free_parking(ptr_parking) == -1){
+            output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
+            return -1;
+    }
+
     return 1;
 }
 
