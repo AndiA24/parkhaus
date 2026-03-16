@@ -13,7 +13,7 @@ int main() {
     Queue *ptr_queue1 = NULL;
     Queue *ptr_queue2 = NULL;
 
-    // Test 1: Return value is not NULL
+    // Test 1: return value is not NULL
     printf("Test 1: init_queue()                   → returns valid queue:  ");
     ptr_queue1 = init_queue();
     assert(ptr_queue1 != NULL);

@@ -21,13 +21,13 @@ SimStats *test_stats(){
 }
 
 int main() {
-    Queue   *ptr_queue   = NULL;
+    Queue *ptr_queue   = NULL;
     Vehicle *ptr_vehicle1 = NULL;
     Vehicle *ptr_vehicle2 = NULL;
     Vehicle *ptr_vehicle3 = NULL;
     SimStats *ptr_stats = test_stats();
 
-    // Test 1: Both Args are NULL
+    // Test 1: both Args are NULL
     printf("Test 1: enqueue(NULL, NULL)           → returns -1:  ");
     assert(enqueue(NULL, NULL) == -1);
     printf("OK\n");
@@ -49,9 +49,9 @@ int main() {
     printf("OK\n");
 
 
-    // Test 4: Enqueue one element
+    // Test 4: enqueue one element
     printf("Test 4: enqueue(queue, one vehicle)   → size=1, head==tail:   ");
-    ptr_queue    = init_queue();
+    ptr_queue = init_queue();
     ptr_vehicle1 = test_vehicle();
 
     assert(enqueue(ptr_queue, ptr_vehicle1) == 1);
@@ -64,13 +64,13 @@ int main() {
     assert(ptr_queue->ptr_head->ptr_next == NULL);              
 
     delete_queue(ptr_queue, ptr_stats);
-    ptr_queue    = NULL;
+    ptr_queue = NULL;
     ptr_vehicle1 = NULL;
     printf("OK\n");
 
-    // Test 5: Enqueue two elements
+    // Test 5: enqueue two elements
     printf("Test 5: enqueue(queue, 2x vehicles)   → FIFO order maintained:   ");
-    ptr_queue    = init_queue();
+    ptr_queue = init_queue();
     ptr_vehicle1 = test_vehicle();
     ptr_vehicle2 = test_vehicle();
 
@@ -85,14 +85,14 @@ int main() {
     assert(ptr_queue->ptr_tail->ptr_next == NULL);              
 
     delete_queue(ptr_queue, ptr_stats);
-    ptr_queue    = NULL;
+    ptr_queue = NULL;
     ptr_vehicle1 = NULL;
     ptr_vehicle2 = NULL;
     printf("OK\n");
 
-    // Test 6: Enqueue three elements
+    // Test 6: enqueue three elements
     printf("Test 6: enqueue(queue, 3x vehicles)   → tail updated correctly:   ");
-    ptr_queue    = init_queue();
+    ptr_queue = init_queue();
     ptr_vehicle1 = test_vehicle();
     ptr_vehicle2 = test_vehicle();
     ptr_vehicle3 = test_vehicle();
@@ -108,7 +108,7 @@ int main() {
     assert(ptr_queue->ptr_tail->ptr_next == NULL);              
 
     delete_queue(ptr_queue, ptr_stats);
-    ptr_queue    = NULL;
+    ptr_queue = NULL;
     ptr_vehicle1 = NULL;
     ptr_vehicle2 = NULL;
     ptr_vehicle3 = NULL;

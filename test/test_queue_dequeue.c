@@ -26,7 +26,7 @@ int main() {
     Vehicle *ptr_vehicle = NULL;
     Vehicle *ptr_result = NULL;
 
-    // Test 1: Both Args are NULL
+    // Test 1: both Args are NULL
     printf("Test 1: dequeue(NULL, NULL)           → returns NULL:  ");
     assert(dequeue(NULL, NULL) == NULL);
     printf("OK\n");
@@ -58,9 +58,9 @@ int main() {
 
     // Test 5: dequeue one vehicle
     printf("Test 5: dequeue(one vehicle, stats)   → returns dequeued vehicle:  ");
-    ptr_queue   = init_queue();
+    ptr_queue = init_queue();
     ptr_vehicle = create_test_vehicle();
-    ptr_stats   = create_test_stats();
+    ptr_stats = create_test_stats();
 
     enqueue(ptr_queue, ptr_vehicle);
     ptr_result = dequeue(ptr_queue, ptr_stats);
@@ -77,8 +77,8 @@ int main() {
 
     // Test 6: stats updated after dequeue
     printf("Test 6: dequeue(one vehicle, stats)   → updates stats correctly:  ");
-    ptr_queue    = init_queue();
-    ptr_vehicle  = create_test_vehicle();
+    ptr_queue = init_queue();
+    ptr_vehicle = create_test_vehicle();
     ptr_vehicle->queue_time = 5;
     ptr_stats = create_test_stats();
 

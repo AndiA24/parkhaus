@@ -155,7 +155,7 @@ int main() {
     ptr_config = NULL;
     printf("OK\n");
 
-    // Test 8: park on full parking → returns 0
+    // Test 8: park on full parking
     printf("Test 8: entry_parking on full parking            → returns  0:  ");
     ptr_config = create_test_config(1, 1);                     
     ptr_stats = create_test_stats();
