@@ -31,6 +31,10 @@ endif()
 # Tests
 enable_testing()
 
+if(NOT WIN32)
+    link_libraries(m)
+endif()
+
 add_executable(test_init_occ test/test_parking_init_occ.c src/parking.c src/config.c src/stats.c src/vehicle.c src/utils.c)
 target_include_directories(test_init_occ PRIVATE include)
 target_compile_definitions(test_init_occ PRIVATE UNIT_TEST)
