@@ -17,8 +17,6 @@
     #include <limits.h>
 #endif
 
-#define UNIT_TEST
-
 #define WIN_HEIGHT 25
 #define WIN_WIDTH 86
 
