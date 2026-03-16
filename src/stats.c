@@ -39,7 +39,7 @@ FILE *create_output_file(SimConfig *ptr_config)
     // open file for writing (silently overwrite if it already exists)
     char temp_string[80];
     snprintf(temp_string, sizeof(temp_string), "%s.csv", ptr_config->output_file_name); //always add .csv to end of a filename
-    ptr_output_file = fopen(temp_string, "a");
+    ptr_output_file = fopen(temp_string, "w");
     if (ptr_output_file == NULL)
     {
         return NULL;
