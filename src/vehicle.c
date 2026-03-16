@@ -20,7 +20,7 @@ Vehicle *create_vehicle(SimStats *ptr_stats, SimConfig *ptr_config){
     }
     Vehicle *ptr_vehicle = malloc(sizeof(*ptr_vehicle));
     if(ptr_vehicle == NULL){
-        output(2, "Error: Failed to allocate memory to generate vehicle. Invalid argument.\n", 2, 1, ptr_config);
+        output(2, "Error: Failed to allocate memory to generate vehicle. Invalid argument.\n", 2, 0, NULL);
         return NULL;
     }
     
