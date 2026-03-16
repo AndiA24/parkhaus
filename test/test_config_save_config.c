@@ -16,6 +16,8 @@ int main() {
     FILE *ptr_f           = NULL;
     int ret;
 
+    remove(test_file);
+
     // Test 1: save_config writes a file that get_config can read back correctly
     printf("Test 1: Saved config is read back correctly: ");
     ptr_config = create_config();

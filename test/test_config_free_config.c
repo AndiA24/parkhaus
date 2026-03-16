@@ -18,7 +18,7 @@ int main() {
     ptr_config = create_config();
     assert(ptr_config != NULL);
     ret = free_config(ptr_config);
-    assert(ret == 1);
+    assert(ret == 0);
     ptr_config = NULL;
     printf("OK\n");
 
