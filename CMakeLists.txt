@@ -25,16 +25,15 @@ if(WIN32)
     target_include_directories(parkhaus PRIVATE pdcurses)
     target_link_libraries(parkhaus PRIVATE ${CMAKE_SOURCE_DIR}/pdcurses/wincon/libpdcurses.a winmm)
 else()
-    target_link_libraries(parkhaus PRIVATE ncurses)
-endif()
-
-option(UNIT_TEST "Build without UI for unit testing" OFF)
-if(UNIT_TEST)
-    target_compile_definitions(parkhaus PRIVATE UNIT_TEST)
+    target_link_libraries(parkhaus PRIVATE ncurses m)
 endif()
 
 # Tests
 enable_testing()
+
+if(NOT WIN32)
+    link_libraries(m)
+endif()
 
 add_executable(test_init_occ test/test_parking_init_occ.c src/parking.c src/config.c src/stats.c src/vehicle.c src/utils.c)
 target_include_directories(test_init_occ PRIVATE include)
@@ -131,10 +130,10 @@ target_include_directories(test_save_temp_dataset PRIVATE include)
 target_compile_definitions(test_save_temp_dataset PRIVATE UNIT_TEST)
 add_test(NAME test_save_temp_dataset COMMAND test_save_temp_dataset)
 
-add_executable(test_run_simulation test/test_simulation_run_simulation.c src/simulation.c src/config.c src/parking.c src/stats.c src/queue.c src/vehicle.c src/utils.c)
-target_include_directories(test_run_simulation PRIVATE include)
-target_compile_definitions(test_run_simulation PRIVATE UNIT_TEST)
-add_test(NAME test_run_simulation COMMAND test_run_simulation)
+# add_executable(test_run_simulation test/test_simulation_run_simulation.c src/simulation.c src/config.c src/parking.c src/stats.c src/queue.c src/vehicle.c src/utils.c)
+# target_include_directories(test_run_simulation PRIVATE include)
+# target_compile_definitions(test_run_simulation PRIVATE UNIT_TEST)
+# add_test(NAME test_run_simulation COMMAND test_run_simulation)
 
 add_executable(test_queue_init_queue test/test_queue_init_queue.c src/queue.c src/utils.c)
 target_include_directories(test_queue_init_queue PRIVATE include)

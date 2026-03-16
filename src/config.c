@@ -52,6 +52,9 @@ SimConfig *create_config() {
 }
 
 int get_config(SimConfig *ptr_config) {
+    if(ptr_config == NULL) {
+        return -1;
+    }
     FILE *ptr_f = fopen(ptr_config->config_file_name, "r");
     if(!ptr_f) {
         populate_with_default(ptr_config);

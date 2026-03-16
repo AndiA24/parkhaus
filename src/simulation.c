@@ -75,8 +75,6 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats){
 #endif
     reset_all_stats(ptr_stats);
     free_parking(ptr_parking);
-    free_queue(ptr_queue);
-
     return 1;
 }
 

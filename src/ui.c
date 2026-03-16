@@ -17,8 +17,6 @@
     #include <limits.h>
 #endif
 
-#define UNIT_TEST
-
 #define WIN_HEIGHT 25
 #define WIN_WIDTH 86
 
@@ -284,7 +282,7 @@ void show_settings(SimConfig *ptr_config) {
                 render_settings(ptr_config);
                 break;
             case '7':
-                prompt_uint("Wahrscheinlichkeit für das Ankommen eines Fahrzeuges pro Schritt", &ptr_config->arrival_probability_percent, 1, 100);
+                prompt_uint("Wahrscheinlichkeit fuer das Ankommen eines Fahrzeuges pro Schritt", &ptr_config->arrival_probability_percent, 1, 100);
                 render_settings(ptr_config);
                 break;
             case '8':
@@ -396,7 +394,7 @@ void show_results(SimStats *ptr_stats) {
         print_col(12, 70, 1, A_BOLD, "%u %%", 0);
     }
     else {
-        print_col(12, 70, 1, A_BOLD, "%d %%", (ptr_stats->total_queued*100)/ptr_stats->total_entries);
+        print_col(12, 70, 1, A_BOLD, "%d%%", (ptr_stats->total_queued*100)/ptr_stats->total_entries);
     }
 
     draw_hline(13);
@@ -412,7 +410,7 @@ void show_results(SimStats *ptr_stats) {
     print_col(15, 70, 1, A_BOLD, "%u",  ptr_stats->total_parking_time);
 
     print_col(16, 2, 3, 0,      "Durchschnittliche Auslastung des Parkhaus:");
-    print_col(16, 70, 1, A_BOLD, "%.2f",  ptr_stats->avg_rel_occupancy);
+    print_col(16, 70, 1, A_BOLD, "%.2f%%",  ptr_stats->avg_rel_occupancy);
     if(ptr_stats->avg_rel_occupancy >= 85.0f) {
         draw_bar(17, 2, 68, ptr_stats->avg_rel_occupancy, 2); //rot
     }

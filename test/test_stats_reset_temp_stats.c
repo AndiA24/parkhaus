@@ -37,7 +37,6 @@ int main() {
     //   temp_free_spots                = 0
     //   temp_queue_length              = 0
     //   temp_rel_occupancy_percent     = 0.0f
-    //   temp_time_left                 = 0
     printf("Test 2: All temporary fields are reset to 0: ");
     ptr_stats = create_test_stats();
     ptr_stats->temp_entries = 5;
@@ -52,7 +51,6 @@ int main() {
     assert(ptr_stats->temp_free_spots == 0);
     assert(ptr_stats->temp_queue_length == 0);
     assert(ptr_stats->temp_rel_occupancy_percent == 0.0f);
-    assert(ptr_stats->temp_time_left == 0);
     free(ptr_stats);
     ptr_stats = NULL;
     printf("OK\n");

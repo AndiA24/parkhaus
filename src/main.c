@@ -14,8 +14,6 @@
 #include "../include/simulation.h"
 #include "../include/utils.h"
 
-int run = 1;
-
 int main(){
 
     initialize_ui();
@@ -36,15 +34,11 @@ int main(){
 
     SimStats *ptr_stats = init_simstats(ptr_config);
 
-    while(run == 1){
+    while(1){
         show_welcome(ptr_config);
         save_config(ptr_config);
         run_simulation(ptr_config, ptr_stats);
     }
-
-    free_stats(ptr_stats);
-    free_config(ptr_config);
-    return 0;
 }
 
 /*
