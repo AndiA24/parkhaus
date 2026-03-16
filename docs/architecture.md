@@ -5,6 +5,7 @@
 ## Inhalt
 - [Projektstruktur](#projektstruktur)
 - [Code-Konventionen](#code-konventionen)
+- [Fehlerbehandlung](#fehlerbehandlung)
 - [Module](#module)
 - [Datenstrukturen](#datenstrukturen)
   - [SimConfig](#simconfig)
@@ -75,6 +76,24 @@ Der Code folgt den projekteigenen [C Coding Conventions](assignments/c_coding_co
 **Formatierung**
 - 4 Leerzeichen Einrückung, keine Tabs
 - Geschweifte Klammern immer gesetzt, auch bei einzeiligen Blöcken
+
+---
+
+## Fehlerbehandlung
+
+Fehlerbehandlung wird konsequent im gesamten Projekt berücksichtigt. Alle Funktionen prüfen ihre Eingabeparameter und geben bei ungültigen oder NULL-Zeigern definierte Fehlercodes zurück (in der Regel `-1`).
+
+### Nicht-fatale Fehler – Programm läuft weiter
+
+Bei nicht-fatalen Fehlern wird die fehlerhafte Operation übersprungen und die Simulation fortgesetzt. Ein Beispiel ist `initial_occupancy()`: Wenn die gewünschte Startbelegung die Kapazität des Parkhauses überschreitet, wird die Funktion mit `-2` abgebrochen, aber das Programm läuft weiter – mit einem leeren Parkhaus statt einer ungültigen Belegung.
+
+### Fatale Fehler – Abbruch mit vollständiger Speicherfreigabe
+
+Bei schwerwiegenden Fehlern (z. B. fehlgeschlagene Speicherallokation mit `malloc`) wird die Simulation abgebrochen. In diesem Fall werden alle bis dahin allokierten Ressourcen explizit freigegeben, bevor das Programm beendet wird. Es entstehen keine Memory Leaks.
+
+### Programmabbruch via `exit()`
+
+In einigen Fehlerpfaden wird `exit()` verwendet, anstatt `free()` explizit aufzurufen. Das ist bewusst so gestaltet: `exit()` beendet den Prozess und gibt dabei den gesamten Heap frei, sodass kein manuelles Aufräumen notwendig ist. Diese Stellen sind im Code klar erkennbar und stellen keine Memory Leaks dar.
 
 ---
 
