@@ -12,10 +12,6 @@
 #include "../include/config.h"
 #include "../include/stats.h"
 #include "../include/vehicle.h"
-#include "../src/parking.c"
-#include "../src/config.c"
-#include "../src/stats.c"
-#include "../src/vehicle.c"
 
 Parking *create_test_parking(unsigned int decks, unsigned int spots_per_deck){
     Parking *ptr_parking = malloc(sizeof(*ptr_parking));
