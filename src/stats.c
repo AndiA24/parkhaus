@@ -103,7 +103,7 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
 
     // each parked vehicle is one step closer to exit, so subtract 1 from the average
     if(ptr_parking->occupied_count > 0){
-        ptr_stats->temp_time_left -= 1;
+        ptr_stats->temp_time_left -= 1.0;
     }
     else{
         ptr_stats->temp_time_left = 0;

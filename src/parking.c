@@ -45,13 +45,13 @@ int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr
         ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count] = ptr_spot;
 
         // update temp time left
-        ptr_stats->temp_time_left = (ptr_stats->temp_time_left * ptr_parking->occupied_count) + ptr_spot->ptr_vehicle->parking_duration;
-        ptr_stats->temp_time_left = ptr_stats->temp_time_left / (ptr_parking->occupied_count + 1);
+        ptr_stats->temp_time_left += ptr_spot->ptr_vehicle->parking_duration;
 
         // update occupied counts for deck and parking
         ptr_current_deck->occupied_count = ptr_current_deck->occupied_count + 1;
         ptr_parking->occupied_count = ptr_parking->occupied_count + 1;
     }
+    ptr_stats->temp_time_left = ptr_stats->temp_time_left / ((int)ptr_config->initial_occupancy);
     return 0;
 }
 
@@ -180,6 +180,16 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_stats)
                 ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count - 1] = NULL;
                 i = i - 1;  // recheck index i since it now holds a new entry after the swap
 
+
+
+                // update temp_time_left: remove exiting car's remaining time from average
+                if (ptr_parking->occupied_count > 1) {
+                    float remaining = (float)ptr_vehicle->parking_duration - (float)(sim_step - ptr_vehicle->entry_time);
+                    ptr_stats->temp_time_left = (ptr_stats->temp_time_left * ptr_parking->occupied_count - remaining) / (ptr_parking->occupied_count - 1);
+                } else {
+                    ptr_stats->temp_time_left = 0.0f;
+                }
+
                 // update occupied counts for parking and deck
                 ptr_parking->occupied_count--;
                 ptr_current_deck->occupied_count--;
@@ -228,7 +238,7 @@ int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_stat
 
             // update simulation statistics
             ptr_vehicle->entry_time = ptr_stats->step_num;
-            ptr_stats->temp_time_left = (ptr_stats->temp_time_left * ptr_parking->occupied_count) + ptr_vehicle->parking_duration;
+            ptr_stats->temp_time_left = (ptr_stats->temp_time_left * ptr_parking->occupied_count) + (float)ptr_vehicle->parking_duration;
             ptr_stats->temp_time_left = ptr_stats->temp_time_left / (ptr_parking->occupied_count + 1);
             ptr_stats->temp_entries++;
             ptr_stats->total_entries++;
