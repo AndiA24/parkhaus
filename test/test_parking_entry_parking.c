@@ -52,12 +52,12 @@ int main() {
     SimConfig *ptr_config = NULL;
 
     // Test 1: all args are NULL 
-    printf("Test 1: entry_parking(NULL, NULL, NULL)          - returns -1:  ");
+    printf("Test 1: entry_parking(NULL, NULL, NULL)          → returns -1:  ");
     assert(entry_parking(NULL, NULL, NULL) == -1);
     printf("OK\n");
 
     // Test 2: parking pointer is NULL 
-    printf("Test 2: entry_parking(NULL, valid, valid)        - returns -1:  ");
+    printf("Test 2: entry_parking(NULL, valid, valid)        → returns -1:  ");
     ptr_vehicle = create_test_vehicle();
     ptr_stats = create_test_stats();
     assert(entry_parking(NULL, ptr_vehicle, ptr_stats) == -1);
@@ -68,7 +68,7 @@ int main() {
     printf("OK\n");
 
     // Test 3: vehicle pointer is NULL 
-    printf("Test 3: entry_parking(valid, NULL, valid)        - returns -1:  ");
+    printf("Test 3: entry_parking(valid, NULL, valid)        → returns -1:  ");
     ptr_config = create_test_config(1, 2);
     ptr_stats = create_test_stats();
     ptr_parking = init_parking(ptr_config, ptr_stats);
@@ -82,7 +82,7 @@ int main() {
     printf("OK\n");
 
     // Test 4: stats pointer is NULL 
-    printf("Test 4: entry_parking(valid, valid, NULL)        - returns -1:  ");
+    printf("Test 4: entry_parking(valid, valid, NULL)        → returns -1:  ");
     ptr_config = create_test_config(1, 2);
     ptr_stats = create_test_stats();
     ptr_parking = init_parking(ptr_config, ptr_stats);
@@ -99,7 +99,7 @@ int main() {
     printf("OK\n");
 
     // Test 5: park one vehicle 
-    printf("Test 5: park one vehicle                         - returns  1:  ");
+    printf("Test 5: park one vehicle                         → returns  1:  ");
     ptr_config = create_test_config(1, 2);
     ptr_stats = create_test_stats();
     ptr_parking = init_parking(ptr_config, ptr_stats);
@@ -117,7 +117,7 @@ int main() {
     printf("OK\n");
 
     // Test 6: stats updated after entry 
-    printf("Test 6: stats updated after entry                - entries +1:  ");
+    printf("Test 6: stats updated after entry                → entries +1:  ");
     ptr_config = create_test_config(1, 2);
     ptr_stats = create_test_stats();
     ptr_stats->step_num = 5;                                    
@@ -136,7 +136,7 @@ int main() {
     printf("OK\n");
 
     // Test 7: fill all spots 
-    printf("Test 7: fill all spots (2 decks x 2 spots)       - full:  ");
+    printf("Test 7: fill all spots (2 decks x 2 spots)       → full:  ");
     ptr_config = create_test_config(2, 2);                     
     ptr_stats = create_test_stats();
     ptr_parking = init_parking(ptr_config, ptr_stats);
@@ -156,7 +156,7 @@ int main() {
     printf("OK\n");
 
     // Test 8: park on full parking → returns 0
-    printf("Test 8: entry_parking on full parking            - returns  0:  ");
+    printf("Test 8: entry_parking on full parking            → returns  0:  ");
     ptr_config = create_test_config(1, 1);                     
     ptr_stats = create_test_stats();
     ptr_parking = init_parking(ptr_config, ptr_stats);

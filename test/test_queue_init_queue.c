@@ -35,14 +35,14 @@ int main() {
 
     // Test 3: Two calls return independent pointers
     printf("Test 3: init_queue() called twice      → different pointers:  ");
-    ptr_queue1  = init_queue();
+    ptr_queue1 = init_queue();
     ptr_queue2 = init_queue();
-    assert(ptr_queue1  != NULL);
+    assert(ptr_queue1 != NULL);
     assert(ptr_queue2 != NULL);
-    assert(ptr_queue1  != ptr_queue2);
+    assert(ptr_queue1 != ptr_queue2);
     free_queue(ptr_queue1);
     free_queue(ptr_queue2);
-    ptr_queue1  = NULL;
+    ptr_queue1 = NULL;
     ptr_queue2 = NULL;
     printf("OK\n");
 
