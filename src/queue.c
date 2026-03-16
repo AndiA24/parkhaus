@@ -91,15 +91,13 @@ void increment_queue_time(Queue *ptr_queue)
     }
 }
 
-void delete_queue(Queue *ptr_queue, SimStats *ptr_simstats) 
+void delete_queue(Queue *ptr_queue, SimStats *ptr_simstats)
 {
-    while (ptr_queue->ptr_head != NULL)                         
+    while (ptr_queue->ptr_head != NULL)
     {
         Vehicle *ptr_vehicle = dequeue(ptr_queue, ptr_simstats); // dequeue each node until queue is empty
         free_vehicle(ptr_vehicle);                            // free vehicle memory
     }
-
-    free_queue(ptr_queue);
 }
 
 void free_queue(Queue *ptr_queue) 

@@ -13,6 +13,21 @@
 #include "config.h"
 
 /**
+ * @brief Initializes the curses environment and creates the main window.
+ *
+ * Sets up ncurses/pdcurses, creates a centered WIN_HEIGHT×WIN_WIDTH window,
+ * enables keypad input, and initializes the four color pairs used throughout the UI.
+ */
+void initialize_ui();
+
+/**
+ * @brief Tears down the curses environment and destroys the main window.
+ *
+ * Deletes the window created by initialize_ui() and restores the terminal.
+ */
+void end();
+
+/**
  * @brief Displays the welcome screen and handles its input loop.
  *
  * Renders the welcome screen and waits for user input.
@@ -20,9 +35,19 @@
  * - Press `S` to open the settings menu.
  * - Press `Q` to quit the application.
  *
- * @param[in,out] ptr_config Pointer to the simulation configuration struct.
+ * @param[in] ptr_config Pointer to the simulation configuration struct.
  */
 void show_welcome(SimConfig *ptr_config);
+
+/**
+ * @brief Renders the welcome screen to the window.
+ *
+ * Draws the title, project description, author credits, and keyboard hint footer.
+ * Does not handle any input — call show_welcome() for the full interactive loop.
+ *
+ * @param[in] ptr_config Pointer to the simulation configuration struct.
+ */
+void render_welcome(SimConfig *ptr_config);
 
 /**
  * @brief Displays the settings menu and handles its input loop.
@@ -37,25 +62,6 @@ void show_welcome(SimConfig *ptr_config);
 void show_settings(SimConfig *ptr_config);
 
 /**
- * @brief Prompts the user to enter a new value for a configuration field.
- *
- * Displays the field name and its current value, then repeatedly reads
- * user input until a valid value is entered. For numeric fields the input
- * must be a valid number within [@p min, @p max]. For string fields (i.e.
- * the config file name) the input must be a valid string whose length fits
- * within the destination buffer.
- *
- * @param text              Human-readable name of the field being edited,
- *                          shown in the prompt.
- * @param[in,out] ptr_current_value Pointer to the field that will be updated with
- *                          the validated input. The type is inferred from
- *                          context (numeric or string).
- * @param[in] min               Minimum accepted value (inclusive) for numeric fields.
- * @param[in] max               Maximum accepted value (inclusive) for numeric fields.
- */
-void prompt_input(char text[], void *ptr_current_value, long min, long max);
-
-/**
  * @brief Renders the current simulation settings to the screen.
  *
  * Prints all configuration fields and their current values in a formatted
@@ -67,14 +73,56 @@ void prompt_input(char text[], void *ptr_current_value, long min, long max);
 void render_settings(SimConfig *ptr_config);
 
 /**
+ * @brief Prompts the user to enter an unsigned integer within a given range.
+ *
+ * Clears the prompt area, displays the label and accepted range, reads one line
+ * of input, and validates it. On invalid input an error message is shown and the
+ * user must press a key before control returns. On valid input *ptr_value is updated.
+ *
+ * @param[in]  ptr_label  Human-readable name of the field, shown in the prompt.
+ * @param[in,out] ptr_value  Pointer to the unsigned int that will be updated.
+ * @param[in]  min        Minimum accepted value (inclusive).
+ * @param[in]  max        Maximum accepted value (inclusive).
+ */
+void prompt_uint(char *ptr_label, unsigned int *ptr_value, int min, int max);
+
+/**
+ * @brief Prompts the user to enter a non-empty string.
+ *
+ * Clears the prompt area, displays the label, reads up to size-1 characters,
+ * and validates that the input is non-empty. On invalid input an error message
+ * is shown and the old value is kept. On valid input ptr_value is updated.
+ *
+ * @param[in]  label      Human-readable name of the field, shown in the prompt.
+ * @param[in,out] ptr_value  Destination buffer that will receive the new string.
+ * @param[in]  size       Size of the destination buffer in bytes.
+ */
+void prompt_string(char *label, char *ptr_value, int size);
+
+/**
+ * @brief Displays a single message and optionally terminates the program.
+ *
+ * Clears the window, prints ptr_msg at the given row and color, then waits for
+ * the user to press Enter. If kill is non-zero, pressing Enter calls end() and
+ * quit(), ending the process.
+ *
+ * @param[in]     col        Row at which to print the message.
+ * @param[in]     ptr_msg    Message string to display.
+ * @param[in]     color      Color pair index to use for the message. 1 = green, 2 = red, 3 = white 4 = cyan
+ * @param[in]     kill       If non-zero, quit the program after the user confirms.
+ * @param[in] ptr_config Pointer to the simulation configuration (passed to quit()).
+ */
+void show_message(int col, const char *ptr_msg, int color, int kill, SimConfig *ptr_config);
+
+/**
  * @brief Displays live statistics for the current simulation time step.
  *
  * Prints per-step metrics including exits, entries, relative occupancy,
- * and current queue length. Intended to be called once per simulation step
- * while the simulation is running.
+ * queue length, free spots, and average remaining parking time.
+ * Intended to be called once per simulation step while the simulation is running.
  *
- * @param ptr_stats Pointer to the simulation statistics struct containing
- *                  the current time-step data.
+ * @param[in] ptr_stats Pointer to the simulation statistics struct containing
+ *                      the current time-step data.
  */
 void show_running(SimStats *ptr_stats);
 
@@ -86,7 +134,7 @@ void show_running(SimStats *ptr_stats);
  * the steps at which peaks occurred.
  *
  * @param[in] ptr_stats Pointer to the simulation statistics struct containing
- *                  the final aggregated data.
+ *                      the final aggregated data.
  */
 void show_results(SimStats *ptr_stats);
 
