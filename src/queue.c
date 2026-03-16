@@ -12,6 +12,7 @@
 #include "../include/queue.h"
 #include "../include/vehicle.h"
 #include "../include/stats.h"
+#include "../include/utils.h"
 
 Queue* init_queue()
 {
@@ -33,14 +34,14 @@ int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle)
 {
     if (ptr_queue == NULL || ptr_vehicle == NULL)
     {
-        printf("Error: Failed to enqueue vehicle. Invalid argument.\n");
+        output(2, "Error: Failed to enqueue vehicle. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
 
     QueueNode *ptr_new_node = malloc(sizeof *ptr_new_node);     // allocate memory for new node
     if (ptr_new_node == NULL)
     {
-        printf("Error: Failed to allocate memory for new node.\n");
+        output(2, "Error: Failed to allocate memory for new node.\n", 2, 0, NULL);
         return -1;
     }
     
@@ -63,7 +64,7 @@ Vehicle* dequeue(Queue *ptr_queue, SimStats *ptr_simstats)
 {
     if (ptr_queue == NULL || ptr_simstats == NULL)
     {
-        printf("Error: Failed to dequeue vehicle. Invalid argument.\n");
+        output(2, "Error: Failed to dequeue vehicle. Invalid argument.\n", 2, 0, NULL);
         return NULL;
     }
     if (ptr_queue->ptr_head == NULL) 
@@ -98,7 +99,7 @@ int increment_queue_time(Queue *ptr_queue)
 {
     if (ptr_queue == NULL)
     {
-        printf("Error: Failed to increment queue time. Invalid argument.\n");
+        output(2, "Error: Failed to increment queue time. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
     
@@ -115,7 +116,7 @@ int delete_queue(Queue *ptr_queue, SimStats *ptr_simstats)
 {
     if (ptr_queue == NULL || ptr_simstats == NULL)
     {
-        printf("Error: Failed to delete queue. Invalid argument.\n");
+        output(2, "Error: Failed to delete queue. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
 
@@ -136,7 +137,7 @@ int free_queue(Queue *ptr_queue)
 {
     if (ptr_queue == NULL)
     {
-        printf("Error: Failed to free memory allocated for queue. Invalid argument.\n");
+        output(2, "Error: Failed to free memory allocated for queue. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
     free(ptr_queue);                                            // free queue memory
