@@ -81,6 +81,13 @@ int get_config(SimConfig *ptr_config) {
 }
 
 int save_config(SimConfig *ptr_config) {
+    FILE *ptr_check = fopen(ptr_config->config_file_name, "r");
+    int file_existed = 0;
+    if(ptr_check != NULL) {
+        file_existed = 1;
+        fclose(ptr_check);
+    }
+
     FILE *ptr_f = fopen(ptr_config->config_file_name, "w");
     if(!ptr_f) {
         return -1;
@@ -97,7 +104,10 @@ int save_config(SimConfig *ptr_config) {
         ptr_config->output_file_name,
         ptr_config->seed);
     fclose(ptr_f);
-    return 0;
+    if(file_existed) {
+        return 0;
+    }
+    return 1;
 }
 
 int free_config(SimConfig *ptr_config) {
