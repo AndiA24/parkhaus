@@ -14,7 +14,9 @@
 #include "../include/config.h"
 #include "../include/queue.h"
 #include "../include/stats.h"
+#ifndef UNIT_TEST
 #include "../include/ui.h"
+#endif
 #include "../include/utils.h"
 
 int rand_arrival(SimConfig *ptr_config){
@@ -56,7 +58,9 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats){
         update_simstats(ptr_stats, ptr_parking, ptr_queue);
         update_peak(ptr_stats);
         save_temp_dataset(ptr_stats, ptr_output_file);
+#ifndef UNIT_TEST
         show_running(ptr_stats);
+#endif
         reset_temp_stats(ptr_stats);
         increment_queue_time(ptr_queue);
 
@@ -66,7 +70,9 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats){
     delete_queue(ptr_queue, ptr_stats);
     save_final_dataset(ptr_stats, ptr_output_file);
     close_output_file(ptr_output_file, ptr_config);
+#ifndef UNIT_TEST
     show_results(ptr_stats);
+#endif
     reset_all_stats(ptr_stats);
     free_parking(ptr_parking);
     free_queue(ptr_queue);
