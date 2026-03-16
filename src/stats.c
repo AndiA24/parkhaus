@@ -133,7 +133,8 @@ int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 
     // write per-step statistics 
     fprintf(ptr_output_file,
-        "%u,%u,%.2f,%u,%u,%u\n",
+        "%u,%u,%u,%.2f,%u,%u,%u\n",
+        ptr_stats->step_num,
         ptr_stats->temp_exits,
         ptr_stats->temp_entries,
         ptr_stats->temp_rel_occupancy_percent,
