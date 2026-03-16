@@ -39,7 +39,7 @@ FILE *create_output_file(SimConfig *ptr_config)
     // open file for writing (silently overwrite if it already exists)
     char temp_string[80];
     snprintf(temp_string, sizeof(temp_string), "%s.csv", ptr_config->output_file_name); //always add .csv to end of a filename
-    ptr_output_file = fopen(temp_string, "a");
+    ptr_output_file = fopen(temp_string, "w");
     if (ptr_output_file == NULL)
     {
         return NULL;
@@ -101,6 +101,14 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
         ptr_stats->time_full_occupancy ++;
     }
 
+    // each parked vehicle is one step closer to exit, so subtract 1 from the average
+    if(ptr_parking->occupied_count > 0){
+        ptr_stats->temp_time_left -= 1;
+    }
+    else{
+        ptr_stats->temp_time_left = 0;
+    }
+
     return 0;
 }
 
@@ -156,7 +164,6 @@ int reset_temp_stats(SimStats *ptr_stats){
     ptr_stats->temp_free_spots = 0;
     ptr_stats->temp_queue_length = 0;
     ptr_stats->temp_rel_occupancy_percent = 0;
-    ptr_stats->temp_time_left = 0;
 
     return 0;
 }

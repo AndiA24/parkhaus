@@ -20,12 +20,15 @@
 #define MIN_PARKING_DURATION_DEFAULT 10
 #define SIM_DURATION_STEPS_DEFAULT 1000
 #define ARRIVAL_PERCENT_DEFAULT 70
-#define OUTPUT_FILE_NAME_DEFAULT "parkhaus_results.csv"
-#define CONFIG_FILE_NAME_DEFAULT "parkhaus_config"
+#define OUTPUT_FILE_NAME_DEFAULT "parkhaus_results"
+#define CONFIG_FILE_NAME_DEFAULT "parkhaus_config.csv"
 #define SEED_DEFAULT 69
 
 
-void populate_with_default(SimConfig *ptr_config) {
+int populate_with_default(SimConfig *ptr_config) {
+    if(ptr_config == NULL) {
+        return -1;
+    }
     ptr_config->num_decks = NUM_DECKS_DEFAULT;
     ptr_config->spots_per_deck = SPOTS_PER_DECK_DEFAULT;
     ptr_config->initial_occupancy = INITIAL_OCCUPANCY_DEFAULT;
@@ -36,6 +39,7 @@ void populate_with_default(SimConfig *ptr_config) {
     strcpy(ptr_config->output_file_name, OUTPUT_FILE_NAME_DEFAULT);
     strcpy(ptr_config->config_file_name, CONFIG_FILE_NAME_DEFAULT);
     ptr_config->seed = SEED_DEFAULT;
+    return 0;
 }
 
 SimConfig *create_config() {
@@ -48,6 +52,9 @@ SimConfig *create_config() {
 }
 
 int get_config(SimConfig *ptr_config) {
+    if(ptr_config == NULL) {
+        return -1;
+    }
     FILE *ptr_f = fopen(ptr_config->config_file_name, "r");
     if(!ptr_f) {
         populate_with_default(ptr_config);
@@ -77,6 +84,13 @@ int get_config(SimConfig *ptr_config) {
 }
 
 int save_config(SimConfig *ptr_config) {
+    FILE *ptr_check = fopen(ptr_config->config_file_name, "r");
+    int file_existed = 0;
+    if(ptr_check != NULL) {
+        file_existed = 1;
+        fclose(ptr_check);
+    }
+
     FILE *ptr_f = fopen(ptr_config->config_file_name, "w");
     if(!ptr_f) {
         return -1;
@@ -93,6 +107,9 @@ int save_config(SimConfig *ptr_config) {
         ptr_config->output_file_name,
         ptr_config->seed);
     fclose(ptr_f);
+    if(file_existed) {
+        return 0;
+    }
     return 1;
 }
 
@@ -103,7 +120,7 @@ int free_config(SimConfig *ptr_config) {
         return -1;
     }
     free(ptr_config);
-    return 1;
+    return 0;
 }
 
 /*

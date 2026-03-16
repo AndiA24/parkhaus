@@ -44,6 +44,10 @@ int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr
         ptr_spot->occupied = 1;
         ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count] = ptr_spot;
 
+        // update temp time left
+        ptr_stats->temp_time_left = (ptr_stats->temp_time_left * ptr_parking->occupied_count) + ptr_spot->ptr_vehicle->parking_duration;
+        ptr_stats->temp_time_left = ptr_stats->temp_time_left / (ptr_parking->occupied_count + 1);
+
         // update occupied counts for deck and parking
         ptr_current_deck->occupied_count = ptr_current_deck->occupied_count + 1;
         ptr_parking->occupied_count = ptr_parking->occupied_count + 1;
@@ -143,16 +147,16 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
 
 
 
-int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
+int check_exit(Parking *ptr_parking, SimStats *ptr_stats)
 {
     // validate input pointers
-    if (ptr_parking == NULL || ptr_simstats == NULL)
+    if (ptr_parking == NULL || ptr_stats == NULL)
     {
         output(2, "Error: Failed to check vehicle exits. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
     
-    int sim_step = ptr_simstats->step_num;
+    int sim_step = ptr_stats->step_num;
 
     // iterate through all currently occupied spots
     for (int i = 0; i < (int)ptr_parking->occupied_count; i++)
@@ -181,9 +185,9 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
                 ptr_current_deck->occupied_count--;
 
                 // update simulation statistics
-                ptr_simstats->temp_exits++;
-                ptr_simstats->total_exits++;
-                ptr_simstats->total_parking_time += ptr_vehicle->parking_duration;
+                ptr_stats->temp_exits++;
+                ptr_stats->total_exits++;
+                ptr_stats->total_parking_time += ptr_vehicle->parking_duration;
 
                 // free vehicle memory and clear spot
                 free_vehicle(ptr_vehicle);
@@ -197,10 +201,10 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
 
 
 
-int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_simstats)
+int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_stats)
 {
     // validate input pointers
-    if (ptr_parking == NULL || ptr_vehicle == NULL || ptr_simstats == NULL)
+    if (ptr_parking == NULL || ptr_vehicle == NULL || ptr_stats == NULL)
     {
         output(2, "Error: Failed to park vehicle. Invalid argument.\n", 2, 0, NULL);
         return -1; 
@@ -222,14 +226,16 @@ int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sims
             // add this spot to the array of currently occupied spots
             ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count] = ptr_spot;
 
+            // update simulation statistics
+            ptr_vehicle->entry_time = ptr_stats->step_num;
+            ptr_stats->temp_time_left = (ptr_stats->temp_time_left * ptr_parking->occupied_count) + ptr_vehicle->parking_duration;
+            ptr_stats->temp_time_left = ptr_stats->temp_time_left / (ptr_parking->occupied_count + 1);
+            ptr_stats->temp_entries++;
+            ptr_stats->total_entries++;
+
             // increment occupied counts
             ptr_parking->occupied_count++;               
             ptr_current_deck->occupied_count++;
-            
-            // update simulation statistics
-            ptr_vehicle->entry_time = ptr_simstats->step_num;
-            ptr_simstats->temp_entries++;
-            ptr_simstats->total_entries++;
 
             return 1;
         }
@@ -241,17 +247,17 @@ int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sims
 
 
 
-int get_free_spots(Parking *ptr_parking, SimStats *ptr_simstats)
+int get_free_spots(Parking *ptr_parking, SimStats *ptr_stats)
 {
     // validate input pointers
-    if (ptr_parking == NULL || ptr_simstats == NULL)
+    if (ptr_parking == NULL || ptr_stats == NULL)
     {
         output(2, "Error: Failed to get free spots. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
 
     // calculate free spots
-    ptr_simstats->temp_free_spots = ptr_parking->total_capacity - ptr_parking->occupied_count;
+    ptr_stats->temp_free_spots = ptr_parking->total_capacity - ptr_parking->occupied_count;
     return 1;
 }
 

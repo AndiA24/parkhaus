@@ -14,8 +14,6 @@
 #include "../include/simulation.h"
 #include "../include/utils.h"
 
-int run = 1;
-
 int main(){
 
     initialize_ui();
@@ -41,7 +39,7 @@ int main(){
     }
     
 
-    while(run == 1){
+    while(1){
         show_welcome(ptr_config);
         if (save_config(ptr_config) == -1) {
             output(2, "Error: Failed to create config file. Simulation stopped.", 2, 1, ptr_config);
@@ -52,10 +50,6 @@ int main(){
             return -1;
         }
     }
-
-    free_stats(ptr_stats);
-    free_config(ptr_config);
-    return 0;
 }
 
 /*

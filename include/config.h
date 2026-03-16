@@ -36,7 +36,7 @@ typedef struct {
  *
  * @param[out] ptr_config Pointer to the SimConfig structure to be populated.
  */
-void populate_with_default(SimConfig *ptr_config);
+int populate_with_default(SimConfig *ptr_config);
 
 /**
  * @brief Initializes the SimConfig structure with empty values.
