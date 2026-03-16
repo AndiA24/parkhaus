@@ -97,7 +97,7 @@ int save_config(SimConfig *ptr_config) {
         ptr_config->output_file_name,
         ptr_config->seed);
     fclose(ptr_f);
-    return 1;
+    return 0;
 }
 
 int free_config(SimConfig *ptr_config) {
