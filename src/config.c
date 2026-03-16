@@ -20,8 +20,8 @@
 #define MIN_PARKING_DURATION_DEFAULT 10
 #define SIM_DURATION_STEPS_DEFAULT 1000
 #define ARRIVAL_PERCENT_DEFAULT 70
-#define OUTPUT_FILE_NAME_DEFAULT "parkhaus_results.csv"
-#define CONFIG_FILE_NAME_DEFAULT "parkhaus_config"
+#define OUTPUT_FILE_NAME_DEFAULT "parkhaus_results"
+#define CONFIG_FILE_NAME_DEFAULT "parkhaus_config.csv"
 #define SEED_DEFAULT 69
 
 
