@@ -15,17 +15,17 @@ int main() {
 
     // Test 1: NULL Guard
     printf("Test 1: Checking NULL Guard: ");
-    assert(close_output_file(NULL, NULL) == -1);
+    assert(close_output_file(NULL) == -1);
     printf("OK\n");
 
     // Test 2: Open OUtput-file is closed successfully
     //
     // Expected values after call:
-    //   return value = 1
+    //   return value = 0
     printf("Test 2: Open Output-file is closed: ");
     ptr_file = tmpfile();
     assert(ptr_file != NULL);
-    assert(close_output_file(ptr_file, NULL) == 0);
+    assert(close_output_file(ptr_file) == 0);
     ptr_file = NULL;
     printf("OK\n");
 

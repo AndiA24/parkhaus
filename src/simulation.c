@@ -114,7 +114,7 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats){
             output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
             return -1;
     }
-    if(close_output_file(ptr_output_file, ptr_config) == -1){
+    if(close_output_file(ptr_output_file) == -1){
             output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
             return -1;
     }

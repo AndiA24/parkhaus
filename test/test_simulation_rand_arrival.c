@@ -25,7 +25,7 @@ int main() {
 
     // Test 1: ptr_config is NULL
     printf("Test 1: ptr_config is NULL: ");
-    assert(rand_arrival(NULL) == 0);
+    assert(rand_arrival(NULL) == -1);
     printf("OK\n");
 
     // Test 2: arrival_probability_percent = 0
