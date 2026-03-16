@@ -42,6 +42,10 @@ int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr
         ptr_spot->occupied = 1;
         ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count] = ptr_spot;
 
+        // update temp time left
+        ptr_stats->temp_time_left = (ptr_stats->temp_time_left * ptr_parking->occupied_count) + ptr_spot->ptr_vehicle->parking_duration;
+        ptr_stats->temp_time_left = ptr_stats->temp_time_left / (ptr_parking->occupied_count + 1);
+
         // update occupied counts for deck and parking
         ptr_current_deck->occupied_count = ptr_current_deck->occupied_count + 1;
         ptr_parking->occupied_count = ptr_parking->occupied_count + 1;
@@ -221,14 +225,16 @@ int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sims
             // add this spot to the array of currently occupied spots
             ptr_parking->ptr_occupied_spots[ptr_parking->occupied_count] = ptr_spot;
 
+            // update simulation statistics
+            ptr_vehicle->entry_time = ptr_simstats->step_num;
+            ptr_simstats->temp_time_left = (ptr_simstats->temp_time_left * ptr_parking->occupied_count) + ptr_vehicle->parking_duration;
+            ptr_simstats->temp_time_left = ptr_simstats->temp_time_left / (ptr_parking->occupied_count + 1);
+            ptr_simstats->temp_entries++;
+            ptr_simstats->total_entries++;
+
             // increment occupied counts
             ptr_parking->occupied_count++;               
             ptr_current_deck->occupied_count++;
-            
-            // update simulation statistics
-            ptr_vehicle->entry_time = ptr_simstats->step_num;
-            ptr_simstats->temp_entries++;
-            ptr_simstats->total_entries++;
 
             return 1;
         }

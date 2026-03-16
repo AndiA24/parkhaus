@@ -101,6 +101,14 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
         ptr_stats->time_full_occupancy ++;
     }
 
+    // each parked vehicle is one step closer to exit, so subtract 1 from the average
+    if(ptr_parking->occupied_count > 0){
+        ptr_stats->temp_time_left -= 1;
+    }
+    else{
+        ptr_stats->temp_time_left = 0;
+    }
+
     return 0;
 }
 
@@ -133,7 +141,7 @@ int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 
     // write per-step statistics 
     fprintf(ptr_output_file,
-        "%u,%u,%.2f,%u,%u,%u\n",
+        "%u,%u,%.2f,%u,%u,%.2f\n",
         ptr_stats->temp_exits,
         ptr_stats->temp_entries,
         ptr_stats->temp_rel_occupancy_percent,
@@ -155,7 +163,6 @@ int reset_temp_stats(SimStats *ptr_stats){
     ptr_stats->temp_free_spots = 0;
     ptr_stats->temp_queue_length = 0;
     ptr_stats->temp_rel_occupancy_percent = 0;
-    ptr_stats->temp_time_left = 0;
 
     return 0;
 }
