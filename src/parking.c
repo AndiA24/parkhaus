@@ -17,12 +17,13 @@
 
 int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_parking == NULL || ptr_config == NULL || ptr_stats == NULL){
-        output(2, "Error: Failed to create initial occupancy. Invalid Argument.\n", 2, 0, NULL);
-        return ptr_parking;
+        printf("Error: Failed to create initial occupancy. Invalid Argument.\n");
+        return -1;
     }    
     if(ptr_config->initial_occupancy > ptr_parking->total_capacity){
-        output(2, "Error: Initial Occupancy exceeds total capacity of Parking.\n Starting without initial occupancy.\n", 2, 0, NULL);
-        return ptr_parking;
+        printf("Error: Initial Occupancy exceeds total capacity of Parking. ");
+        printf("Parking initialized without initial occupancy.\n");
+        return -2;
     }
     for(int i = 0; i < (int)ptr_config->initial_occupancy; i++){
         ParkingDeck *ptr_current_deck =((ptr_parking->ptr_decks) + (i / ptr_config->spots_per_deck));
@@ -35,7 +36,7 @@ int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr
         if(ptr_spot->ptr_vehicle == NULL){
             output(2, "Error: Failed to create Vehicle.\n", 2, 0, NULL);
             free_parking(ptr_parking);
-            return NULL;
+            return -1;
         }
         // register spot in occupied spots array
         ptr_spot->occupied = 1;
@@ -153,7 +154,7 @@ int check_exit(Parking *ptr_parking, SimStats *ptr_simstats)
     int sim_step = ptr_simstats->step_num;
 
     // iterate through all currently occupied spots
-    for (int i = 0; i < ptr_parking->occupied_count; i++)
+    for (int i = 0; i < (int)ptr_parking->occupied_count; i++)
     {
         ParkingSpot *ptr_spot = ptr_parking->ptr_occupied_spots[i];
         ParkingDeck *ptr_current_deck = (ptr_parking->ptr_decks) + (ptr_spot->id / ptr_parking->ptr_decks->capacity);
@@ -264,7 +265,7 @@ int free_parking(Parking *ptr_parking) {
     }
 
     // free all vehicles in occupied spots 
-    for (int i = 0; i < ptr_parking->occupied_count; i++) {
+    for (int i = 0; i < (int)ptr_parking->occupied_count; i++) {
         if (ptr_parking->ptr_occupied_spots[i]->ptr_vehicle != NULL) {
             free_vehicle(ptr_parking->ptr_occupied_spots[i]->ptr_vehicle);
             ptr_parking->ptr_occupied_spots[i]->ptr_vehicle = NULL;
@@ -273,7 +274,7 @@ int free_parking(Parking *ptr_parking) {
     }
 
     // free each deck's spot array and stack
-    for (int i = 0; i < ptr_parking->decks; i++) {
+    for (int i = 0; i < (int)ptr_parking->decks; i++) {
         free(ptr_parking->ptr_decks[i].ptr_spots);
         free(ptr_parking->ptr_decks[i].ptr_stack);
         ptr_parking->ptr_decks[i].ptr_spots = NULL;
