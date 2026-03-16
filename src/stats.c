@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "../include/stats.h"
 #include "../include/parking.h"
@@ -78,7 +79,8 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
 
     // calculate relative occupancy for current step
     if(ptr_parking->total_capacity > 0){
-        ptr_stats->temp_rel_occupancy_percent = ((float)ptr_parking->occupied_count / (float)ptr_parking->total_capacity) * 100;
+        // multiply with 1000 and floor to round down to two decimals
+        ptr_stats->temp_rel_occupancy_percent = floor(((float)ptr_parking->occupied_count / (float)ptr_parking->total_capacity) * 10000) / 100;
     }
     else{
         ptr_stats->temp_rel_occupancy_percent = 0;
@@ -99,7 +101,7 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
         ptr_stats->time_full_occupancy ++;
     }
 
-    return 1;
+    return 0;
 }
 
 
@@ -118,7 +120,7 @@ int update_peak(SimStats *ptr_stats){
         ptr_stats->peak_queue_length = ptr_stats->temp_queue_length;
         ptr_stats->step_longest_queue = ptr_stats->step_num;
     }
-    return 1;
+    return 0;
 }
 
 
@@ -154,7 +156,8 @@ int reset_temp_stats(SimStats *ptr_stats){
     ptr_stats->temp_queue_length = 0;
     ptr_stats->temp_rel_occupancy_percent = 0;
     ptr_stats->temp_time_left = 0;
-    return 1;
+
+    return 0;
 }
 
 
@@ -223,7 +226,7 @@ int reset_all_stats(SimStats *ptr_stats){
     ptr_stats->peak_rel_occupancy = 0;
     ptr_stats->step_highest_occupancy = 0;
 
-    return 1;
+    return 0;
 }
 
 
@@ -233,7 +236,7 @@ int free_stats(SimStats *ptr_stats){
         return -1;
     }
     free(ptr_stats);
-    return 1;
+    return 0;
 }
 
 /*

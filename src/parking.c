@@ -15,7 +15,7 @@
 #include "../include/parking.h"
 #include "../include/utils.h"
 
-Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats){
+int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_parking == NULL || ptr_config == NULL || ptr_stats == NULL){
         output(2, "Error: Failed to create initial occupancy. Invalid Argument.\n", 2, 0, NULL);
         return ptr_parking;
@@ -45,12 +45,16 @@ Parking *initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats
         ptr_current_deck->occupied_count = ptr_current_deck->occupied_count + 1;
         ptr_parking->occupied_count = ptr_parking->occupied_count + 1;
     }
-    return ptr_parking;
+    return 0;
 }
 
 
 
 Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
+    if(ptr_config == NULL || ptr_stats == NULL){
+        printf("Error: Failed to create Parking. Invalid Arguments.\n");
+        return NULL;
+    }
     Parking *ptr_parking = malloc(sizeof(*ptr_parking));
     if(ptr_parking == NULL){
         output(2, "Failed to allocate memory for the Parking-Struct.\n", 2, 1, ptr_config);
@@ -119,9 +123,16 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     
     // fill with initial occupancy
     if(ptr_config->initial_occupancy){
-        ptr_parking = initial_occupancy(ptr_parking, ptr_config, ptr_stats);
-        if(ptr_parking == NULL){
-            output(2, "Error: Failed during creating initial occupancy.\n", 2, 0, NULL);
+        if(initial_occupancy(ptr_parking, ptr_config, ptr_stats) == -1){
+            printf("Error: Failed during creating initial occupancy.\n");
+            for(int i = 0; i < (int)ptr_config->num_decks; i++){
+                free((ptr_parking->ptr_decks + i)->ptr_spots);
+                (ptr_parking->ptr_decks + i)->ptr_spots = NULL;
+            }
+            free(ptr_parking->ptr_decks);
+            ptr_parking->ptr_decks = NULL;
+            free(ptr_parking);
+            ptr_parking = NULL;
             return NULL;
         }
     }
@@ -275,8 +286,7 @@ int free_parking(Parking *ptr_parking) {
     free(ptr_parking->ptr_decks);
     ptr_parking->ptr_decks = NULL;
     free(ptr_parking);
-
-    return 1;
+    return 0;
 }
 
 
