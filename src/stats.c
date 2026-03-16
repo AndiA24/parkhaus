@@ -191,7 +191,7 @@ int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 }
 
 
-int close_output_file(FILE *ptr_output_file){
+int close_output_file(FILE *ptr_output_file, SimConfig *ptr_config){
     if(ptr_output_file == NULL){
         printf("Error: Failed to close output file. Invalid Argument.\n");
         return -1;

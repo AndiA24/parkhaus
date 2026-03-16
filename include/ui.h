@@ -47,7 +47,7 @@ void show_welcome(SimConfig *ptr_config);
  *
  * @param[in] ptr_config Pointer to the simulation configuration struct.
  */
-void render_welcome(SimConfig *ptr_config);
+void render_welcome();
 
 /**
  * @brief Displays the settings menu and handles its input loop.

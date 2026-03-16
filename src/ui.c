@@ -115,7 +115,7 @@ void prompt_uint(char *ptr_label, unsigned int *ptr_value, int min, int max) {
     curs_set(0);
 
     char *ptr_end;
-    unsigned long val = strtoul(buf, &ptr_end, 10);
+    int val = strtoul(buf, &ptr_end, 10);
     if(ptr_end == buf || *ptr_end != '\0' || val < min || val > max) {
         print_col(19, 2, 2, 0, "Ungueltig! Der erlaubte Bereich ist: %u-%u", min, max);
         wrefresh(ptr_win);
@@ -153,7 +153,7 @@ void prompt_string(char *label, char *ptr_value, int size) {
 
 //MARK: render things
 
-void render_welcome(SimConfig *ptr_config) {
+void render_welcome() {
     werase(ptr_win);
 
     int w = getmaxx(ptr_win);
@@ -327,7 +327,7 @@ void show_message(int col,const char *ptr_msg, int color, int kill, SimConfig *p
 void show_welcome(SimConfig *ptr_config) {
     int active = 1;
     while (active) {
-        render_welcome(ptr_config);
+        render_welcome();
         int key = wgetch(ptr_win);
         switch (key) {
         case 'q':
@@ -339,7 +339,7 @@ void show_welcome(SimConfig *ptr_config) {
         case 's':
         case 'S':
             show_settings(ptr_config);
-            render_welcome(ptr_config);
+            render_welcome();
             break;
         case '\n':
         case KEY_ENTER:

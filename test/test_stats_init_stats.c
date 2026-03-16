@@ -23,7 +23,7 @@ int main(){
 
     // Test 1: Return value is not NULL
     printf("Test 1: Return value is not NULL: ");
-    ptr_stats = init_simstats();
+    ptr_stats = init_simstats(NULL);
     assert(ptr_stats != NULL);
     free_stats(ptr_stats);
     ptr_stats = NULL;
@@ -31,7 +31,7 @@ int main(){
 
     // Test 2: All fields are zero-initialized
     printf("Test 2: All fields are zero after init: ");
-    ptr_stats = init_simstats();
+    ptr_stats = init_simstats(NULL);
     assert(ptr_stats != NULL);
     assert(ptr_stats->step_num                   == 0);
     assert(ptr_stats->id_count                   == 0);
@@ -58,8 +58,8 @@ int main(){
 
     // Test 3: Two calls return independent pointers
     printf("Test 3: Two calls return different pointers: ");
-    ptr_stats  = init_simstats();
-    ptr_stats2 = init_simstats();
+    ptr_stats  = init_simstats(NULL);
+    ptr_stats2 = init_simstats(NULL);
     assert(ptr_stats  != NULL);
     assert(ptr_stats2 != NULL);
     assert(ptr_stats  != ptr_stats2);

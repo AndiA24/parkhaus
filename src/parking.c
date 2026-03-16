@@ -17,12 +17,14 @@
 
 int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_parking == NULL || ptr_config == NULL || ptr_stats == NULL){
-        printf("Error: Failed to create initial occupancy. Invalid Argument.\n");
+        output(2, "Error: Failed to create initial occupancy. Invalid Argument.\n", 2, 1, ptr_config); // kills program
         return -1;
     }    
     if(ptr_config->initial_occupancy > ptr_parking->total_capacity){
-        printf("Error: Initial Occupancy exceeds total capacity of Parking. ");
-        printf("Parking initialized without initial occupancy.\n");
+        /*
+        output(2, "Error: Initial Occupancy exceeds total capacity of Parking. ", 2, 0, NULL);
+        output(2, "Parking initialized without initial occupancy.\n", 2, 0, NULL);
+        */
         return -2;
     }
     for(int i = 0; i < (int)ptr_config->initial_occupancy; i++){
@@ -53,7 +55,7 @@ int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr
 
 Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     if(ptr_config == NULL || ptr_stats == NULL){
-        printf("Error: Failed to create Parking. Invalid Arguments.\n");
+        output(2, "Error: Failed to create Parking. Invalid Arguments.\n",2 , 1, ptr_config);
         return NULL;
     }
     Parking *ptr_parking = malloc(sizeof(*ptr_parking));
@@ -124,8 +126,9 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     
     // fill with initial occupancy
     if(ptr_config->initial_occupancy){
-        if(initial_occupancy(ptr_parking, ptr_config, ptr_stats) == -1){
-            printf("Error: Failed during creating initial occupancy.\n");
+        if(initial_occupancy(ptr_parking, ptr_config, ptr_stats) == -2){
+            output(2, "Error: Failed during creating initial occupancy. Initial Occupancy exceeds the capacity of the Parking. Simulation starts without initial occupancy.\n", 2, 0, NULL);
+            /*
             for(int i = 0; i < (int)ptr_config->num_decks; i++){
                 free((ptr_parking->ptr_decks + i)->ptr_spots);
                 (ptr_parking->ptr_decks + i)->ptr_spots = NULL;
@@ -135,6 +138,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
             free(ptr_parking);
             ptr_parking = NULL;
             return NULL;
+            */
         }
     }
     return ptr_parking;
