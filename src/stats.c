@@ -64,7 +64,7 @@ FILE *create_output_file(SimConfig *ptr_config)
         ptr_config->seed);
 
     // write column headers for per-step statistics
-    fprintf(ptr_output_file, "temp_exits,temp_entries,temp_rel_occupancy_percent,"
+    fprintf(ptr_output_file, "step_num,temp_exits,temp_entries,temp_rel_occupancy_percent,"
     "temp_queue_length,temp_free_spots,temp_time_left\n");
     
     return ptr_output_file;
