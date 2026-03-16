@@ -107,7 +107,7 @@ int free_config(SimConfig *ptr_config) {
         return -1;
     }
     free(ptr_config);
-    return 1;
+    return 0;
 }
 
 /*
