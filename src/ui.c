@@ -396,7 +396,7 @@ void show_results(SimStats *ptr_stats) {
         print_col(12, 70, 1, A_BOLD, "%u %%", 0);
     }
     else {
-        print_col(12, 70, 1, A_BOLD, "%u %%", (ptr_stats->total_queued*100)/ptr_stats->total_entries);
+        print_col(12, 70, 1, A_BOLD, "%d %%", (ptr_stats->total_queued*100)/ptr_stats->total_entries);
     }
 
     draw_hline(13);
