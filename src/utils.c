@@ -8,7 +8,7 @@
 
 void output(int col, const char *ptr_msg, int color, int kill, SimConfig *ptr_config) {
 #ifdef UNIT_TEST
-    (void)col; (void)color; (void)kill; (void)ptr_config;
+    (void)col; (void)color; (void)kill; (void)ptr_config; //remove compiler warnings by voiding the values
     printf("%s", ptr_msg);
 #else
     show_message(col, ptr_msg, color, kill, ptr_config);
