@@ -24,8 +24,13 @@
     #include <limits.h>
 #endif
 
-#define WIN_HEIGHT 25
-#define WIN_WIDTH 86
+#define WIN_HEIGHT               25
+#define WIN_WIDTH                86
+#define OCCUPANCY_HIGH_THRESHOLD 85.0f
+#define BAR_WIDTH                70
+#define INPUT_BUF_SIZE           16
+#define STRING_BUF_SIZE          70
+#define PERCENT_MAX              100.0f
 
 
 static WINDOW *ptr_win;
@@ -82,7 +87,7 @@ static void draw_hline(int y) {
 }
 
 static void draw_bar(int y, int x, int width, float percent, int pair) {
-    int filled = (int)(width * percent / 100.0f);
+    int filled = (int)(width * percent / PERCENT_MAX);
     mvwaddch(ptr_win, y, x, '[');
     if (filled > width) filled = width;
     wattron(ptr_win, COLOR_PAIR(pair) | A_REVERSE);
@@ -106,7 +111,7 @@ static void clear_prompt_area() {
 //MARK: prompt functions
 
 void prompt_uint(char *ptr_label, unsigned int *ptr_value, unsigned int min, unsigned int max) {
-    char buf[16] = {0};
+    char buf[INPUT_BUF_SIZE] = {0};
     clear_prompt_area();
     print_col(17, 2, 3, 0, "%s (%u-%u):", ptr_label, min, max);
     print_col(18, 2, 3, 0, "> ");
@@ -132,7 +137,7 @@ void prompt_uint(char *ptr_label, unsigned int *ptr_value, unsigned int min, uns
 }
 
 void prompt_string(char *label, char *ptr_value, int size) {
-    char tmp[70] = {0};
+    char tmp[STRING_BUF_SIZE] = {0};
     clear_prompt_area();
     print_col(17, 2, 3, 0, "%s:", label);
     print_col(18, 2, 3, 0, "> ");
@@ -418,21 +423,21 @@ void show_results(SimStats *ptr_stats) {
 
     print_col(16, 2, 3, 0,      "Durchschnittliche Auslastung des Parkhaus:");
     print_col(16, 70, 1, A_BOLD, "%.2f%%",  ptr_stats->avg_rel_occupancy);
-    if(ptr_stats->avg_rel_occupancy >= 85.0f) {
-        draw_bar(17, 2, 68, ptr_stats->avg_rel_occupancy, 2); //rot
+    if(ptr_stats->avg_rel_occupancy >= OCCUPANCY_HIGH_THRESHOLD) {
+        draw_bar(17, 2, BAR_WIDTH, ptr_stats->avg_rel_occupancy, 2); //rot
     }
     else {
-        draw_bar(17, 2, 68, ptr_stats->avg_rel_occupancy, 1); //grün
+        draw_bar(17, 2, BAR_WIDTH, ptr_stats->avg_rel_occupancy, 1); //grün
     }
 
     print_col(18,  2, 3, 0,      "Hoechste Auslastung waehrend der Simulation:");
     print_col(18, 70, 1, A_BOLD, "%.1f%%", ptr_stats->peak_rel_occupancy);
 
-    if(ptr_stats->peak_rel_occupancy >= 85.0f) {
-        draw_bar(19, 2, 68, ptr_stats->peak_rel_occupancy, 2); //rot
+    if(ptr_stats->peak_rel_occupancy >= OCCUPANCY_HIGH_THRESHOLD) {
+        draw_bar(19, 2, BAR_WIDTH, ptr_stats->peak_rel_occupancy, 2); //rot
     }
     else {
-        draw_bar(19, 2, 68, ptr_stats->peak_rel_occupancy, 1); //grün
+        draw_bar(19, 2, BAR_WIDTH, ptr_stats->peak_rel_occupancy, 1); //grün
     }
 
     print_col(20, 2, 3, 0,      "Schritt an dem diese hoechste Auslastung war:");
@@ -487,13 +492,13 @@ void show_running(SimStats *ptr_stats) {
     print_col(15,  2, 3, 0,      "Auslastung des Parkhauses:");
     print_col(15, 40, 1, A_BOLD, "%.1f%%", ptr_stats->temp_rel_occupancy_percent);
     int bar_color = 0;
-    if(ptr_stats->temp_rel_occupancy_percent >= 85.0f) {
+    if(ptr_stats->temp_rel_occupancy_percent >= OCCUPANCY_HIGH_THRESHOLD) {
         bar_color = 2;
     }
     else {
         bar_color = 1;
     }
-    draw_bar(16, 2, 68, ptr_stats->temp_rel_occupancy_percent, bar_color);
+    draw_bar(16, 2, BAR_WIDTH, ptr_stats->temp_rel_occupancy_percent, bar_color);
     wrefresh(ptr_win);
 }
 

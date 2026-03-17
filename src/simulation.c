@@ -19,12 +19,14 @@
 #endif
 #include "../include/utils.h"
 
+#define PERCENT_MAX 100
+
 int rand_arrival(SimConfig *ptr_config) {
     if (ptr_config == NULL) {
         output(2, "Error: Failed to check arrival. Invalid Arguments.\n", 2, 0, NULL);
         return -1;
     }
-    int rand_i = (rand() % 100) + 1;
+    int rand_i = (rand() % PERCENT_MAX) + 1;
     if (rand_i <= (int)ptr_config->arrival_probability_percent) {
         return 1;
     }

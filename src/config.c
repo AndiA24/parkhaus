@@ -23,6 +23,7 @@
 #define OUTPUT_FILE_NAME_DEFAULT "parkhaus_results"
 #define CONFIG_FILE_NAME_DEFAULT "parkhaus_config.csv"
 #define SEED_DEFAULT 69
+#define NUM_CONFIG_FIELDS 9
 
 
 int populate_with_default(SimConfig *ptr_config) {
@@ -71,7 +72,7 @@ int get_config(SimConfig *ptr_config) {
         &ptr_config->arrival_probability_percent,
         ptr_config->output_file_name,
         &ptr_config->seed);
-        if (count != 9) {
+        if (count != NUM_CONFIG_FIELDS) {
             populate_with_default(ptr_config);
             fclose(ptr_f);
             return 0;

@@ -16,6 +16,10 @@
 #include "../include/config.h"
 #include "../include/utils.h"
 
+#define TEMP_STRING_SIZE        80
+#define PERCENT_PRECISION_SCALE 10000.0f
+#define PERCENT_MAX             100.0f
+
 
 SimStats *init_simstats() {
     SimStats *ptr_stats = calloc(1,sizeof(*ptr_stats));
@@ -37,7 +41,7 @@ FILE *create_output_file(SimConfig *ptr_config)
     FILE *ptr_output_file;
 
     // open file for writing (silently overwrite if it already exists)
-    char temp_string[80];
+    char temp_string[TEMP_STRING_SIZE];
     snprintf(temp_string, sizeof(temp_string), "%s.csv", ptr_config->output_file_name); //always add .csv to end of a filename
     ptr_output_file = fopen(temp_string, "w");
     if (ptr_output_file == NULL)
@@ -80,7 +84,7 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
     // calculate relative occupancy for current step
     if (ptr_parking->total_capacity > 0) {
         // multiply with 1000 and floor to round down to two decimals
-        ptr_stats->temp_rel_occupancy_percent = floor(((float)ptr_parking->occupied_count / (float)ptr_parking->total_capacity) * 10000) / 100;
+        ptr_stats->temp_rel_occupancy_percent = floor(((float)ptr_parking->occupied_count / (float)ptr_parking->total_capacity) * PERCENT_PRECISION_SCALE) / PERCENT_MAX;
     }
     else{
         ptr_stats->temp_rel_occupancy_percent = 0;
