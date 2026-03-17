@@ -32,7 +32,7 @@ int main(){
         break;
     }
 
-    SimStats *ptr_stats = init_simstats(ptr_config);
+    SimStats *ptr_stats = init_simstats();
     if (ptr_stats == NULL) {
         output(2, "Error: Failed to initialize stats. Simulation stopped.", 2, 1, ptr_config);
         return -1;

@@ -17,7 +17,7 @@
 #include "../include/utils.h"
 
 
-SimStats *init_simstats(SimConfig *ptr_config){
+SimStats *init_simstats(){
     SimStats *ptr_stats = calloc(1,sizeof(*ptr_stats));
     if(ptr_stats == NULL){
         output(2, "Error: Failed to allocate memory for the Stats Struct.\n", 2, 0, NULL);
@@ -103,7 +103,7 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
 
     // each parked vehicle is one step closer to exit, so subtract 1 from the average
     if(ptr_parking->occupied_count > 0){
-        ptr_stats->temp_time_left -= 1;
+        ptr_stats->temp_time_left -= 1.0;
     }
     else{
         ptr_stats->temp_time_left = 0;
@@ -141,7 +141,7 @@ int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 
     // write per-step statistics 
     fprintf(ptr_output_file,
-        "%u,%u,%u,%.2f,%u,%u,%u\n",
+        "%u,%u,%u,%.2f,%u,%u,%f\n",
         ptr_stats->step_num,
         ptr_stats->temp_exits,
         ptr_stats->temp_entries,
@@ -199,7 +199,7 @@ int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 }
 
 
-int close_output_file(FILE *ptr_output_file, SimConfig *ptr_config){
+int close_output_file(FILE *ptr_output_file){
     if(ptr_output_file == NULL){
         printf("Error: Failed to close output file. Invalid Argument.\n");
         return -1;

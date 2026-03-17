@@ -473,7 +473,7 @@ void show_running(SimStats *ptr_stats) {
     print_col(10, 40, 1, A_BOLD, "%u",  ptr_stats->temp_queue_length);
 
     print_col(11,  2, 3, 0,      "Durchschnittliche Parkzeit pro Auto:");
-    print_col(11, 40, 1, A_BOLD, "%u Schr.", ptr_stats->temp_time_left);
+    print_col(11, 40, 1, A_BOLD, "%.2f Schr.", ptr_stats->temp_time_left);
 
     draw_hline(13);
 
