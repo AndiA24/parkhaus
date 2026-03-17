@@ -49,7 +49,7 @@ int main() {
 
     // Test 2: ptr_parking is NULL
     printf("Test 2: ptr_parking is NULL: ");
-    ptr_stats = init_simstats(NULL);
+    ptr_stats = init_simstats();
     ptr_queue = create_test_queue(3);
     assert(update_simstats(ptr_stats, NULL, ptr_queue) == -1);
     free_stats(ptr_stats); 
@@ -60,7 +60,7 @@ int main() {
 
     // Test 3: ptr_queue is NULL
     printf("Test 3: ptr_queue is NULL: ");
-    ptr_stats = init_simstats(NULL);
+    ptr_stats = init_simstats();
     ptr_parking = create_test_parking(100, 50);
     assert(update_simstats(ptr_stats, ptr_parking, NULL) == -1);
     free_stats(ptr_stats); 
@@ -78,7 +78,7 @@ int main() {
     //   temp_free_spots            = 40
     //   avg_rel_occupancy          = 60.0f
     printf("Test 4: All computed fields with valid structs: ");
-    ptr_stats = init_simstats(NULL);
+    ptr_stats = init_simstats();
     ptr_parking = create_test_parking(100, 60);
     ptr_queue = create_test_queue(3);
 

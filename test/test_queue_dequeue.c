@@ -62,7 +62,7 @@ int main() {
     ptr_vehicle = create_test_vehicle();
     ptr_stats = create_test_stats();
 
-    enqueue(ptr_queue, ptr_vehicle);
+    enqueue(ptr_queue, ptr_vehicle, ptr_stats);
     ptr_result = dequeue(ptr_queue, ptr_stats);
 
     assert(ptr_result == ptr_vehicle);
@@ -82,7 +82,7 @@ int main() {
     ptr_vehicle->queue_time = 5;
     ptr_stats = create_test_stats();
 
-    enqueue(ptr_queue, ptr_vehicle);
+    enqueue(ptr_queue, ptr_vehicle, ptr_stats);
     ptr_result = dequeue(ptr_queue, ptr_stats);
 
     assert(ptr_stats->total_queue_time == 5);
