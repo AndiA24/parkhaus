@@ -1,5 +1,12 @@
-// C:/msys64/ucrt64/bin/gcc.exe -DUI_TEST -o ui_test.exe src/ui.c -I. -Iinclude -Ipdcurses pdcurses/wincon/libpdcurses.a -lwinmm -lkernel32 -luser32 -lgdi32 && start ui_test.exe
-
+/**
+ * @file ui.c
+ * @brief User interface rendering
+ *
+ * Provides function to render a welcome screen, settings screen,
+ * simulation results screen and a sreen while the simulation is running
+ * with live data. Also handles key inputs from the user to navigate the
+ * simulation and change the settings.
+ */
 
 #include "../include/ui.h"
 #include "../include/config.h"
@@ -306,7 +313,7 @@ void show_settings(SimConfig *ptr_config) {
     }
 }
 
-void show_message(int col,const char *ptr_msg, int color, int kill, SimConfig *ptr_config) {
+void show_message(int col, const char *ptr_msg, int color, int kill, SimConfig *ptr_config) {
     werase(ptr_win);
     print_col(col, 2, color, 0, ptr_msg);
     if(kill) {
