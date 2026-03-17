@@ -79,13 +79,12 @@ int main() {
     printf("Test 6: dequeue(one vehicle, stats)   → updates stats correctly:  ");
     ptr_queue = init_queue();
     ptr_vehicle = create_test_vehicle();
-    ptr_vehicle->queue_time = 5;
     ptr_stats = create_test_stats();
-
+    ptr_stats->step_num = 2;
     enqueue(ptr_queue, ptr_vehicle, ptr_stats);
+    ptr_stats->step_num = 4;
     ptr_result = dequeue(ptr_queue, ptr_stats);
-
-    assert(ptr_stats->total_queue_time == 5);
+    assert(ptr_stats->total_queue_time == 2);
     assert(ptr_stats->total_queued == 1);
 
     free(ptr_result);
