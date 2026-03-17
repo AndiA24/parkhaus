@@ -16,7 +16,9 @@ void output(int col, const char *ptr_msg, int color, int kill, SimConfig *ptr_co
 }
 
 void quit(SimConfig *ptr_config) {
-    save_config(ptr_config);
+    if(ptr_config) {
+        save_config(ptr_config);
+    }
     exit(1);
 }
 /*
