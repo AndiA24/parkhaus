@@ -30,9 +30,9 @@ Queue* init_queue()
     return ptr_queue;                                           // return initialized queue                                              
 }
 
-int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle)
+int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle, SimStats *ptr_stats)
 {
-    if (ptr_queue == NULL || ptr_vehicle == NULL)
+    if (ptr_queue == NULL || ptr_vehicle == NULL || ptr_stats == NULL)
     {
         output(2, "Error: Failed to enqueue vehicle. Invalid argument.\n", 2, 0, NULL);
         return -1;
@@ -47,6 +47,7 @@ int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle)
     
     ptr_new_node->ptr_vehicle = ptr_vehicle;                    // store vehicle in node
     ptr_new_node->ptr_next = NULL;
+    ptr_new_node->ptr_vehicle->queue_time = ptr_stats->step_num;
 
     if (ptr_queue->ptr_tail == NULL)                            // check if queue empty
     {
@@ -60,9 +61,9 @@ int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle)
     return 1;
 }
 
-Vehicle* dequeue(Queue *ptr_queue, SimStats *ptr_simstats) 
+Vehicle* dequeue(Queue *ptr_queue, SimStats *ptr_stats) 
 {
-    if (ptr_queue == NULL || ptr_simstats == NULL)
+    if (ptr_queue == NULL || ptr_stats == NULL)
     {
         output(2, "Error: Failed to dequeue vehicle. Invalid argument.\n", 2, 0, NULL);
         return NULL;
@@ -75,7 +76,7 @@ Vehicle* dequeue(Queue *ptr_queue, SimStats *ptr_simstats)
     QueueNode *ptr_prev_head = ptr_queue->ptr_head;             // temp pointer to current head node
     Vehicle *ptr_vehicle = ptr_prev_head->ptr_vehicle;          // store vehicle to return
 
-    ptr_simstats->total_queue_time += ptr_vehicle->queue_time;  // update total queue time
+    ptr_stats->total_queue_time += (ptr_stats->step_num - ptr_vehicle->queue_time);  // update total queue time
 
     ptr_queue->ptr_head = ptr_prev_head->ptr_next;              // set head pointer to next node
 
@@ -87,9 +88,9 @@ Vehicle* dequeue(Queue *ptr_queue, SimStats *ptr_simstats)
     free(ptr_prev_head);                                        // free memory of previous head node
     ptr_queue->size--;                                          // decrement queue size 
 
-    if (ptr_vehicle->queue_time > 0)                            // check if vehicle was queued
+    if ((ptr_stats->step_num - ptr_vehicle->queue_time) > 0)                            // check if vehicle was queued
     {
-        ptr_simstats->total_queued++;                           // increment total queued
+        ptr_stats->total_queued++;                           // increment total queued
     }
     
     return ptr_vehicle;                                         // return dequeued vehicle
