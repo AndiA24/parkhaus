@@ -14,7 +14,7 @@
 #include "../include/stats.h"
 #include "../include/utils.h"
 
-Queue* init_queue()
+Queue *init_queue()
 {
     Queue *ptr_queue = malloc(sizeof *ptr_queue);               // allocate memory for queue
 
@@ -61,7 +61,7 @@ int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle, SimStats *ptr_stats)
     return 1;
 }
 
-Vehicle* dequeue(Queue *ptr_queue, SimStats *ptr_stats) 
+Vehicle *dequeue(Queue *ptr_queue, SimStats *ptr_stats) 
 {
     if (ptr_queue == NULL || ptr_stats == NULL)
     {

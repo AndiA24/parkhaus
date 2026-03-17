@@ -26,7 +26,7 @@
 
 
 int populate_with_default(SimConfig *ptr_config) {
-    if(ptr_config == NULL) {
+    if (ptr_config == NULL) {
         return -1;
     }
     ptr_config->num_decks = NUM_DECKS_DEFAULT;
@@ -44,7 +44,7 @@ int populate_with_default(SimConfig *ptr_config) {
 
 SimConfig *create_config() {
     SimConfig *ptr_config = calloc(1, sizeof(*ptr_config));
-    if(ptr_config == NULL) {
+    if (ptr_config == NULL) {
         return NULL;
     }
     strcpy(ptr_config->config_file_name, CONFIG_FILE_NAME_DEFAULT);
@@ -52,11 +52,11 @@ SimConfig *create_config() {
 }
 
 int get_config(SimConfig *ptr_config) {
-    if(ptr_config == NULL) {
+    if (ptr_config == NULL) {
         return -1;
     }
     FILE *ptr_f = fopen(ptr_config->config_file_name, "r");
-    if(!ptr_f) {
+    if (!ptr_f) {
         populate_with_default(ptr_config);
         return 0;
     }
@@ -71,7 +71,7 @@ int get_config(SimConfig *ptr_config) {
         &ptr_config->arrival_probability_percent,
         ptr_config->output_file_name,
         &ptr_config->seed);
-        if(count != 9) {
+        if (count != 9) {
             populate_with_default(ptr_config);
             fclose(ptr_f);
             return 0;
@@ -86,13 +86,13 @@ int get_config(SimConfig *ptr_config) {
 int save_config(SimConfig *ptr_config) {
     FILE *ptr_check = fopen(ptr_config->config_file_name, "r");
     int file_existed = 0;
-    if(ptr_check != NULL) {
+    if (ptr_check != NULL) {
         file_existed = 1;
         fclose(ptr_check);
     }
 
     FILE *ptr_f = fopen(ptr_config->config_file_name, "w");
-    if(!ptr_f) {
+    if (!ptr_f) {
         return -1;
     }
 
@@ -107,14 +107,14 @@ int save_config(SimConfig *ptr_config) {
         ptr_config->output_file_name,
         ptr_config->seed);
     fclose(ptr_f);
-    if(file_existed) {
+    if (file_existed) {
         return 0;
     }
     return 1;
 }
 
 int free_config(SimConfig *ptr_config) {
-    if(ptr_config == NULL){
+    if (ptr_config == NULL) {
         //commented it out because the user is already closing when this is called so doesn't really matter but left it here if we decide to add it back.
         //output(2, "Error: Failed to free config Struct. Invalid Argument\n", 2, 0, NULL);
         return -1;

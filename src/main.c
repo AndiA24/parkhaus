@@ -14,16 +14,16 @@
 #include "../include/simulation.h"
 #include "../include/utils.h"
 
-int main(){
+int main() {
 
     initialize_ui();
     SimConfig *ptr_config = create_config();
-    if(ptr_config == NULL){
+    if (ptr_config == NULL) {
         output(2, "Error: Failed to create Config Struct. Simulation stopped.", 2, 1, NULL);
         return -1;
     }
 
-    switch (get_config(ptr_config)){
+    switch (get_config(ptr_config)) {
     case 1:
         output(2, "Info: Succesfully imported config from config-file.\n", 1, 0, NULL);
         break;
@@ -39,13 +39,13 @@ int main(){
     }
     
 
-    while(1){
+    while (1) {
         show_welcome(ptr_config);
         if (save_config(ptr_config) == -1) {
             output(2, "Error: Failed to create config file. Simulation stopped.", 2, 1, ptr_config);
             return -1;
         }
-        if(run_simulation(ptr_config, ptr_stats) == -1){
+        if (run_simulation(ptr_config, ptr_stats) == -1) {
             output(2, "Error: Failed to run simulation. Simulation stopped.", 2, 1, ptr_config);
             return -1;
         }
