@@ -38,7 +38,7 @@ FILE *create_output_file(SimConfig *ptr_config)
         return NULL;
     }
 
-    FILE *ptr_output_file;
+    FILE *ptr_output_file = NULL;
 
     // open file for writing (silently overwrite if it already exists)
     char temp_string[TEMP_STRING_SIZE];

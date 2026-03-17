@@ -126,7 +126,7 @@ void prompt_uint(char *ptr_label, unsigned int *ptr_value, unsigned int min, uns
     noecho();
     curs_set(0);
 
-    char *ptr_end;
+    char *ptr_end = NULL;
     unsigned long val = strtoul(buf, &ptr_end, 10);
     if (ptr_end == buf || *ptr_end != '\0' || val < min || val > max) {
         print_col(19, COL_TEXT, 2, 0, "Ungueltig! Der erlaubte Bereich ist: %u-%u", min, max);
