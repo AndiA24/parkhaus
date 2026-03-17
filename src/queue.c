@@ -96,23 +96,6 @@ Vehicle* dequeue(Queue *ptr_queue, SimStats *ptr_stats)
     return ptr_vehicle;                                         // return dequeued vehicle
 }
 
-int increment_queue_time(Queue *ptr_queue) 
-{
-    if (ptr_queue == NULL)
-    {
-        output(2, "Error: Failed to increment queue time. Invalid argument.\n", 2, 0, NULL);
-        return -1;
-    }
-    
-    QueueNode *ptr_temp_node = ptr_queue->ptr_head;
-    while (ptr_temp_node != NULL)                               // iterate through queue
-    {
-        ptr_temp_node->ptr_vehicle->queue_time++;               // increment queue time
-        ptr_temp_node = ptr_temp_node->ptr_next;                // move to next node in queue
-    }
-    return 1;
-}
-
 int delete_queue(Queue *ptr_queue, SimStats *ptr_simstats) 
 {
     if (ptr_queue == NULL || ptr_simstats == NULL)
