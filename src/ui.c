@@ -31,6 +31,8 @@
 #define INPUT_BUF_SIZE           16
 #define STRING_BUF_SIZE          70
 #define PERCENT_MAX              100.0f
+#define COL_TEXT                 2
+#define COL_VALUE                70
 
 
 static WINDOW *ptr_win;
@@ -113,8 +115,8 @@ static void clear_prompt_area() {
 void prompt_uint(char *ptr_label, unsigned int *ptr_value, unsigned int min, unsigned int max) {
     char buf[INPUT_BUF_SIZE] = {0};
     clear_prompt_area();
-    print_col(17, 2, 3, 0, "%s (%u-%u):", ptr_label, min, max);
-    print_col(18, 2, 3, 0, "> ");
+    print_col(17, COL_TEXT, 3, 0, "%s (%u-%u):", ptr_label, min, max);
+    print_col(18, COL_TEXT, 3, 0, "> ");
     wrefresh(ptr_win);
 
     echo();
@@ -126,8 +128,8 @@ void prompt_uint(char *ptr_label, unsigned int *ptr_value, unsigned int min, uns
 
     char *ptr_end;
     unsigned long val = strtoul(buf, &ptr_end, 10);
-    if(ptr_end == buf || *ptr_end != '\0' || val < min || val > max) {
-        print_col(19, 2, 2, 0, "Ungueltig! Der erlaubte Bereich ist: %u-%u", min, max);
+    if (ptr_end == buf || *ptr_end != '\0' || val < min || val > max) {
+        print_col(19, COL_TEXT, 2, 0, "Ungueltig! Der erlaubte Bereich ist: %u-%u", min, max);
         wrefresh(ptr_win);
         wgetch(ptr_win);
     }
@@ -139,8 +141,8 @@ void prompt_uint(char *ptr_label, unsigned int *ptr_value, unsigned int min, uns
 void prompt_string(char *label, char *ptr_value, int size) {
     char tmp[STRING_BUF_SIZE] = {0};
     clear_prompt_area();
-    print_col(17, 2, 3, 0, "%s:", label);
-    print_col(18, 2, 3, 0, "> ");
+    print_col(17, COL_TEXT, 3, 0, "%s:", label);
+    print_col(18, COL_TEXT, 3, 0, "> ");
     wrefresh(ptr_win);
 
     echo();
@@ -150,8 +152,8 @@ void prompt_string(char *label, char *ptr_value, int size) {
     noecho();
     curs_set(0);
 
-    if(strlen(tmp) == 0) {
-        print_col(19, 2, 2, 0, "Ungueltig! Behalte alten Wert bei.");
+    if (strlen(tmp) == 0) {
+        print_col(19, COL_TEXT, 2, 0, "Ungueltig! Behalte alten Wert bei.");
         wrefresh(ptr_win);
         wgetch(ptr_win);
     }
@@ -177,26 +179,26 @@ void render_welcome() {
 
     draw_hline(2);
 
-    print_col(4, 2, 3, 0, "Eine Simulation eines Parkhauses. Entwickelt");
-    print_col(5, 2, 3, 0, "im Rahmen eines Hochschulprojekts, um das");
-    print_col(6, 2, 3, 0, "Belegungsverhalten, Warteschlangen und die");
-    print_col(7, 2, 3, 0, "Auslastung eines Parkhauses zu modellieren.");
+    print_col(4, COL_TEXT, 3, 0, "Eine Simulation eines Parkhauses. Entwickelt");
+    print_col(5, COL_TEXT, 3, 0, "im Rahmen eines Hochschulprojekts, um das");
+    print_col(6, COL_TEXT, 3, 0, "Belegungsverhalten, Warteschlangen und die");
+    print_col(7, COL_TEXT, 3, 0, "Auslastung eines Parkhauses zu modellieren.");
 
     draw_hline(9);
 
-    print_col(11, 2, 3, 0, "Simuliert einen Parkhaus-Betrieb mit Einfahrten, Ausfahrten, Warteschlangen");
-    print_col(12, 2, 3, 0, "und stellt Live- sowie Endstatistiken dar. Einstellbar sind Etagen,");
-    print_col(13, 2, 3, 0, "Stellplaetze, Ankunftswahrscheinlichkeit, Parkdauer und Simulationsdauer.");
-    print_col(14, 2, 3, 0, "Zusaetzlich kann ein Seed fuer reproduzierbare Ergebnisse angegeben werden.");
-    print_col(16, 2, 3, 0, "Entwickelt von: Andreas Adler, Lukas Kornmayer und Jost Ruething.");
+    print_col(11, COL_TEXT, 3, 0, "Simuliert einen Parkhaus-Betrieb mit Einfahrten, Ausfahrten, Warteschlangen");
+    print_col(12, COL_TEXT, 3, 0, "und stellt Live- sowie Endstatistiken dar. Einstellbar sind Etagen,");
+    print_col(13, COL_TEXT, 3, 0, "Stellplaetze, Ankunftswahrscheinlichkeit, Parkdauer und Simulationsdauer.");
+    print_col(14, COL_TEXT, 3, 0, "Zusaetzlich kann ein Seed fuer reproduzierbare Ergebnisse angegeben werden.");
+    print_col(16, COL_TEXT, 3, 0, "Entwickelt von: Andreas Adler, Lukas Kornmayer und Jost Ruething.");
 
     draw_hline(20);
 
-    print_col(21,  2, 4, A_BOLD, "[ENTER]");
+    print_col(21,  COL_TEXT, 4, A_BOLD, "[ENTER]");
     print_col(21, 10, 3, 0,      "Simulation starten");
-    print_col(22,  2, 4, A_BOLD, "[S]");
+    print_col(22,  COL_TEXT, 4, A_BOLD, "[S]");
     print_col(22, 10, 3, 0,      "Einstellungen");
-    print_col(23,  2, 4, A_BOLD, "[Q]");
+    print_col(23,  COL_TEXT, 4, A_BOLD, "[Q]");
     print_col(23, 10, 3, 0,      "Beenden");
 
     wrefresh(ptr_win);
@@ -214,51 +216,51 @@ void render_settings(SimConfig *ptr_config) {
 
     draw_hline(2);
 
-    print_col(3,  2, 4, A_BOLD, "[1]"); 
-    print_col(3,  6, 3, 0, "Etagen:");          
+    print_col(3,  COL_TEXT, 4, A_BOLD, "[1]");
+    print_col(3,  6, 3, 0, "Etagen:");
     print_col(3,  28, 1, A_BOLD, "%u", ptr_config->num_decks);
 
-    print_col(4,  2, 4, A_BOLD, "[2]"); 
-    print_col(4,  6, 3, 0, "Stellpl./Etage:");  
+    print_col(4,  COL_TEXT, 4, A_BOLD, "[2]");
+    print_col(4,  6, 3, 0, "Stellpl./Etage:");
     print_col(4,  28, 1, A_BOLD, "%u", ptr_config->spots_per_deck);
 
-    print_col(5,  2, 4, A_BOLD, "[3]"); 
-    print_col(5,  6, 3, 0, "Startbelegung:");   
+    print_col(5,  COL_TEXT, 4, A_BOLD, "[3]");
+    print_col(5,  6, 3, 0, "Startbelegung:");
     print_col(5,  28, 1, A_BOLD, "%u", ptr_config->initial_occupancy);
 
-    print_col(6,  2, 4, A_BOLD, "[4]"); 
-    print_col(6,  6, 3, 0, "Max. Parkdauer:");  
+    print_col(6,  COL_TEXT, 4, A_BOLD, "[4]");
+    print_col(6,  6, 3, 0, "Max. Parkdauer:");
     print_col(6,  28, 1, A_BOLD, "%u", ptr_config->max_parking_duration_steps);
 
-    print_col(7,  2, 4, A_BOLD, "[5]"); 
-    print_col(7,  6, 3, 0, "Min. Parkdauer:");  
+    print_col(7,  COL_TEXT, 4, A_BOLD, "[5]");
+    print_col(7,  6, 3, 0, "Min. Parkdauer:");
     print_col(7,  28, 1, A_BOLD, "%u", ptr_config->min_parking_duration_steps);
 
-    print_col(8,  2, 4, A_BOLD, "[6]"); 
-    print_col(8,  6, 3, 0, "Sim.-Dauer:");      
+    print_col(8,  COL_TEXT, 4, A_BOLD, "[6]");
+    print_col(8,  6, 3, 0, "Sim.-Dauer:");
     print_col(8,  28, 1, A_BOLD, "%u", ptr_config->sim_duration_steps);
 
-    print_col(9,  2, 4, A_BOLD, "[7]"); 
-    print_col(9,  6, 3, 0, "Ankunftswahr.:");   
+    print_col(9,  COL_TEXT, 4, A_BOLD, "[7]");
+    print_col(9,  6, 3, 0, "Ankunftswahr.:");
     print_col(9,  28, 1, A_BOLD, "%u%%", ptr_config->arrival_probability_percent);
 
-    print_col(10, 2, 4, A_BOLD, "[8]"); 
-    print_col(10, 6, 3, 0, "Seed:");            
+    print_col(10, COL_TEXT, 4, A_BOLD, "[8]");
+    print_col(10, 6, 3, 0, "Seed:");
     print_col(10, 28, 1, A_BOLD, "%u", ptr_config->seed);
 
-    print_col(11, 2, 4, A_BOLD, "[9]"); 
+    print_col(11, COL_TEXT, 4, A_BOLD, "[9]");
     print_col(11, 6, 3, 0, "Ausgabedatei:");
-    print_col(11, 28, 1, A_BOLD, "%s", ptr_config->output_file_name);   
-    
+    print_col(11, 28, 1, A_BOLD, "%s", ptr_config->output_file_name);
+
     draw_hline(13);
 
-    print_col(15, 2, 3, 0, "Zahl druecken um den entsprechenden Wert zu bearbeiten");
-    print_col(17, 2, 3, 0, "Druecke:");
+    print_col(15, COL_TEXT, 3, 0, "Zahl druecken um den entsprechenden Wert zu bearbeiten");
+    print_col(17, COL_TEXT, 3, 0, "Druecke:");
     print_col(17, 11, 4, A_BOLD, "[Q]");
     print_col(17, 15, 3, 0, "/");
     print_col(17, 17, 4, A_BOLD, "[ENTER]");
     print_col(17, 25, 3, 0, "um die Einstellungen zu speichern und zum Hauptmenue");
-    print_col(18, 2, 3, 0, "zurueck zu kommen.");
+    print_col(18, COL_TEXT, 3, 0, "zurueck zu kommen.");
 }
 
 //MARK: show functions
@@ -266,7 +268,7 @@ void render_settings(SimConfig *ptr_config) {
 void show_settings(SimConfig *ptr_config) {
     render_settings(ptr_config);
     int active = 1;
-    while(active) {
+    while (active) {
         int key = wgetch(ptr_win);
         switch (key) {
             case '1':
@@ -320,15 +322,15 @@ void show_settings(SimConfig *ptr_config) {
 
 void show_message(int col, const char *ptr_msg, int color, int kill, SimConfig *ptr_config) {
     werase(ptr_win);
-    print_col(col, 2, color, 0, ptr_msg);
-    if(kill) {
-        print_col(20, 2, 3, 0, "Druecke ENTER um das Programm zu beenden...");
+    print_col(col, COL_TEXT, color, 0, ptr_msg);
+    if (kill) {
+        print_col(20, COL_TEXT, 3, 0, "Druecke ENTER um das Programm zu beenden...");
     }
     else {
-        print_col(20, 2, 3, 0, "Druecke ENTER um fortzufahren...");
+        print_col(20, COL_TEXT, 3, 0, "Druecke ENTER um fortzufahren...");
     }
     int key = wgetch(ptr_win);
-    if(kill && (key == KEY_ENTER || key == '\n')) {
+    if (kill && (key == KEY_ENTER || key == '\n')) {
         end();
         quit(ptr_config);
     }
@@ -374,83 +376,83 @@ void show_results(SimStats *ptr_stats) {
 
     draw_hline(3);
 
-    print_col(4,  2, 3, 0,      "Anzahl der Autos die das Parkhaus verlassen haben:");
-    print_col(4, 70, 1, A_BOLD, "%u", ptr_stats->total_exits);
-    print_col(5,  2, 3, 0,      "Anzahl der Autos die in das Parkhaus gefahren sind:");
-    print_col(5, 70, 1, A_BOLD, "%u",  ptr_stats->total_entries);
+    print_col(4,  COL_TEXT,  3, 0,      "Anzahl der Autos die das Parkhaus verlassen haben:");
+    print_col(4,  COL_VALUE, 1, A_BOLD, "%u", ptr_stats->total_exits);
+    print_col(5,  COL_TEXT,  3, 0,      "Anzahl der Autos die in das Parkhaus gefahren sind:");
+    print_col(5,  COL_VALUE, 1, A_BOLD, "%u",  ptr_stats->total_entries);
 
     draw_hline(6);
 
-    print_col(7, 2, 3, 0,       "Anzahl aller Autos in der Warteschlange waren:");
-    print_col(7, 70, 1, A_BOLD, "%u",  ptr_stats->total_queued);
+    print_col(7,  COL_TEXT,  3, 0,      "Anzahl aller Autos in der Warteschlange waren:");
+    print_col(7,  COL_VALUE, 1, A_BOLD, "%u",  ptr_stats->total_queued);
 
-    print_col(8,  2, 3, 0,      "Summierte Zeit aller Autos in der Warteschlane:");
-    print_col(8, 70, 1, A_BOLD, "%u",  ptr_stats->total_queue_time);
+    print_col(8,  COL_TEXT,  3, 0,      "Summierte Zeit aller Autos in der Warteschlane:");
+    print_col(8,  COL_VALUE, 1, A_BOLD, "%u",  ptr_stats->total_queue_time);
 
-    print_col(9,  2, 3, 0,      "Laengste Warteschlange waehrend der Simulation:");
-    print_col(9, 70, 1, A_BOLD, "%u Schr.", ptr_stats->peak_queue_length);
+    print_col(9,  COL_TEXT,  3, 0,      "Laengste Warteschlange waehrend der Simulation:");
+    print_col(9,  COL_VALUE, 1, A_BOLD, "%u Schr.", ptr_stats->peak_queue_length);
 
-    print_col(10,  2, 3, 0,      "Der Schritt an dem die Warteschlange am laengsten war:");
-    print_col(10, 70, 1, A_BOLD, "%u", ptr_stats->step_longest_queue);
+    print_col(10, COL_TEXT,  3, 0,      "Der Schritt an dem die Warteschlange am laengsten war:");
+    print_col(10, COL_VALUE, 1, A_BOLD, "%u", ptr_stats->step_longest_queue);
 
-    print_col(11, 2, 3, 0,     "Durchschnittliche Schritte in der Warteschlange pro Auto");
-    if(ptr_stats->total_queued == 0) {
-        print_col(11, 70, 1, A_BOLD, "%u", 0u);
+    print_col(11, COL_TEXT,  3, 0,      "Durchschnittliche Schritte in der Warteschlange pro Auto");
+    if (ptr_stats->total_queued == 0) {
+        print_col(11, COL_VALUE, 1, A_BOLD, "%u", 0u);
     }
     else {
-        print_col(11, 70, 1, A_BOLD, "%u", ptr_stats->total_queue_time/ptr_stats->total_queued);
+        print_col(11, COL_VALUE, 1, A_BOLD, "%u", ptr_stats->total_queue_time/ptr_stats->total_queued);
     }
 
-    print_col(12, 2, 3, 0,     "Anteil aller Autos, die in der Warteschlange waren:");
-    if(ptr_stats->total_entries == 0) {
-        print_col(12, 70, 1, A_BOLD, "%u %%", 0);
+    print_col(12, COL_TEXT,  3, 0,      "Anteil aller Autos, die in der Warteschlange waren:");
+    if (ptr_stats->total_entries == 0) {
+        print_col(12, COL_VALUE, 1, A_BOLD, "%u %%", 0);
     }
     else {
-        print_col(12, 70, 1, A_BOLD, "%d%%", (ptr_stats->total_queued*100)/ptr_stats->total_entries);
+        print_col(12, COL_VALUE, 1, A_BOLD, "%d%%", (ptr_stats->total_queued*100)/ptr_stats->total_entries);
     }
 
     draw_hline(13);
 
-    print_col(14, 2, 3, 0,     "Durchschnittliche Parkdauer:");
+    print_col(14, COL_TEXT,  3, 0,      "Durchschnittliche Parkdauer:");
     unsigned int average_parking_duration = 0;
-    if(ptr_stats->total_exits) {
+    if (ptr_stats->total_exits) {
         average_parking_duration = ptr_stats->total_parking_time/ptr_stats->total_exits;
     }
-    print_col(14, 70, 1, A_BOLD, "%u",  average_parking_duration);
+    print_col(14, COL_VALUE, 1, A_BOLD, "%u",  average_parking_duration);
 
-    print_col(15, 2, 3, 0,      "Summierte Anzahl der Schritte die Autos im Parkaus verbracht haben:");
-    print_col(15, 70, 1, A_BOLD, "%u",  ptr_stats->total_parking_time);
+    print_col(15, COL_TEXT,  3, 0,      "Summierte Anzahl der Schritte die Autos im Parkaus verbracht haben:");
+    print_col(15, COL_VALUE, 1, A_BOLD, "%u",  ptr_stats->total_parking_time);
 
-    print_col(16, 2, 3, 0,      "Durchschnittliche Auslastung des Parkhaus:");
-    print_col(16, 70, 1, A_BOLD, "%.2f%%",  ptr_stats->avg_rel_occupancy);
-    if(ptr_stats->avg_rel_occupancy >= OCCUPANCY_HIGH_THRESHOLD) {
-        draw_bar(17, 2, BAR_WIDTH, ptr_stats->avg_rel_occupancy, 2); //rot
+    print_col(16, COL_TEXT,  3, 0,      "Durchschnittliche Auslastung des Parkhaus:");
+    print_col(16, COL_VALUE, 1, A_BOLD, "%.2f%%",  ptr_stats->avg_rel_occupancy);
+    if (ptr_stats->avg_rel_occupancy >= OCCUPANCY_HIGH_THRESHOLD) {
+        draw_bar(17, COL_TEXT, BAR_WIDTH, ptr_stats->avg_rel_occupancy, 2); //rot
     }
     else {
-        draw_bar(17, 2, BAR_WIDTH, ptr_stats->avg_rel_occupancy, 1); //grün
+        draw_bar(17, COL_TEXT, BAR_WIDTH, ptr_stats->avg_rel_occupancy, 1); //grün
     }
 
-    print_col(18,  2, 3, 0,      "Hoechste Auslastung waehrend der Simulation:");
-    print_col(18, 70, 1, A_BOLD, "%.1f%%", ptr_stats->peak_rel_occupancy);
+    print_col(18, COL_TEXT,  3, 0,      "Hoechste Auslastung waehrend der Simulation:");
+    print_col(18, COL_VALUE, 1, A_BOLD, "%.1f%%", ptr_stats->peak_rel_occupancy);
 
-    if(ptr_stats->peak_rel_occupancy >= OCCUPANCY_HIGH_THRESHOLD) {
-        draw_bar(19, 2, BAR_WIDTH, ptr_stats->peak_rel_occupancy, 2); //rot
+    if (ptr_stats->peak_rel_occupancy >= OCCUPANCY_HIGH_THRESHOLD) {
+        draw_bar(19, COL_TEXT, BAR_WIDTH, ptr_stats->peak_rel_occupancy, 2); //rot
     }
     else {
-        draw_bar(19, 2, BAR_WIDTH, ptr_stats->peak_rel_occupancy, 1); //grün
+        draw_bar(19, COL_TEXT, BAR_WIDTH, ptr_stats->peak_rel_occupancy, 1); //grün
     }
 
-    print_col(20, 2, 3, 0,      "Schritt an dem diese hoechste Auslastung war:");
-    print_col(20, 70, 1, A_BOLD, "%u", ptr_stats->step_highest_occupancy);
+    print_col(20, COL_TEXT,  3, 0,      "Schritt an dem diese hoechste Auslastung war:");
+    print_col(20, COL_VALUE, 1, A_BOLD, "%u", ptr_stats->step_highest_occupancy);
 
-    print_col(21, 2, 3, 0,      "Anzahl an Schritten die das Parkhaus voll war:");
-    print_col(21, 70, 1, A_BOLD, "%u", ptr_stats->time_full_occupancy);
+    print_col(21, COL_TEXT,  3, 0,      "Anzahl an Schritten die das Parkhaus voll war:");
+    print_col(21, COL_VALUE, 1, A_BOLD, "%u", ptr_stats->time_full_occupancy);
 
     draw_hline(22);
 
-    print_col(23, 2, 3, 0, "Druecke ENTER um zurueck zum Hauptmenue zu kommen...");
+    print_col(23, COL_TEXT, 3, 0, "Druecke ENTER um zurueck zum Hauptmenue zu kommen...");
     int key;
-    while((key = wgetch(ptr_win)) != KEY_ENTER && key != '\n' && key != 'q' && key != 'Q' && key != 27) {
+    while ((key = wgetch(ptr_win)) != KEY_ENTER && key != '\n' && key != 'q' && key != 'Q' && key != 27) {
 
     }
 }
@@ -469,36 +471,36 @@ void show_running(SimStats *ptr_stats) {
 
     draw_hline(2);
 
-    print_col(4,  2, 3, 0,      "Aktueller Schritt:");
+    print_col(4,  COL_TEXT, 3, 0,      "Aktueller Schritt:");
     print_col(4, 40, 1, A_BOLD, "%u", ptr_stats->step_num);
 
     draw_hline(6);
 
-    print_col(7,  2, 3, 0,      "Einfahrten diesen Schritt:");
+    print_col(7,  COL_TEXT, 3, 0,      "Einfahrten diesen Schritt:");
     print_col(7, 40, 1, A_BOLD, "%u",  ptr_stats->temp_entries);
-    print_col(8, 2, 3, 0,       "Ausfahrten diesen Schritt:");
+    print_col(8,  COL_TEXT, 3, 0,      "Ausfahrten diesen Schritt:");
     print_col(8, 40, 1, A_BOLD, "%u",  ptr_stats->temp_exits);
 
-    print_col(9,  2, 3, 0,      "Aktuell freie Parkplaetze:");
+    print_col(9,  COL_TEXT, 3, 0,      "Aktuell freie Parkplaetze:");
     print_col(9, 40, 1, A_BOLD, "%u",  ptr_stats->temp_free_spots);
-    print_col(10, 2, 3, 0,      "Aktuelle Laenge der Warteschlange:");
+    print_col(10, COL_TEXT, 3, 0,      "Aktuelle Laenge der Warteschlange:");
     print_col(10, 40, 1, A_BOLD, "%u",  ptr_stats->temp_queue_length);
 
-    print_col(11,  2, 3, 0,      "Durchschnittliche Parkzeit pro Auto:");
+    print_col(11, COL_TEXT, 3, 0,      "Durchschnittliche Parkzeit pro Auto:");
     print_col(11, 40, 1, A_BOLD, "%.2f Schr.", ptr_stats->temp_time_left);
 
     draw_hline(13);
 
-    print_col(15,  2, 3, 0,      "Auslastung des Parkhauses:");
+    print_col(15, COL_TEXT, 3, 0,      "Auslastung des Parkhauses:");
     print_col(15, 40, 1, A_BOLD, "%.1f%%", ptr_stats->temp_rel_occupancy_percent);
     int bar_color = 0;
-    if(ptr_stats->temp_rel_occupancy_percent >= OCCUPANCY_HIGH_THRESHOLD) {
+    if (ptr_stats->temp_rel_occupancy_percent >= OCCUPANCY_HIGH_THRESHOLD) {
         bar_color = 2;
     }
     else {
         bar_color = 1;
     }
-    draw_bar(16, 2, BAR_WIDTH, ptr_stats->temp_rel_occupancy_percent, bar_color);
+    draw_bar(16, COL_TEXT, BAR_WIDTH, ptr_stats->temp_rel_occupancy_percent, bar_color);
     wrefresh(ptr_win);
 }
 
