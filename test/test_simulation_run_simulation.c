@@ -22,7 +22,7 @@ static SimConfig *create_test_config() {
     ptr_config->sim_duration_steps = 0;
     ptr_config->arrival_probability_percent = 0;
     ptr_config->seed = 1;
-    strncpy(ptr_config->output_file_name, "test_tmp_sim_output.csv",
+    strncpy(ptr_config->output_file_name, "test_tmp_sim_output",    //without .csv at the end because we always append .csv to have a valid file type
             sizeof(ptr_config->output_file_name) - 1);
     return ptr_config;
 }
@@ -59,12 +59,14 @@ int main() {
     printf("Test 2: Minimal Run: ");
     ptr_config = create_test_config();
     ptr_stats  = create_test_stats();
-    remove(ptr_config->output_file_name);
+    char expected_path[80];
+    snprintf(expected_path, sizeof(expected_path), "%s.csv", ptr_config->output_file_name);
+    remove(expected_path);
     assert(run_simulation(ptr_config, ptr_stats) == 1);
-    FILE *ptr_file = fopen(ptr_config->output_file_name, "r");
+    FILE *ptr_file = fopen(expected_path, "r");
     assert(ptr_file != NULL);
     fclose(ptr_file);
-    remove(ptr_config->output_file_name);
+    remove(expected_path);
     assert(ptr_stats->step_num == 0);
     free(ptr_config);
     free(ptr_stats);
