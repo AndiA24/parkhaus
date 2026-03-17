@@ -284,7 +284,7 @@ void show_settings(SimConfig *ptr_config) {
                 render_settings(ptr_config);
                 break;
             case '4':
-                prompt_uint("Maximal Parkdauer eines Fahrzeuges", &ptr_config->max_parking_duration_steps, 1, UINT_MAX);
+                prompt_uint("Maximal Parkdauer eines Fahrzeuges", &ptr_config->max_parking_duration_steps, 1, 1000000000); //make this just very big to have a finite value in accordance to assignment
                 render_settings(ptr_config);
                 break;
             case '5':
