@@ -368,6 +368,7 @@ void show_welcome(SimConfig *ptr_config) {
 }
 
 void show_results(SimStats *ptr_stats) {
+    flushinp(); //flush input buffer so user can't spam and accumulate inputs while running sim
     begin_screen("ERGEBNISSE DER SIMULATION");
     draw_hline(3);
 
