@@ -284,7 +284,9 @@ int free_parking(Parking *ptr_parking, SimStats *ptr_stats) {
     // free all vehicles in occupied spots 
     for (int i = 0; i < (int)ptr_parking->occupied_count; i++) {
         if (ptr_parking->ptr_occupied_spots[i]->ptr_vehicle != NULL) {
+            // update total parking time
             ptr_stats->total_parking_time += ptr_stats->step_num - ptr_parking->ptr_occupied_spots[i]->ptr_vehicle->entry_time;
+            // free allocated memory
             free_vehicle(ptr_parking->ptr_occupied_spots[i]->ptr_vehicle);
             ptr_parking->ptr_occupied_spots[i]->ptr_vehicle = NULL;
             ptr_parking->ptr_occupied_spots[i]->occupied = 0;
