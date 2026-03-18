@@ -61,7 +61,7 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats){
     unsigned int total_steps = ptr_config->sim_duration_steps;
     for(unsigned int i = 0; i < total_steps; i++){
         if(rand_arrival(ptr_config) == 1){
-            if(enqueue(ptr_queue, create_vehicle(ptr_stats, ptr_config)) == -1) {
+            if(enqueue(ptr_queue, create_vehicle(ptr_stats, ptr_config), ptr_stats) == -1) {
                 output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
                 return -1;
             }
@@ -96,10 +96,6 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats){
         show_running(ptr_stats);
 #endif
         if(reset_temp_stats(ptr_stats) == -1){
-            output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
-            return -1;
-        }
-        if(increment_queue_time(ptr_queue) == -1){
             output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
             return -1;
         }

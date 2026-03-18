@@ -47,11 +47,12 @@ Queue *init_queue();
  * to the tail of the queue. Increments size by 1.
  *
  * @param[in,out] ptr_queue   Pointer to the waiting queue
- * @param[in]     vehicle Pointer to the vehicle to be enqueued
+ * @param[in]     ptr_vehicle Pointer to the vehicle to be enqueued
+ * @param[in]     ptr_stats   Pointer to the simulation stats
  * 
  * @return 1 on success, -1 if any param is NULL
  */
-int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle);
+int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle, SimStats *ptr_stats);
 
 /**
  * @brief Removes and returns the first vehicle from the waiting queue.

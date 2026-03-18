@@ -63,8 +63,8 @@ int main() {
     ptr_stats = create_test_stats();
     ptr_vehicle1 = create_test_vehicle();
     ptr_vehicle2 = create_test_vehicle();
-    enqueue(ptr_queue, ptr_vehicle1);
-    enqueue(ptr_queue, ptr_vehicle2);
+    enqueue(ptr_queue, ptr_vehicle1, ptr_stats);
+    enqueue(ptr_queue, ptr_vehicle2, ptr_stats);
     assert(delete_queue(ptr_queue, ptr_stats) == 1);
     free(ptr_stats);   
     printf("OK\n");
