@@ -19,12 +19,18 @@ static Parking *create_test_parking() {
     return ptr_parking;
 }
 
+SimStats *create_test_stats(){
+    SimStats *ptr_stats = calloc(1, sizeof *ptr_stats);
+    return ptr_stats;
+}
+
 int main() {
     Parking *ptr_parking = NULL;
+    SimStats *ptr_stats = NULL;
 
     // Test 1: ptr_parking is NULL
     printf("Test 1: ptr_parking is NULL: ");
-    assert(free_parking(NULL) == -1);
+    assert(free_parking(NULL, NULL) == -1);
     printf("OK\n");
 
     // Test 2: Valid pointer is freed successfully
@@ -33,8 +39,11 @@ int main() {
     //   return value = 0
     printf("Test 2: Valid pointer is freed successfully: ");
     ptr_parking = create_test_parking();
-    assert(free_parking(ptr_parking) == 0);
+    ptr_stats = create_test_stats();
+    assert(free_parking(ptr_parking, ptr_stats) == 0);
+    free(ptr_stats);
     ptr_parking = NULL;
+    ptr_stats = NULL;
     printf("OK\n");
 
     return 0;

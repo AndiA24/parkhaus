@@ -117,15 +117,15 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats){
 #ifndef UNIT_TEST
     show_results(ptr_stats);
 #endif
+    if(free_parking(ptr_parking, ptr_stats) == -1){
+            output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
+            return -1;
+    }
     if(reset_all_stats(ptr_stats) == -1){
             output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
             return -1;
     }
-    if(free_parking(ptr_parking) == -1){
-            output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
-            return -1;
-    }
-
+    
     return 1;
 }
 
