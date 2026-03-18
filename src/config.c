@@ -58,8 +58,11 @@ int get_config(SimConfig *ptr_config) {
     }
     FILE *ptr_f = fopen(ptr_config->config_file_name, "r");
     if (!ptr_f) {
-        populate_with_default(ptr_config);
-        return 0;
+        if (populate_with_default(ptr_config)) {
+            return 0;
+        }
+        return -1;
+
     }
     else {
         int count = fscanf(ptr_f, "%u,%u,%u,%u,%u,%u,%u,%69[^,],%u",
@@ -73,9 +76,11 @@ int get_config(SimConfig *ptr_config) {
         ptr_config->output_file_name,
         &ptr_config->seed);
         if (count != NUM_CONFIG_FIELDS) {
-            populate_with_default(ptr_config);
+            if (populate_with_default(ptr_config)) {
+                return 0;
+            }     
+            return -1;
             fclose(ptr_f);
-            return 0;
         }
         else {
             fclose(ptr_f);
