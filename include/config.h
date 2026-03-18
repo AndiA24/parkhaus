@@ -35,6 +35,7 @@ typedef struct {
  * the predefined default configuration values.
  *
  * @param[out] ptr_config Pointer to the SimConfig structure to be populated.
+ * @return 0 on success -1 on failure
  */
 int populate_with_default(SimConfig *ptr_config);
 
@@ -54,6 +55,7 @@ SimConfig *create_config();
  * is filled with default values.
  *
  * @param[in,out] ptr_config Pointer to the SimConfig structure to be populated
+ * @return 0 if we populated with default, 1 if success, -1 if failed
  */
 int get_config(SimConfig *ptr_config);
 
@@ -64,6 +66,8 @@ int get_config(SimConfig *ptr_config);
  * file under a defined name, overwriting any existing configuration.
  *
  * @param[in] config Pointer to the SimConfig structure to be saved
+ * @return 0 if success and the file existed initially (for testing purposes), -1 if the file failed to open
+ * and 1 if the file didn't exist but the operation succeeded
  */
 int save_config(SimConfig *ptr_config);
 
@@ -73,6 +77,7 @@ int save_config(SimConfig *ptr_config);
  * Frees the SimConfig structure that was allocated by create_config
  *
  * @param[in] ptr_config Pointer to the SimConfig structure to be freed.
+ * @return 0 if success, -1 if fail
  */
 int free_config(SimConfig *ptr_config);
 

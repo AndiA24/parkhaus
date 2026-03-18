@@ -26,9 +26,9 @@ cmake -B build
 cmake --build build
 ```
 
-### Programm starten
+### Programm starten auf
 
-> **Wichtig:** Das Terminalfenster muss vor dem Start auf mindestens **86 × 25 Zeichen** gezogen werden, damit die Oberfläche korrekt dargestellt wird.
+> **Wichtig:** Das Terminalfenster muss vor dem Start auf mindestens **86 × 25 Zeichen** gezogen werden, damit die Oberfläche korrekt dargestellt wird. Außerdem darf es keine git-bash sein sondern muss ein reguläres terminal sein.
 
 ```bash
 ./build/parkhaus

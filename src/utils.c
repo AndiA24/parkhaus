@@ -1,3 +1,14 @@
+/**
+ * @file utils.c
+ * @brief Utility functions 
+ *
+ * This files contains two functions that had to be excluded from 
+ * other files for better handling. One handles if we are testing or 
+ * not and the appropriate output method. The other handles exiting
+ * the program correcly.
+ */
+
+
 #include "../include/utils.h"
 #include "../include/config.h"
 #ifndef UNIT_TEST
@@ -16,7 +27,9 @@ void output(int col, const char *ptr_msg, int color, int kill, SimConfig *ptr_co
 }
 
 void quit(SimConfig *ptr_config) {
-    save_config(ptr_config);
+    if (ptr_config) {
+        save_config(ptr_config);
+    }
     exit(1);
 }
 /*

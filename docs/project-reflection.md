@@ -99,6 +99,12 @@ Zunächst wurde die Suche nach einem freien Parkplatz so implementiert, dass das
 •⁠  ⁠*Option B (gewählt)*: Separates Array mit nur den aktuell geparkten Fahrzeugen → deutlich kleinere Iteration
 Um festzustellen, ob die Parkdauer eines Fahrzeugs abgelaufen ist, wurde zunächst das gesamte Parkhaus durchlaufen. Im schlechtesten Fall führt das zu einer Laufzeit von O(Decks × Spots), da jeder Spot einzeln geprüft werden muss. Um diese Suche zu vermeiden, wurde ein Array eingeführt, das Pointer auf alle aktuell belegten Spots hält. Bei der Überprüfung muss nun nur noch über dieses Array iteriert werden, was die Laufzeit auf O(belegte Spots) verbessert. Verlässt ein Fahrzeug das Parkhaus, wird sein Eintrag aus dem Array entfernt. Um Lücken im Array zu vermeiden, übernimmt das letzte Element des Arrays die Position des entfernten Eintrags.
 
+#### Einfahrtsbeschränkung auf ein Fahrzeug pro Zeitschritt
+
+Bei der Einfahrt wurde bewusst entschieden, dass pro Simulationsschritt maximal ein Fahrzeug aus der Warteschlange ins Parkhaus einfahren kann. Diese Einschränkung spiegelt die Realität einer physischen Schranke wider: Eine Schranke lässt immer nur ein Fahrzeug auf einmal passieren – erst wenn dieses eingefahren ist und die Schranke wieder geschlossen wurde, kann das nächste Fahrzeug den Einfahrtsvorgang starten.
+
+Bei der **Ausfahrt** besteht diese Einschränkung nicht. Dort wird stattdessen eine automatische Kennzeichenerkennung angenommen: Das System erfasst das Kennzeichen des ausfahrenden Fahrzeugs und bucht den Parkplatz automatisch frei. Deshalb können mehrere Autos in einem Zeitschritt ausfahren, denn es wird angenommen, dass die Erfassung berührungslos und ohne manuelle Interaktion erfolgt.
+
 ### Ausgabeformat
 
 •⁠  ⁠*Option A*: Einfache Konsolenausgabe mit ⁠ printf ⁠
