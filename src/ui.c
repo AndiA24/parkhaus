@@ -409,15 +409,15 @@ void show_results(SimStats *ptr_stats) {
 
     draw_hline(13);
 
-    print_col(14, 2, 3, 0,     "Durchschnittliche Parkdauer:");
+    print_col(14, COL_TEXT, CP_INFO, 0,     "Durchschnittliche Parkdauer:");
     double average_parking_duration = 0.0f;
-    if(ptr_stats->total_entries) {
+    if (ptr_stats->total_entries) {
         average_parking_duration = (double)ptr_stats->total_parking_time/(double)ptr_stats->total_entries;
     }
-    print_col(14, 70, 1, A_BOLD, "%.2f",  average_parking_duration);
+    print_col(14, COL_VALUE, CP_GOOD, A_BOLD, "%.2f",  average_parking_duration);
 
-    print_col(15, 2, 3, 0,      "Summierte Anzahl der Schritte die Autos im Parkaus verbracht haben:");
-    print_col(15, 70, 1, A_BOLD, "%llu",  ptr_stats->total_parking_time);
+    print_col(15, COL_TEXT, CP_INFO, 0,      "Summierte Anzahl der Schritte die Autos im Parkaus verbracht haben:");
+    print_col(15, COL_VALUE, CP_GOOD, A_BOLD, "%llu",  ptr_stats->total_parking_time);
 
     print_col(15, COL_TEXT, CP_INFO, 0, "Summierte Anzahl der Schritte die Autos im Parkaus verbracht haben:");
     print_col(15, COL_VALUE, CP_GOOD, A_BOLD, "%u", ptr_stats->total_parking_time);
