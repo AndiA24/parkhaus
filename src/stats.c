@@ -189,8 +189,8 @@ int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file) {
         ptr_stats->total_exits,
         ptr_stats->total_entries,
         ptr_stats->total_queued,
-        (unsigned long long)ptr_stats->total_queue_time,
-        (unsigned long long)ptr_stats->total_parking_time,
+        (unsigned long long)ptr_stats->total_queue_time,    //cast to long long to avoid warnings during compilation on Linux
+        (unsigned long long)ptr_stats->total_parking_time,  //cast to long long to avoid warnings during compilation on Linux
         ptr_stats->time_full_occupancy,
         ptr_stats->peak_queue_length,
         ptr_stats->step_longest_queue,

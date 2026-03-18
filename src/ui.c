@@ -383,7 +383,7 @@ void show_results(SimStats *ptr_stats) {
     print_col(7, COL_VALUE, CP_GOOD, A_BOLD, "%u", ptr_stats->total_queued);
 
     print_col(8, COL_TEXT, CP_INFO, 0, "Summierte Zeit aller Autos in der Warteschlane:");
-    print_col(8, COL_VALUE, CP_GOOD, A_BOLD, "%llu", (unsigned long long)ptr_stats->total_queue_time);
+    print_col(8, COL_VALUE, CP_GOOD, A_BOLD, "%llu", (unsigned long long)ptr_stats->total_queue_time);  //cast to long long to avoid warnings during compilation on Linux
 
     print_col(9, COL_TEXT, CP_INFO, 0, "Laengste Warteschlange waehrend der Simulation:");
     print_col(9, COL_VALUE, CP_GOOD, A_BOLD, "%u Schr.", ptr_stats->peak_queue_length);
@@ -396,7 +396,7 @@ void show_results(SimStats *ptr_stats) {
         print_col(11, COL_VALUE, CP_GOOD, A_BOLD, "%u", 0u);
     }
     else {
-        print_col(11, COL_VALUE, CP_GOOD, A_BOLD, "%llu", (unsigned long long)ptr_stats->total_queue_time/ptr_stats->total_queued);
+        print_col(11, COL_VALUE, CP_GOOD, A_BOLD, "%llu", (unsigned long long)ptr_stats->total_queue_time/ptr_stats->total_queued); //cast to long long to avoid warnings during compilation on Linux
     }
 
     print_col(12, COL_TEXT, CP_INFO, 0, "Anteil aller Autos, die in der Warteschlange waren:");
