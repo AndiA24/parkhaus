@@ -42,6 +42,11 @@ Verfügbare Test-Targets:
 | `test_get_free_spots` | `get_free_spots()` |
 | `test_create_vehicle` | `create_vehicle()` |
 | `test_free_vehicle` | `free_vehicle()` |
+| `test_queue_init_queue` | `init_queue()` |
+| `test_queue_free_queue` | `free_queue()` |
+| `test_queue_delete_queue` | `delete_queue()` |
+| `test_queue_enqueue` | `enqueue()` |
+| `test_queue_dequeue` | `dequeue()` |
 | `test_init_stats` | `init_simstats()` |
 | `test_free_stats` | `free_stats()` |
 | `test_reset_all_stats` | `reset_all_stats()` |
@@ -58,7 +63,7 @@ Verfügbare Test-Targets:
 | `test_config_get_config` | `get_config()` |
 | `test_config_save_config` | `save_config()` |
 | `test_rand_arrival` | `rand_arrival()` |
-| ~~`test_run_simulation`~~ | ~~`run_simulation()`~~ *(in CMakeLists.txt deaktiviert)* |
+| `test_simulation_run_simulation` | `run_simulation()` |
 
 ### 4. Build bereinigen
 
