@@ -58,7 +58,7 @@ int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle, SimStats *ptr_stats)
 
     ptr_queue->ptr_tail = ptr_new_node;                         // update tail to new node
     ptr_queue->size++;                                          // increment queue size
-    return 1;
+    return 0;
 }
 
 Vehicle* dequeue(Queue *ptr_queue, SimStats *ptr_stats) 
@@ -114,7 +114,7 @@ int delete_queue(Queue *ptr_queue, SimStats *ptr_simstats)
     }
 
     free_queue(ptr_queue);
-    return 1;
+    return 0;
 }
 
 int free_queue(Queue *ptr_queue) 
@@ -125,7 +125,7 @@ int free_queue(Queue *ptr_queue)
         return -1;
     }
     free(ptr_queue);                                            // free queue memory
-    return 1;
+    return 0;
 }
 
 /* 
