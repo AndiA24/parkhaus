@@ -46,6 +46,7 @@ int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr
 
         // update temp time left
         ptr_stats->temp_time_left += ptr_spot->ptr_vehicle->parking_duration;
+        ptr_stats->total_entries++;
 
         // update occupied counts for deck and parking
         ptr_current_deck->occupied_count = ptr_current_deck->occupied_count + 1;
