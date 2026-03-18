@@ -81,7 +81,7 @@ int main(){
     ptr_parking= create_test_parking(10,20);
     ptr_config = create_test_config();
     assert(initial_occupancy(ptr_parking, ptr_config, NULL) == -1);
-    free_parking(ptr_parking);
+    free_parking(ptr_parking, NULL);
     free(ptr_config);
     ptr_parking = NULL;
     ptr_config = NULL;
@@ -92,7 +92,7 @@ int main(){
     ptr_parking = create_test_parking(10, 20);
     ptr_stats = create_test_stats();
     assert(initial_occupancy(ptr_parking, NULL, ptr_stats) == -1);
-    free_parking(ptr_parking);
+    free_parking(ptr_parking, ptr_stats);
     free(ptr_stats);
     ptr_parking = NULL;
     ptr_stats = NULL;
@@ -104,7 +104,7 @@ int main(){
     ptr_config = create_test_config();
     ptr_stats = create_test_stats();
     assert(initial_occupancy(ptr_parking, ptr_config, ptr_stats) == -2);
-    free_parking(ptr_parking);
+    free_parking(ptr_parking, ptr_stats);
     free(ptr_config);
     free(ptr_stats);
     ptr_parking = NULL;
@@ -129,7 +129,7 @@ int main(){
     }
     assert(vehicle_count == (int)ptr_config->initial_occupancy);
     printf("OK\n");
-    free_parking(ptr_parking);
+    free_parking(ptr_parking, ptr_stats);
     free(ptr_config);
     free(ptr_stats);
 }

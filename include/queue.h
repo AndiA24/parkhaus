@@ -70,19 +70,6 @@ int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle, SimStats *ptr_stats);
 Vehicle *dequeue(Queue *ptr_queue, SimStats *ptr_stats);
 
 /**
- * @brief Increments the queue time of all vehicles in the waiting queue at each time step.
- *
- * Iterates through all nodes in the queue and increases the queue_time
- * of each contained vehicle by one. 
- * Does nothing if the queue is empty.
- *
- * @param[in,out] ptr_queue Pointer to the waiting queue
- * 
- * @return 0 on success, -1 if ptr_queue is NULL
- */
-int increment_queue_time(Queue *ptr_queue);
-
-/**
  * @brief Frees all resources associated with the queue.
  *
  * Traverses all remaining nodes in the queue and releases their

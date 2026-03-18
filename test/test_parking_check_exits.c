@@ -70,7 +70,7 @@ int main() {
     assert(check_exit(NULL, NULL) == -1);
     assert(check_exit(NULL, ptr_stats) == -1);
     assert(check_exit(ptr_parking, NULL) == -1);
-    free_parking(ptr_parking);
+    free_parking(ptr_parking, ptr_stats);
     free(ptr_stats);
     ptr_parking = NULL; 
     ptr_stats = NULL;
@@ -105,7 +105,7 @@ int main() {
     assert(ptr_stats->temp_exits == 1);
     assert(ptr_stats->total_exits == 1);
     assert(ptr_stats->total_parking_time == 5);
-    free_parking(ptr_parking);
+    free_parking(ptr_parking, ptr_stats);
     free(ptr_stats);
     ptr_parking = NULL; 
     ptr_stats = NULL;
@@ -128,7 +128,7 @@ int main() {
     assert(ptr_parking->occupied_count == 1);
     assert(ptr_stats->temp_exits == 1);
     assert(ptr_stats->total_exits == 1);
-    free_parking(ptr_parking);
+    free_parking(ptr_parking, ptr_stats);
     free(ptr_stats);
     ptr_parking = NULL; ptr_stats = NULL;
     printf("OK\n");

@@ -383,7 +383,7 @@ void show_results(SimStats *ptr_stats) {
     print_col(7, COL_VALUE, CP_GOOD, A_BOLD, "%u", ptr_stats->total_queued);
 
     print_col(8, COL_TEXT, CP_INFO, 0, "Summierte Zeit aller Autos in der Warteschlane:");
-    print_col(8, COL_VALUE, CP_GOOD, A_BOLD, "%u", ptr_stats->total_queue_time);
+    print_col(8, COL_VALUE, CP_GOOD, A_BOLD, "%llu", (unsigned long long)ptr_stats->total_queue_time);  //cast to long long to avoid warnings during compilation on Linux
 
     print_col(9, COL_TEXT, CP_INFO, 0, "Laengste Warteschlange waehrend der Simulation:");
     print_col(9, COL_VALUE, CP_GOOD, A_BOLD, "%u Schr.", ptr_stats->peak_queue_length);
@@ -396,7 +396,7 @@ void show_results(SimStats *ptr_stats) {
         print_col(11, COL_VALUE, CP_GOOD, A_BOLD, "%u", 0u);
     }
     else {
-        print_col(11, COL_VALUE, CP_GOOD, A_BOLD, "%u", ptr_stats->total_queue_time/ptr_stats->total_queued);
+        print_col(11, COL_VALUE, CP_GOOD, A_BOLD, "%llu", (unsigned long long)ptr_stats->total_queue_time/ptr_stats->total_queued); //cast to long long to avoid warnings during compilation on Linux
     }
 
     print_col(12, COL_TEXT, CP_INFO, 0, "Anteil aller Autos, die in der Warteschlange waren:");
@@ -409,12 +409,12 @@ void show_results(SimStats *ptr_stats) {
 
     draw_hline(13);
 
-    print_col(14, COL_TEXT, CP_INFO, 0, "Durchschnittliche Parkdauer:");
-    unsigned int average_parking_duration = 0;
-    if (ptr_stats->total_exits) {
-        average_parking_duration = ptr_stats->total_parking_time/ptr_stats->total_exits;
+    print_col(14, COL_TEXT, CP_INFO, 0,     "Durchschnittliche Parkdauer:");
+    double average_parking_duration = 0.0f;
+    if (ptr_stats->total_entries) {
+        average_parking_duration = (double)ptr_stats->total_parking_time/(double)ptr_stats->total_entries;
     }
-    print_col(14, COL_VALUE, CP_GOOD, A_BOLD, "%u", average_parking_duration);
+    print_col(14, COL_VALUE, CP_GOOD, A_BOLD, "%.2f",  average_parking_duration);
 
     print_col(15, COL_TEXT, CP_INFO, 0, "Summierte Anzahl der Schritte die Autos im Parkaus verbracht haben:");
     print_col(15, COL_VALUE, CP_GOOD, A_BOLD, "%u", ptr_stats->total_parking_time);

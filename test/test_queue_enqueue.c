@@ -10,12 +10,12 @@
 #include "../include/vehicle.h"
 #include "../include/stats.h"
 
-Vehicle *test_vehicle(){
+Vehicle *create_test_vehicle() {
     Vehicle *ptr_vehicle = calloc(1, sizeof *ptr_vehicle); 
     return ptr_vehicle;
 }
 
-SimStats *test_stats(){
+SimStats *create_test_stats() {
     SimStats *ptr_stats = calloc(1, sizeof *ptr_stats);
     return ptr_stats;
 }
@@ -35,7 +35,7 @@ int main() {
     // Test 2: vehicle pointer is NULL
     printf("Test 2: enqueue(valid queue, NULL)    → returns -1:  ");
     ptr_queue = init_queue();
-    ptr_stats = test_stats();
+    ptr_stats = create_test_stats();
     assert(enqueue(ptr_queue, NULL, ptr_stats) == -1);
     delete_queue(ptr_queue, ptr_stats);
     ptr_queue = NULL;
@@ -44,8 +44,8 @@ int main() {
 
     // Test 3: queue pointer is NULL
     printf("Test 3: enqueue(NULL, valid vehicle)  → returns -1:  ");
-    ptr_vehicle1 = test_vehicle();
-    ptr_stats = test_stats();
+    ptr_vehicle1 = create_test_vehicle();
+    ptr_stats = create_test_stats();
     assert(enqueue(NULL, ptr_vehicle1, ptr_stats) == -1);
     free(ptr_vehicle1);
     free(ptr_stats);
@@ -55,7 +55,7 @@ int main() {
 
     // Test 4: stats pointer is NULL
     printf("Test 4: enqueue(NULL, valid vehicle)  → returns -1:  ");
-    ptr_vehicle1 = test_vehicle();
+    ptr_vehicle1 = create_test_vehicle();
     assert(enqueue(ptr_queue, ptr_vehicle1, NULL) == -1);
     delete_queue(ptr_queue, ptr_stats);
     free(ptr_vehicle1);
@@ -67,8 +67,8 @@ int main() {
     // Test 5: enqueue one element
     printf("Test 5: enqueue(queue, one vehicle)   → size=1, head==tail:   ");
     ptr_queue = init_queue();
-    ptr_vehicle1 = test_vehicle();
-    ptr_stats = test_stats();
+    ptr_vehicle1 = create_test_vehicle();
+    ptr_stats = create_test_stats();
 
     assert(enqueue(ptr_queue, ptr_vehicle1, ptr_stats) == 0);
     assert(ptr_queue->size == 1);
@@ -88,9 +88,9 @@ int main() {
     // Test 6: enqueue two elements
     printf("Test 6: enqueue(queue, 2x vehicles)   → FIFO order maintained:   ");
     ptr_queue = init_queue();
-    ptr_stats = test_stats();
-    ptr_vehicle1 = test_vehicle();
-    ptr_vehicle2 = test_vehicle();
+    ptr_stats = create_test_stats();
+    ptr_vehicle1 = create_test_vehicle();
+    ptr_vehicle2 = create_test_vehicle();
 
     assert(enqueue(ptr_queue, ptr_vehicle1, ptr_stats) == 0);
     assert(enqueue(ptr_queue, ptr_vehicle2, ptr_stats) == 0);
@@ -113,10 +113,10 @@ int main() {
     // Test 7: enqueue three elements
     printf("Test 7: enqueue(queue, 3x vehicles)   → tail updated correctly:   ");
     ptr_queue = init_queue();
-    ptr_stats = test_stats();
-    ptr_vehicle1 = test_vehicle();
-    ptr_vehicle2 = test_vehicle();
-    ptr_vehicle3 = test_vehicle();
+    ptr_stats = create_test_stats();
+    ptr_vehicle1 = create_test_vehicle();
+    ptr_vehicle2 = create_test_vehicle();
+    ptr_vehicle3 = create_test_vehicle();
 
     assert(enqueue(ptr_queue, ptr_vehicle1, ptr_stats) == 0);
     assert(enqueue(ptr_queue, ptr_vehicle2, ptr_stats) == 0);

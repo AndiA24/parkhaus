@@ -73,7 +73,7 @@ int main() {
     ptr_stats = create_test_stats();
     ptr_parking = init_parking(ptr_config, ptr_stats);
     assert(entry_parking(ptr_parking, NULL, ptr_stats) == -1);
-    free_parking(ptr_parking); 
+    free_parking(ptr_parking, ptr_stats); 
     ptr_parking = NULL;
     free(ptr_stats);           
     ptr_stats = NULL;
@@ -90,7 +90,7 @@ int main() {
     assert(entry_parking(ptr_parking, ptr_vehicle, NULL) == -1);
     free(ptr_vehicle);         
     ptr_vehicle = NULL;
-    free_parking(ptr_parking); 
+    free_parking(ptr_parking, ptr_stats); 
     ptr_parking = NULL;
     free(ptr_stats);           
     ptr_stats = NULL;
@@ -108,7 +108,7 @@ int main() {
     assert(ptr_parking->occupied_count == 1);
     assert(ptr_parking->ptr_decks[0].occupied_count == 1);
     assert(ptr_parking->ptr_decks[0].free_spots == 1);        
-    free_parking(ptr_parking); 
+    free_parking(ptr_parking, ptr_stats); 
     ptr_parking = NULL;             
     free(ptr_stats);           
     ptr_stats = NULL;
@@ -127,7 +127,7 @@ int main() {
     assert(ptr_stats->temp_entries == 1);
     assert(ptr_stats->total_entries == 1);
     assert(ptr_vehicle->entry_time == 5);                      
-    free_parking(ptr_parking); 
+    free_parking(ptr_parking, ptr_stats); 
     ptr_parking = NULL;
     free(ptr_stats);           
     ptr_stats = NULL;
@@ -147,7 +147,7 @@ int main() {
     assert(ptr_parking->occupied_count == 4);
     assert(ptr_parking->ptr_decks[0].free_spots == 0);
     assert(ptr_parking->ptr_decks[1].free_spots == 0);
-    free_parking(ptr_parking); 
+    free_parking(ptr_parking, ptr_stats); 
     ptr_parking = NULL;
     free(ptr_stats);           
     ptr_stats = NULL;
@@ -166,7 +166,7 @@ int main() {
     assert(entry_parking(ptr_parking, ptr_vehicle2, ptr_stats) == 0);  
     free(ptr_vehicle2);
     ptr_vehicle2 = NULL;
-    free_parking(ptr_parking); 
+    free_parking(ptr_parking, ptr_stats); 
     ptr_parking = NULL;
     free(ptr_stats);           
     ptr_stats = NULL;

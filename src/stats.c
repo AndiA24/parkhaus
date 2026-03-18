@@ -93,8 +93,7 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
     ptr_stats->temp_queue_length = ptr_queue->size;
 
     // calculate avg relative occupancy using running avg formular
-    ptr_stats->avg_rel_occupancy = (ptr_stats->avg_rel_occupancy * ptr_stats->step_num + 
-        ptr_stats->temp_rel_occupancy_percent) / (ptr_stats->step_num + 1);
+    ptr_stats->avg_rel_occupancy += (ptr_stats->temp_rel_occupancy_percent - ptr_stats->avg_rel_occupancy) / (ptr_stats->step_num + 1);
 
     // save free spots for this step
     ptr_stats->temp_free_spots = ptr_parking->total_capacity - ptr_parking->occupied_count;
@@ -186,12 +185,12 @@ int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file) {
 
     // write final statistics
     fprintf(ptr_output_file,
-        "%u,%u,%u,%u,%u,%u,%u,%u,%.2f,%u\n",
+        "%u,%u,%u,%llu,%llu,%u,%u,%u,%.2f,%u\n",
         ptr_stats->total_exits,
         ptr_stats->total_entries,
         ptr_stats->total_queued,
-        ptr_stats->total_queue_time,
-        ptr_stats->total_parking_time,
+        (unsigned long long)ptr_stats->total_queue_time,    //cast to long long to avoid warnings during compilation on Linux
+        (unsigned long long)ptr_stats->total_parking_time,  //cast to long long to avoid warnings during compilation on Linux
         ptr_stats->time_full_occupancy,
         ptr_stats->peak_queue_length,
         ptr_stats->step_longest_queue,

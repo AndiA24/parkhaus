@@ -37,7 +37,7 @@ int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr
         // check return of create_vehicle
         if (ptr_spot->ptr_vehicle == NULL) {
             output(2, "Error: Failed to create Vehicle.\n", 2, 0, NULL);
-            free_parking(ptr_parking);
+            free_parking(ptr_parking, ptr_stats);
             return -1;
         }
         // register spot in occupied spots array
@@ -46,6 +46,7 @@ int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr
 
         // update temp time left
         ptr_stats->temp_time_left += ptr_spot->ptr_vehicle->parking_duration;
+        ptr_stats->total_entries++;
 
         // update occupied counts for deck and parking
         ptr_current_deck->occupied_count = ptr_current_deck->occupied_count + 1;
@@ -133,7 +134,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats) {
         switch (initial_occupancy(ptr_parking, ptr_config, ptr_stats))
         {
         case -1:
-            free_parking(ptr_parking);
+            free_parking(ptr_parking, ptr_stats);
             return NULL;
             break;
         
@@ -273,9 +274,9 @@ int get_free_spots(Parking *ptr_parking, SimStats *ptr_stats)
 
 
 
-int free_parking(Parking *ptr_parking) {
+int free_parking(Parking *ptr_parking, SimStats *ptr_stats) {
     // validate input pointer
-    if (ptr_parking == NULL)
+    if (ptr_parking == NULL || ptr_stats == NULL)
     {
         output(2, "Error: Failed to free memory allocated for parking. Invalid argument.\n", 2, 0, NULL);
         return -1;
@@ -284,6 +285,9 @@ int free_parking(Parking *ptr_parking) {
     // free all vehicles in occupied spots 
     for (int i = 0; i < (int)ptr_parking->occupied_count; i++) {
         if (ptr_parking->ptr_occupied_spots[i]->ptr_vehicle != NULL) {
+            // update total parking time
+            ptr_stats->total_parking_time += ptr_stats->step_num - ptr_parking->ptr_occupied_spots[i]->ptr_vehicle->entry_time;
+            // free allocated memory
             free_vehicle(ptr_parking->ptr_occupied_spots[i]->ptr_vehicle);
             ptr_parking->ptr_occupied_spots[i]->ptr_vehicle = NULL;
             ptr_parking->ptr_occupied_spots[i]->occupied = 0;
