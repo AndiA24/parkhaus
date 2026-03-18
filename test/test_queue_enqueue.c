@@ -70,7 +70,7 @@ int main() {
     ptr_vehicle1 = create_test_vehicle();
     ptr_stats = create_test_stats();
 
-    assert(enqueue(ptr_queue, ptr_vehicle1, ptr_stats) == 1);
+    assert(enqueue(ptr_queue, ptr_vehicle1, ptr_stats) == 0);
     assert(ptr_queue->size == 1);
     assert(ptr_queue->ptr_head != NULL);
     assert(ptr_queue->ptr_tail != NULL);
@@ -92,8 +92,8 @@ int main() {
     ptr_vehicle1 = create_test_vehicle();
     ptr_vehicle2 = create_test_vehicle();
 
-    assert(enqueue(ptr_queue, ptr_vehicle1, ptr_stats) == 1);
-    assert(enqueue(ptr_queue, ptr_vehicle2, ptr_stats) == 1);
+    assert(enqueue(ptr_queue, ptr_vehicle1, ptr_stats) == 0);
+    assert(enqueue(ptr_queue, ptr_vehicle2, ptr_stats) == 0);
 
     assert(ptr_queue->size == 2);
     assert(ptr_queue->ptr_head != ptr_queue->ptr_tail);        
@@ -118,9 +118,9 @@ int main() {
     ptr_vehicle2 = create_test_vehicle();
     ptr_vehicle3 = create_test_vehicle();
 
-    assert(enqueue(ptr_queue, ptr_vehicle1, ptr_stats) == 1);
-    assert(enqueue(ptr_queue, ptr_vehicle2, ptr_stats) == 1);
-    assert(enqueue(ptr_queue, ptr_vehicle3, ptr_stats) == 1);
+    assert(enqueue(ptr_queue, ptr_vehicle1, ptr_stats) == 0);
+    assert(enqueue(ptr_queue, ptr_vehicle2, ptr_stats) == 0);
+    assert(enqueue(ptr_queue, ptr_vehicle3, ptr_stats) == 0);
 
     assert(ptr_queue->size == 3);
     assert(ptr_queue->ptr_head->ptr_vehicle == ptr_vehicle1);

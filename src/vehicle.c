@@ -13,13 +13,13 @@
 #include "../include/stats.h"
 #include "../include/utils.h"
 
-Vehicle *create_vehicle(SimStats *ptr_stats, SimConfig *ptr_config){
-    if(ptr_stats == NULL || ptr_config == NULL){
+Vehicle *create_vehicle(SimStats *ptr_stats, SimConfig *ptr_config) {
+    if (ptr_stats == NULL || ptr_config == NULL) {
         printf("Error: Failed to create vehicle. Invalid Arguments.\n");
         return NULL;
     }
     Vehicle *ptr_vehicle = malloc(sizeof(*ptr_vehicle));
-    if(ptr_vehicle == NULL){
+    if (ptr_vehicle == NULL) {
         output(2, "Error: Failed to allocate memory to generate vehicle. Invalid argument.\n", 2, 0, NULL);
         return NULL;
     }
@@ -29,7 +29,7 @@ Vehicle *create_vehicle(SimStats *ptr_stats, SimConfig *ptr_config){
     ptr_stats->id_count ++;
 
     // set vehicles parking-duration to a random time between min and max
-    ptr_vehicle->parking_duration = rand() % (ptr_config->max_parking_duration_steps -ptr_config->min_parking_duration_steps + 1) 
+    ptr_vehicle->parking_duration = rand() % (ptr_config->max_parking_duration_steps - ptr_config->min_parking_duration_steps + 1) 
         + ptr_config->min_parking_duration_steps;
 
     ptr_vehicle->queue_time = 0;
@@ -38,8 +38,8 @@ Vehicle *create_vehicle(SimStats *ptr_stats, SimConfig *ptr_config){
     return ptr_vehicle;
 }
 
-int free_vehicle(Vehicle *ptr_vehicle){
-    if(ptr_vehicle == NULL){
+int free_vehicle(Vehicle *ptr_vehicle) {
+    if (ptr_vehicle == NULL) {
         output(2, "Error: Failed to free memory allocated for Vehicle. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }

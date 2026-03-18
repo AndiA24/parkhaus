@@ -15,19 +15,19 @@
 #include "../include/parking.h"
 #include "../include/utils.h"
 
-int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats){
-    if(ptr_parking == NULL || ptr_config == NULL || ptr_stats == NULL){
+int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr_stats) {
+    if (ptr_parking == NULL || ptr_config == NULL || ptr_stats == NULL) {
         output(2, "Error: Failed to create initial occupancy. Invalid Argument.\n", 2, 0, NULL);
         return -1;
     }    
-    if(ptr_config->initial_occupancy > ptr_parking->total_capacity){
+    if (ptr_config->initial_occupancy > ptr_parking->total_capacity) {
         /*
         output(2, "Error: Initial Occupancy exceeds total capacity of Parking. ", 2, 0, NULL);
         output(2, "Parking initialized without initial occupancy.\n", 2, 0, NULL);
         */
         return -2;
     }
-    for(int i = 0; i < (int)ptr_config->initial_occupancy; i++){
+    for (int i = 0; i < (int)ptr_config->initial_occupancy; i++) {
         ParkingDeck *ptr_current_deck =((ptr_parking->ptr_decks) + (i / ptr_config->spots_per_deck));
         
         // pop the next free spot from the deck's stack
@@ -35,7 +35,7 @@ int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr
         ptr_spot->ptr_vehicle = create_vehicle(ptr_stats, ptr_config);
 
         // check return of create_vehicle
-        if(ptr_spot->ptr_vehicle == NULL){
+        if (ptr_spot->ptr_vehicle == NULL) {
             output(2, "Error: Failed to create Vehicle.\n", 2, 0, NULL);
             free_parking(ptr_parking, ptr_stats);
             return -1;
@@ -58,13 +58,13 @@ int initial_occupancy(Parking *ptr_parking, SimConfig *ptr_config, SimStats *ptr
 
 
 
-Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
-    if(ptr_config == NULL || ptr_stats == NULL){
+Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats) {
+    if (ptr_config == NULL || ptr_stats == NULL) {
         output(2, "Error: Failed to create Parking. Invalid Arguments.\n", 2, 0, NULL);
         return NULL;
     }
     Parking *ptr_parking = malloc(sizeof(*ptr_parking));
-    if(ptr_parking == NULL){
+    if (ptr_parking == NULL) {
         output(2, "Failed to allocate memory for the Parking-Struct.\n", 2, 0, NULL);
         return NULL;
     }
@@ -76,7 +76,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     
     // allocate memory for an array of N Decks
     ptr_parking->ptr_decks = calloc((ptr_parking->decks), (sizeof(ParkingDeck)));
-    if(ptr_parking->ptr_decks == NULL){
+    if (ptr_parking->ptr_decks == NULL) {
         output(2, "Failed to allocate memory for the ParkingDecks.\n", 2, 0, NULL);
         //free(ptr_parking); not needed because exit frees all memory
         return NULL;
@@ -84,14 +84,14 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
 
     // allocate memory for an array of occupied spots 
     ptr_parking->ptr_occupied_spots = calloc(ptr_parking->total_capacity, sizeof(ParkingSpot*));
-    if(ptr_parking->ptr_occupied_spots == NULL){
+    if (ptr_parking->ptr_occupied_spots == NULL) {
         output(2, "Failed to allocate memory for array of occupied spots.\n", 2, 0, NULL);
         //free(ptr_parking); not needed because exit frees all memory
         return NULL;
     }
 
     ParkingDeck *ptr_current_deck = NULL;
-    for(int i = 0; i < (int)ptr_parking->decks; i++){
+    for (int i = 0; i < (int)ptr_parking->decks; i++) {
         ptr_current_deck = (ptr_parking->ptr_decks + i);
 
         ptr_current_deck->deck_id = i;
@@ -102,10 +102,10 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
         ptr_current_deck->ptr_spots = calloc((ptr_config->spots_per_deck), sizeof(ParkingSpot));
         ptr_current_deck->ptr_stack = calloc((ptr_config->spots_per_deck), sizeof(ParkingSpot*));
 
-        if(ptr_current_deck->ptr_spots == NULL || ptr_current_deck->ptr_stack == NULL){
+        if (ptr_current_deck->ptr_spots == NULL || ptr_current_deck->ptr_stack == NULL) {
             output(2, "Failed to allocate memory for the spots in a Deck.\n", 2, 0, NULL);
             // free memory of already allocated spots
-            for(int j = 0; j <= i; j++){
+            for (int j = 0; j <= i; j++) {
                 free((ptr_parking->ptr_decks + j)->ptr_stack);
                 free((ptr_parking->ptr_decks + j)->ptr_spots);
                 (ptr_parking->ptr_decks + j)->ptr_stack = NULL;
@@ -118,7 +118,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
             return NULL;
         }
 
-        for(int j = 0; j < (int)ptr_config->spots_per_deck; j++){
+        for (int j = 0; j < (int)ptr_config->spots_per_deck; j++) {
             // Global spot ID: deck index * spots per deck + local spot index 
             // this way every spot got an unique ID across all decks
             (ptr_current_deck->ptr_spots + j)->id = (i * ptr_config->spots_per_deck) + j;
@@ -130,7 +130,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats){
     }
     
     // fill with initial occupancy
-    if(ptr_config->initial_occupancy){
+    if (ptr_config->initial_occupancy) {
         switch (initial_occupancy(ptr_parking, ptr_config, ptr_stats))
         {
         case -1:

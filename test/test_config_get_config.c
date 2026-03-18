@@ -18,8 +18,7 @@ int main() {
     ptr_config = create_config();
     assert(ptr_config != NULL);
     strcpy(ptr_config->config_file_name, "nonexistent_test_config.csv");
-    int ret = get_config(ptr_config);
-    assert(ret == 0);
+    assert(get_config(ptr_config) == 0);
     assert(ptr_config->num_decks                   == 5);
     assert(ptr_config->spots_per_deck              == 60);
     assert(ptr_config->initial_occupancy           == 150);
@@ -43,8 +42,7 @@ int main() {
     ptr_config = create_config();
     assert(ptr_config != NULL);
     strcpy(ptr_config->config_file_name, test_file);
-    ret = get_config(ptr_config);
-    assert(ret == 1);
+    assert(get_config(ptr_config) == 1);
     assert(ptr_config->num_decks                   == 3);
     assert(ptr_config->spots_per_deck              == 20);
     assert(ptr_config->initial_occupancy           == 30);
@@ -70,8 +68,7 @@ int main() {
     ptr_config = create_config();
     assert(ptr_config != NULL);
     strcpy(ptr_config->config_file_name, test_file);
-    ret = get_config(ptr_config);
-    assert(ret == 0);
+    assert(get_config(ptr_config) == 0);
     assert(ptr_config->num_decks == 5);
     assert(ptr_config->sim_duration_steps == 1000);
     free_config(ptr_config);

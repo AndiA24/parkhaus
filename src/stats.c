@@ -16,10 +16,14 @@
 #include "../include/config.h"
 #include "../include/utils.h"
 
+#define TEMP_STRING_SIZE        80
+#define PERCENT_PRECISION_SCALE 10000.0f
+#define PERCENT_MAX             100.0f
 
-SimStats *init_simstats(){
+
+SimStats *init_simstats() {
     SimStats *ptr_stats = calloc(1,sizeof(*ptr_stats));
-    if(ptr_stats == NULL){
+    if (ptr_stats == NULL) {
         output(2, "Error: Failed to allocate memory for the Stats Struct.\n", 2, 0, NULL);
         return NULL;
     }
@@ -34,14 +38,13 @@ FILE *create_output_file(SimConfig *ptr_config)
         return NULL;
     }
 
-    FILE *ptr_output_file;
+    FILE *ptr_output_file = NULL;
 
     // open file for writing (silently overwrite if it already exists)
-    char temp_string[80];
+    char temp_string[TEMP_STRING_SIZE];
     snprintf(temp_string, sizeof(temp_string), "%s.csv", ptr_config->output_file_name); //always add .csv to end of a filename
     ptr_output_file = fopen(temp_string, "w");
-    if (ptr_output_file == NULL)
-    {
+    if (ptr_output_file == NULL) {
         return NULL;
     }
 
@@ -71,16 +74,16 @@ FILE *create_output_file(SimConfig *ptr_config)
 }
 
 
-int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue){
-    if(ptr_stats == NULL || ptr_parking == NULL || ptr_queue == NULL){
+int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue) {
+    if (ptr_stats == NULL || ptr_parking == NULL || ptr_queue == NULL) {
         output(2, "Error: Failed to update Stats. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
 
     // calculate relative occupancy for current step
-    if(ptr_parking->total_capacity > 0){
+    if (ptr_parking->total_capacity > 0) {
         // multiply with 1000 and floor to round down to two decimals
-        ptr_stats->temp_rel_occupancy_percent = floor(((float)ptr_parking->occupied_count / (float)ptr_parking->total_capacity) * 10000) / 100;
+        ptr_stats->temp_rel_occupancy_percent = floor(((float)ptr_parking->occupied_count / (float)ptr_parking->total_capacity) * PERCENT_PRECISION_SCALE) / PERCENT_MAX;
     }
     else{
         ptr_stats->temp_rel_occupancy_percent = 0;
@@ -96,12 +99,12 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
     ptr_stats->temp_free_spots = ptr_parking->total_capacity - ptr_parking->occupied_count;
 
     // if parking is full increment counter for full steps
-    if(ptr_parking->occupied_count == ptr_parking->total_capacity){
+    if (ptr_parking->occupied_count == ptr_parking->total_capacity) {
         ptr_stats->time_full_occupancy ++;
     }
 
     // each parked vehicle is one step closer to exit, so subtract 1 from the average
-    if(ptr_parking->occupied_count > 0){
+    if (ptr_parking->occupied_count > 0) {
         ptr_stats->temp_time_left -= 1.0;
     }
     else{
@@ -112,18 +115,18 @@ int update_simstats(SimStats *ptr_stats, Parking *ptr_parking, Queue *ptr_queue)
 }
 
 
-int update_peak(SimStats *ptr_stats){
-    if(ptr_stats == NULL){
+int update_peak(SimStats *ptr_stats) {
+    if (ptr_stats == NULL) {
         output(2, "Error: Failed to update peak-values. Invalid arguments.\n", 2, 0, NULL);
         return -1;
     }
 
     // check if current values are higher then saved peaks
-    if(ptr_stats->temp_rel_occupancy_percent > ptr_stats->peak_rel_occupancy){
+    if (ptr_stats->temp_rel_occupancy_percent > ptr_stats->peak_rel_occupancy) {
         ptr_stats->peak_rel_occupancy = ptr_stats->temp_rel_occupancy_percent;
         ptr_stats->step_highest_occupancy = ptr_stats->step_num;
     }
-    if(ptr_stats->temp_queue_length > ptr_stats->peak_queue_length){
+    if (ptr_stats->temp_queue_length > ptr_stats->peak_queue_length) {
         ptr_stats->peak_queue_length = ptr_stats->temp_queue_length;
         ptr_stats->step_longest_queue = ptr_stats->step_num;
     }
@@ -131,9 +134,9 @@ int update_peak(SimStats *ptr_stats){
 }
 
 
-int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
+int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file) {
     // valdate input pointers
-    if(ptr_stats == NULL || ptr_output_file == NULL){
+    if (ptr_stats == NULL || ptr_output_file == NULL) {
         output(2, "Error: Failed to save temp dataset. Invalid Argument.\n", 2, 0, NULL);
         return -1;
     }
@@ -153,8 +156,8 @@ int save_temp_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 }
 
 
-int reset_temp_stats(SimStats *ptr_stats){
-    if(ptr_stats == NULL){
+int reset_temp_stats(SimStats *ptr_stats) {
+    if (ptr_stats == NULL) {
         output(2, "Error: Failed to reset temp Stats. Invalid Argument.\n", 2, 0, NULL);
         return -1;
     }
@@ -168,9 +171,9 @@ int reset_temp_stats(SimStats *ptr_stats){
 }
 
 
-int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
+int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file) {
     // valdate input pointers
-    if(ptr_stats == NULL || ptr_output_file == NULL){
+    if (ptr_stats == NULL || ptr_output_file == NULL) {
         output(2, "Error: Failed to save final dataset. Invalid argumant\n", 2, 0, NULL);
         return -1;
     }
@@ -198,12 +201,12 @@ int save_final_dataset(SimStats *ptr_stats, FILE *ptr_output_file){
 }
 
 
-int close_output_file(FILE *ptr_output_file){
-    if(ptr_output_file == NULL){
+int close_output_file(FILE *ptr_output_file) {
+    if (ptr_output_file == NULL) {
         printf("Error: Failed to close output file. Invalid Argument.\n");
         return -1;
     }
-    if(fclose(ptr_output_file) == EOF){
+    if (fclose(ptr_output_file) == EOF) {
         output(2, "Error: Failed to close output file.\n", 2, 0, NULL);
         return -1;
     }
@@ -211,8 +214,8 @@ int close_output_file(FILE *ptr_output_file){
 }
 
 
-int reset_all_stats(SimStats *ptr_stats){
-    if(ptr_stats == NULL){
+int reset_all_stats(SimStats *ptr_stats) {
+    if (ptr_stats == NULL) {
         output(2, "Error: Failed to reset Stats. Invalid Argument.\n", 2, 0, NULL);
         return -1;
     }
@@ -240,8 +243,8 @@ int reset_all_stats(SimStats *ptr_stats){
 }
 
 
-int free_stats(SimStats *ptr_stats){
-    if(ptr_stats == NULL){
+int free_stats(SimStats *ptr_stats) {
+    if (ptr_stats == NULL) {
         output(2, "Error: Failed to free memory allocated for Stats. Invalid Argument\n", 2, 0, NULL);
         return -1;
     }

@@ -199,13 +199,13 @@ Diese Struct stellt ein einzelnes Fahrzeug dar. Jedes Fahrzeug erhält eine fort
 
 `entry_time` enthält die Nummer des Steps, in dem das Fahrzeug das Parkhaus befahren hat. Zusammen mit `parking_duration` lässt sich feststellen, wann das Fahrzeug das Parkhaus wieder verlassen muss.
 
-`queue_time` ist die Anzahl der Schritte, die das Fahrzeug in der Warteschlange verbracht hat, sie wird bei jedem Schritt in der Warteschlange inkrementiert und bei dem verlassen der Schlage in die Stats übernommen.
+`queue_time` speichert den Simulationsschritt, in dem das Fahrzeug in die Warteschlange eingereiht wurde. Verlässt das Fahrzeug die Warteschlange, wird die tatsächliche Wartezeit als Differenz zwischen dem aktuellen Schritt und dem gespeicherten Einreihungsschritt berechnet.
 ```c
 typedef struct {
     unsigned int id;               /**< Unique identifier of the vehicle. */
     unsigned int entry_time;       /**< Simulation step at which the vehicle entered the parking garage. */
     unsigned int parking_duration; /**< Total number of simulation steps the vehicle stays parked. */
-    unsigned int queue_time;       /**< Number of simulation steps the vehicle spent waiting in the queue. */
+    unsigned int queue_time;       /**< Simulation step at which the vehicle entered the queue. */
 } Vehicle;
 ```
 

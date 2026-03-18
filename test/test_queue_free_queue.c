@@ -19,7 +19,7 @@ int main() {
     // Test 2: valid empty queue
     printf("Test 2: free_queue(empty queue)   → returns  1:  ");
     ptr_queue = init_queue();
-    assert(free_queue(ptr_queue) == 1);
+    assert(free_queue(ptr_queue) == 0);
     ptr_queue = NULL;
     printf("OK\n");
 

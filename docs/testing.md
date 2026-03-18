@@ -42,6 +42,11 @@ Verfügbare Test-Targets:
 | `test_get_free_spots` | `get_free_spots()` |
 | `test_create_vehicle` | `create_vehicle()` |
 | `test_free_vehicle` | `free_vehicle()` |
+| `test_queue_init_queue` | `init_queue()` |
+| `test_queue_free_queue` | `free_queue()` |
+| `test_queue_delete_queue` | `delete_queue()` |
+| `test_queue_enqueue` | `enqueue()` |
+| `test_queue_dequeue` | `dequeue()` |
 | `test_init_stats` | `init_simstats()` |
 | `test_free_stats` | `free_stats()` |
 | `test_reset_all_stats` | `reset_all_stats()` |
@@ -58,7 +63,7 @@ Verfügbare Test-Targets:
 | `test_config_get_config` | `get_config()` |
 | `test_config_save_config` | `save_config()` |
 | `test_rand_arrival` | `rand_arrival()` |
-| ~~`test_run_simulation`~~ | ~~`run_simulation()`~~ *(in CMakeLists.txt deaktiviert)* |
+| `test_simulation_run_simulation` | `run_simulation()` |
 
 ### 4. Build bereinigen
 
@@ -100,8 +105,14 @@ Testet `free_parking()`.
 
 ### `test_parking_entry_parking.c`
 Testet `entry_parking()`.
-- Test 1: NULL-Schutz – alle NULL-Kombinationen der drei Zeigerargumente geben -1 zurück
-- Test 2: Korrekte Einfahrt – prüft `occupied_count`, Stellplatzzuweisung, Stats (`temp_entries`, `total_entries`) und `vehicle->entry_time`
+- Test 1: Alle Argumente NULL – gibt -1 zurück
+- Test 2: Parking-Argument ist NULL – gibt -1 zurück
+- Test 3: Vehicle-Argument ist NULL – gibt -1 zurück
+- Test 4: Stats-Argument ist NULL – gibt -1 zurück
+- Test 5: Ein Fahrzeug einparken – prüft `occupied_count`, `occupied_count` des Decks und `free_spots`
+- Test 6: Statistik nach Einparken – prüft `temp_entries`, `total_entries` und `entry_time` des Fahrzeugs
+- Test 7: Alle Spots belegen (2 Etagen × 2 Spots) – prüft `occupied_count` und `free_spots` aller Etagen
+- Test 8: Einparken bei vollem Parkhaus – gibt 0 zurück
 
 ---
 
@@ -134,6 +145,56 @@ Testet `create_vehicle()`.
 Testet `free_vehicle()`.
 - Test 1: ptr_vehicle ist NULL – gibt -1 zurück
 - Test 2: Gültiger Zeiger wird erfolgreich freigegeben – gibt 0 zurück
+
+---
+
+## Queue
+
+### `test_queue_init_queue.c`
+Testet `init_queue()`.
+- Test 1: Aufruf ohne Argumente – gibt einen gültigen Pointer zurück
+- Test 2: Alle Felder nach Initialisierung – `ptr_head`, `ptr_tail` sind NULL und `size` ist 0
+- Test 3: Zwei unabhängige Aufrufe – gibt zwei verschiedene Pointer zurück
+
+---
+
+### `test_queue_free_queue.c`
+Testet `free_queue()`.
+- Test 1: Argument ist NULL – `free_queue(NULL)` gibt -1 zurück
+- Test 2: Gültige leere Queue – gibt 1 zurück
+
+---
+
+### `test_queue_enqueue.c`
+Testet `enqueue()`.
+- Test 1: Alle Argumente NULL – gibt -1 zurück
+- Test 2: Vehicle-Argument ist NULL – gibt -1 zurück
+- Test 3: Queue-Argument ist NULL – gibt -1 zurück
+- Test 4: Stats-Argument ist NULL – gibt -1 zurück
+- Test 5: Ein Fahrzeug einreihen – prüft `size`, `ptr_head`, `ptr_tail` und Vehicle-Pointer
+- Test 6: Zwei Fahrzeuge einreihen – prüft FIFO-Reihenfolge und Verkettung
+- Test 7: Drei Fahrzeuge einreihen – prüft korrekte Aktualisierung von `ptr_tail`
+
+---
+
+### `test_queue_dequeue.c`
+Testet `dequeue()`.
+- Test 1: Beide Argumente NULL – gibt NULL zurück
+- Test 2: Stats-Argument ist NULL – gibt NULL zurück
+- Test 3: Queue-Argument ist NULL – gibt NULL zurück
+- Test 4: Leere Queue – gibt NULL zurück
+- Test 5: Ein Fahrzeug ausreihen – prüft Rückgabewert, `size`, `ptr_head` und `ptr_tail`
+- Test 6: Statistik nach Ausreihen – prüft `total_queue_time` und `total_queued` anhand der Differenz aus Ein- und Ausreihungsschritt
+
+---
+
+### `test_queue_delete_queue.c`
+Testet `delete_queue()`.
+- Test 1: Beide Argumente NULL – gibt -1 zurück
+- Test 2: Stats-Argument ist NULL – gibt -1 zurück
+- Test 3: Queue-Argument ist NULL – gibt -1 zurück
+- Test 4: Gültige leere Queue – gibt 1 zurück
+- Test 5: Queue mit zwei Fahrzeugen – gibt 1 zurück und gibt den gesamten Speicher frei
 
 ---
 
