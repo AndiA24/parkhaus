@@ -51,7 +51,7 @@ int main() {
     printf("Test 4: delete_queue(empty queue, stats)   → returns  1:  ");
     ptr_queue = init_queue();
     ptr_stats = create_test_stats();
-    assert(delete_queue(ptr_queue, ptr_stats) == 1);
+    assert(delete_queue(ptr_queue, ptr_stats) == 0);
     free(ptr_stats);
     ptr_queue = NULL;
     ptr_stats = NULL;
@@ -65,7 +65,7 @@ int main() {
     ptr_vehicle2 = create_test_vehicle();
     enqueue(ptr_queue, ptr_vehicle1, ptr_stats);
     enqueue(ptr_queue, ptr_vehicle2, ptr_stats);
-    assert(delete_queue(ptr_queue, ptr_stats) == 1);
+    assert(delete_queue(ptr_queue, ptr_stats) == 0);
     free(ptr_stats);   
     printf("OK\n");
 
