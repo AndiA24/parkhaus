@@ -39,7 +39,7 @@ typedef struct SimStats{
     unsigned int total_entries;                  /**< Total cars arrived over all steps. */
     unsigned int total_queued;                  /**< Total cars that had to wait in queue. */
     unsigned int total_queue_time;              /**< Sum of all queue waiting times (in steps). */
-    unsigned int total_parking_time;            /**< Sum of all parking durations (in steps). */
+    uint64_t     total_parking_time;            /**< Sum of all parking durations (in steps). */
     unsigned int time_full_occupancy;           /**< Steps where parking was at full capacity. */
     float        avg_rel_occupancy;             /**< Average relative occupancy over all steps. */
 
