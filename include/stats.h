@@ -10,6 +10,7 @@
 #define STATS_H
 
 #include <stdio.h>
+#include <stdint.h>
 #include "queue.h"
 #include "config.h"
 
