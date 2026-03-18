@@ -19,7 +19,7 @@ static Parking *create_test_parking() {
     return ptr_parking;
 }
 
-SimStats *create_test_stats(){
+SimStats *create_test_stats() {
     SimStats *ptr_stats = calloc(1, sizeof *ptr_stats);
     return ptr_stats;
 }

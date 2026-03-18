@@ -10,12 +10,12 @@
 #include "../include/vehicle.h"
 #include "../include/stats.h"
 
-Vehicle *create_test_vehicle(){
+Vehicle *create_test_vehicle() {
     Vehicle *ptr_vehicle = calloc(1, sizeof *ptr_vehicle); 
     return ptr_vehicle;
 }
 
-SimStats *create_test_stats(){
+SimStats *create_test_stats() {
     SimStats *ptr_stats = calloc(1, sizeof *ptr_stats);
     return ptr_stats;
 }
