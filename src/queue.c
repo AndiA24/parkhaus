@@ -32,15 +32,13 @@ Queue *init_queue()
 
 int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle, SimStats *ptr_stats)
 {
-    if (ptr_queue == NULL || ptr_vehicle == NULL || ptr_stats == NULL)
-    {
+    if (ptr_queue == NULL || ptr_vehicle == NULL || ptr_stats == NULL) {
         output(2, "Error: Failed to enqueue vehicle. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
 
     QueueNode *ptr_new_node = malloc(sizeof *ptr_new_node);     // allocate memory for new node
-    if (ptr_new_node == NULL)
-    {
+    if (ptr_new_node == NULL) {
         output(2, "Error: Failed to allocate memory for new node.\n", 2, 0, NULL);
         return -1;
     }
@@ -49,10 +47,10 @@ int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle, SimStats *ptr_stats)
     ptr_new_node->ptr_next = NULL;
     ptr_new_node->ptr_vehicle->queue_time = ptr_stats->step_num;
 
-    if (ptr_queue->ptr_tail == NULL)                            // check if queue empty
-    {
+    if (ptr_queue->ptr_tail == NULL) {                           // check if queue empty
         ptr_queue->ptr_head = ptr_new_node;                     // head point to new node
-    } else {
+    } 
+    else {
         ptr_queue->ptr_tail->ptr_next = ptr_new_node;           // link previous tail to new node
     }
 
@@ -63,13 +61,11 @@ int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle, SimStats *ptr_stats)
 
 Vehicle *dequeue(Queue *ptr_queue, SimStats *ptr_stats) 
 {
-    if (ptr_queue == NULL || ptr_stats == NULL)
-    {
+    if (ptr_queue == NULL || ptr_stats == NULL) {
         output(2, "Error: Failed to dequeue vehicle. Invalid argument.\n", 2, 0, NULL);
         return NULL;
     }
-    if (ptr_queue->ptr_head == NULL) 
-    {
+    if (ptr_queue->ptr_head == NULL) {
         return NULL;
     }
 
@@ -80,17 +76,15 @@ Vehicle *dequeue(Queue *ptr_queue, SimStats *ptr_stats)
 
     ptr_queue->ptr_head = ptr_prev_head->ptr_next;              // set head pointer to next node
 
-    if (ptr_queue->ptr_head == NULL)
-    {
+    if (ptr_queue->ptr_head == NULL) {
         ptr_queue->ptr_tail = NULL;
     }
 
     free(ptr_prev_head);                                        // free memory of previous head node
     ptr_queue->size--;                                          // decrement queue size 
 
-    if ((ptr_stats->step_num - ptr_vehicle->queue_time) > 0)                            // check if vehicle was queued
-    {
-        ptr_stats->total_queued++;                           // increment total queued
+    if ((ptr_stats->step_num - ptr_vehicle->queue_time) > 0) {  // check if vehicle was queued
+        ptr_stats->total_queued++;                              // increment total queued
     }
     
     return ptr_vehicle;                                         // return dequeued vehicle
@@ -98,17 +92,14 @@ Vehicle *dequeue(Queue *ptr_queue, SimStats *ptr_stats)
 
 int delete_queue(Queue *ptr_queue, SimStats *ptr_simstats) 
 {
-    if (ptr_queue == NULL || ptr_simstats == NULL)
-    {
+    if (ptr_queue == NULL || ptr_simstats == NULL) {
         output(2, "Error: Failed to delete queue. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
 
-    while (ptr_queue->ptr_head != NULL)                         
-    {
+    while (ptr_queue->ptr_head != NULL) {
         Vehicle *ptr_vehicle = dequeue(ptr_queue, ptr_simstats); // dequeue each node until queue is empty
-        if (ptr_vehicle != NULL)
-        {
+        if (ptr_vehicle != NULL) {
             free_vehicle(ptr_vehicle);                          // free vehicle memory                                                            
         }                           
     }
@@ -119,8 +110,7 @@ int delete_queue(Queue *ptr_queue, SimStats *ptr_simstats)
 
 int free_queue(Queue *ptr_queue) 
 {
-    if (ptr_queue == NULL)
-    {
+    if (ptr_queue == NULL) {
         output(2, "Error: Failed to free memory allocated for queue. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
