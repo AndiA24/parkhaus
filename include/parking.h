@@ -86,7 +86,7 @@ Parking *init_parking(SimConfig *ptr_config, SimStats *ptr_stats);
  * @param[in,out] simstats Pointer to the current simulation statistics
  * @return 1 on success, 0 if vehicle cannot be assigned, -1 if any param is NULL
  */
-int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_simstats);
+int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_stats);
 
 /**
  * @brief Checks all parking spots for vehicles that have exceeded their parking duration.
@@ -99,7 +99,7 @@ int entry_parking(Parking *ptr_parking, Vehicle *ptr_vehicle, SimStats *ptr_sims
  * @param[in,out] simstats Pointer to the current simulation statistics
  * @return 1 on success, -1 if any param is NULL
  */
-int check_exit(Parking *ptr_parking, SimStats *ptr_simstats);
+int check_exit(Parking *ptr_parking, SimStats *ptr_stats);
 
 
 /**

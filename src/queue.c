@@ -90,15 +90,15 @@ Vehicle *dequeue(Queue *ptr_queue, SimStats *ptr_stats)
     return ptr_vehicle;                                         // return dequeued vehicle
 }
 
-int delete_queue(Queue *ptr_queue, SimStats *ptr_simstats) 
+int delete_queue(Queue *ptr_queue, SimStats *ptr_stats) 
 {
-    if (ptr_queue == NULL || ptr_simstats == NULL) {
+    if (ptr_queue == NULL || ptr_stats == NULL) {
         output(2, "Error: Failed to delete queue. Invalid argument.\n", 2, 0, NULL);
         return -1;
     }
 
     while (ptr_queue->ptr_head != NULL) {
-        Vehicle *ptr_vehicle = dequeue(ptr_queue, ptr_simstats); // dequeue each node until queue is empty
+        Vehicle *ptr_vehicle = dequeue(ptr_queue, ptr_stats); // dequeue each node until queue is empty
         if (ptr_vehicle != NULL) {
             free_vehicle(ptr_vehicle);                          // free vehicle memory                                                            
         }                           
