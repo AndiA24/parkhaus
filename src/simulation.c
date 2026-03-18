@@ -41,28 +41,25 @@ int run_simulation(SimConfig *ptr_config, SimStats *ptr_stats) {
 
     srand(ptr_config->seed);
     Parking *ptr_parking = init_parking(ptr_config, ptr_stats);
-    if (ptr_parking == NULL)
-    {
+    if (ptr_parking == NULL) {
         output(2, "Error: Failed to initialize parking. Simulation aborted.\n", 2, 1, ptr_config);
         return -1;
     }
     
     Queue *ptr_queue = init_queue();
-    if (ptr_queue == NULL)
-    {
+    if (ptr_queue == NULL) {
         output(2, "Error: Failed to initialize queue. Simulation aborted.\n", 2, 1, ptr_config);
         return -1;
     }
     FILE *ptr_output_file = create_output_file(ptr_config);
-    if (ptr_output_file == NULL)
-    {
+    if (ptr_output_file == NULL) {
         output(2, "Error: Failed to create output file. Simulation aborted.\n", 2, 1, ptr_config);
         return -1;
     }
 
     unsigned int total_steps = ptr_config->sim_duration_steps;
-    for (unsigned int i = 0; i < total_steps; i++){
-        if (rand_arrival(ptr_config) == 1){
+    for (unsigned int i = 0; i < total_steps; i++) {
+        if (rand_arrival(ptr_config) == 1) {
             if (enqueue(ptr_queue, create_vehicle(ptr_stats, ptr_config), ptr_stats) == -1) {
                 output(2, "Error: Simulation aborted.\n", 2, 1, ptr_config);
                 return -1;
