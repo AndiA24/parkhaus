@@ -280,7 +280,7 @@ void show_settings(SimConfig *ptr_config) {
                 render_settings(ptr_config);
                 break;
             case '2':
-                prompt_uint("Anzahl der Stellplätze pro Etage", &ptr_config->spots_per_deck, 1, 999);
+                prompt_uint("Anzahl der Stellplaetze pro Etage", &ptr_config->spots_per_deck, 1, 999);
                 render_settings(ptr_config);
                 break;
             case '3':

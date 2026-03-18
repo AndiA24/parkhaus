@@ -69,8 +69,6 @@
 | ***Begründung:*** | Kapselt das Einfügen in die Warteschlange, damit die Zeigerlogik der verketteten Liste nicht im Simulationsloop auftaucht | | |
 | `dequeue(ptr_queue, ptr_stats)` | Entfernt und gibt das Fahrzeug am Anfang der Warteschlange zurück. Dekrementiert `size` um 1. Gibt `NULL` zurück, wenn die Warteschlange leer ist. | `Queue *ptr_queue`, `SimStats *ptr_stats` | `Vehicle *` oder `NULL` |
 | ***Begründung:*** | Kapselt das Entfernen aus der Warteschlange und nutzt den Moment des Ausreihens, um die Wartezeit des Fahrzeugs zentral in die Statistik zu übertragen | | |
-| `increment_queue_time(ptr_queue)` | Inkrementiert `queue_time` jedes Fahrzeugs in der Warteschlange um 1. Tut nichts, wenn die Warteschlange leer ist. | `Queue *ptr_queue` | — |
-| ***Begründung:*** | Ermöglicht es, die Wartezeit aller wartenden Fahrzeuge pro Simulationsschritt mit einem einzigen Aufruf zu aktualisieren, anstatt dies im Simulationsloop manuell zu iterieren | | |
 | `delete_queue(ptr_queue)` | Gibt alle Knoten der Warteschlange frei und setzt sie auf den Initialzustand zurück (size = 0). Die enthaltenen `Vehicle`-Objekte werden nicht freigegeben. | `Queue *ptr_queue` | — |
 | ***Begründung:*** | Leert die Warteschlange am Simulationsende, ohne die Queue-Struct selbst freizugeben, damit diese bei Bedarf wiederverwendet werden könnte | | |
 | `free_queue(ptr_queue)` | Gibt die durch `init_queue` allokierte `Queue` Struct frei. | `Queue *ptr_queue` | — |

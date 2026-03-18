@@ -50,7 +50,7 @@ Queue *init_queue();
  * @param[in]     ptr_vehicle Pointer to the vehicle to be enqueued
  * @param[in]     ptr_stats   Pointer to the simulation stats
  * 
- * @return 1 on success, -1 if any param is NULL
+ * @return 0 on success, -1 if any param is NULL
  */
 int enqueue(Queue *ptr_queue, Vehicle *ptr_vehicle, SimStats *ptr_stats);
 
@@ -78,7 +78,7 @@ Vehicle *dequeue(Queue *ptr_queue, SimStats *ptr_stats);
  *
  * @param[in,out] ptr_queue Pointer to the waiting queue
  * 
- * @return 1 on success, -1 if ptr_queue is NULL
+ * @return 0 on success, -1 if ptr_queue is NULL
  */
 int increment_queue_time(Queue *ptr_queue);
 
@@ -93,7 +93,7 @@ int increment_queue_time(Queue *ptr_queue);
  * @param[in,out] ptr_queue Pointer to the queue to be deleted
  * @param[in,out] ptr_stats Pointer to the stats to have the data from the vehicles safed inside of
  * 
- * @return 1 on success, -1 if any param is NULL
+ * @return 0 on success, -1 if any param is NULL
  */
 int delete_queue(Queue *ptr_queue, SimStats *ptr_stats);
 
@@ -104,7 +104,7 @@ int delete_queue(Queue *ptr_queue, SimStats *ptr_stats);
  *
  * @param[in] ptr_queue Pointer to the Queue structure to be freed.
  * 
- * @return 1 on success, -1 if ptr_queue is NULL
+ * @return 0 on success, -1 if ptr_queue is NULL
  */
 int free_queue(Queue *ptr_queue);
 
