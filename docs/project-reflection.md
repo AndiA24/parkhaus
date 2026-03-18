@@ -88,58 +88,89 @@ Wir haben uns bereits zu Beginn während der Planung der Anforderungen und der U
 ## 2. Welche Optionen wurden diskutiert?
 
 ### Datenstruktur für freie Parkplätze
-
 - **Option A (initial)**: Iteration durch das gesamte Parkhaus zur Suche nach einem freien Platz → O(Decks × Spots)
-- ⁠**Option B (gewählt)**: Freie Parkplätze werden auf einem Stack gehalten → O(Decks) bei der Suche
-Zunächst wurde die Suche nach einem freien Parkplatz so implementiert, dass das gesamte Parkhaus durchsucht wird. Im schlechtesten Fall führt das zu einer Laufzeit von O(Decks × Spots), da jeder Spot geprüft werden muss. Um diese Suche zu vermeiden, wurde pro Deck ein Stack eingeführt, der Pointer auf alle freien Spots hält. Beim Initialisieren des Parkhauses wird jeder Spot auf den Stack seines Decks gelegt. Fährt ein Fahrzeug ein, wird der oberste Eintrag des Stacks gepoppt und das Fahrzeug diesem zugewiesen. Fährt ein Fahrzeug aus, wird der freigewordene Spot wieder oben auf den Stack gelegt. Da nur noch über die Decks iteriert wird bis eine mit freien Spots gefunden wird, verbessert sich die Laufzeit auf O(Decks).
+- **Option B (gewählt)**: Freie Parkplätze werden auf einem Stack gehalten → O(Decks) bei der Suche
 
 ### Prüfung auf abgelaufene Parkdauer
+- **Option A (initial)**: Iteration durch alle Parkplätze des gesamten Parkhauses → O(Decks × Spots)
+- **Option B (gewählt)**: Separates Array mit nur den aktuell geparkten Fahrzeugen → O(belegte Spots)
 
-- ⁠**Option A (initial)**: Iteration durch alle Parkplätze des gesamten Parkhauses
-- ⁠**Option B (gewählt)**: Separates Array mit nur den aktuell geparkten Fahrzeugen → deutlich kleinere Iteration
-Um festzustellen, ob die Parkdauer eines Fahrzeugs abgelaufen ist, wurde zunächst das gesamte Parkhaus durchlaufen. Im schlechtesten Fall führt das zu einer Laufzeit von O(Decks × Spots), da jeder Spot einzeln geprüft werden muss. Um diese Suche zu vermeiden, wurde ein Array eingeführt, das Pointer auf alle aktuell belegten Spots hält. Bei der Überprüfung muss nun nur noch über dieses Array iteriert werden, was die Laufzeit auf O(belegte Spots) verbessert. Verlässt ein Fahrzeug das Parkhaus, wird sein Eintrag aus dem Array entfernt. Um Lücken im Array zu vermeiden, übernimmt das letzte Element des Arrays die Position des entfernten Eintrags.
-
-#### Einfahrtsbeschränkung auf ein Fahrzeug pro Zeitschritt
-
-Bei der Einfahrt wurde bewusst entschieden, dass pro Simulationsschritt maximal ein Fahrzeug aus der Warteschlange ins Parkhaus einfahren kann. Diese Einschränkung spiegelt die Realität einer physischen Schranke wider: Eine Schranke lässt immer nur ein Fahrzeug auf einmal passieren – erst wenn dieses eingefahren ist und die Schranke wieder geschlossen wurde, kann das nächste Fahrzeug den Einfahrtsvorgang starten.
-
-Bei der **Ausfahrt** besteht diese Einschränkung nicht. Dort wird stattdessen eine automatische Kennzeichenerkennung angenommen: Das System erfasst das Kennzeichen des ausfahrenden Fahrzeugs und bucht den Parkplatz automatisch frei. Deshalb können mehrere Autos in einem Zeitschritt ausfahren, denn es wird angenommen, dass die Erfassung berührungslos und ohne manuelle Interaktion erfolgt.
+### Einfahrtsbeschränkung
+- **Option A**: Mehrere Fahrzeuge können pro Zeitschritt einfahren
+- **Option B (gewählt)**: Maximal ein Fahrzeug pro Zeitschritt bei der Einfahrt, keine Einschränkung bei der Ausfahrt
 
 ### Ausgabeformat
-
-- **Option A**: Einfache Konsolenausgabe mit ⁠ printf ⁠
+- **Option A**: Einfache Konsolenausgabe mit `printf`
 - **Option B (gewählt)**: CSV-Ausgabe → kompatibel mit Excel, ermöglicht Diagramme und weitere Auswertungen
-
-Für das Ausgabeformat wurde bewusst CSV gewählt, da dieses Format mehrere Vorteile bietet. CSV-Dateien sind mit gängigen Tabellenkalkulationsprogrammen wie Excel kompatibel, was eine übersichtliche Darstellung der Daten ermöglicht — besonders bei großen Datensätzen. Darüber hinaus lassen sich die Daten einfach visualisieren und auswerten, da Diagramme direkt aus den importierten Daten erstellt werden können.
 
 ### Vereinzelte Implementierungslogiken
 
 #### Queue
-Die Warteschlange wurde von Beginn an als Queue-Datenstruktur geplant, da das FIFO-Prinzip das natürliche Verhalten einer Einfahrtswarteschlange abbildet. Für die interne Implementierung wurde zunächst eine doppelt verkettete Liste in Betracht gezogen. Im Laufe der Entwicklung stellte sich jedoch heraus, dass eine Rückwärtsnavigation nicht benötigt wird, weshalb die Implementierung auf eine einfach verkettete Liste reduziert wurde. Dies vereinfacht die Struktur und vermeidet unnötigen Verwaltungsaufwand. 
+- **Option A**: Doppelt verkettete Liste
+- **Option B (gewählt)**: Einfach verkettete Liste
 
 #### Vorbelegung (Initial Occupancy)
-Eine weitere Entwurfsentscheidung betraf die Vorbelegung des Parkhauses vor Simulationsstart. Anstatt die Simulation stets mit einem leeren Parkhaus zu beginnen, wurde die Möglichkeit eingeführt, eine vom Benutzer konfigurierbare Anzahl an Fahrzeugen beim Initialisieren einzuparken. Diese Option wurde bewusst gewählt, um realistischere Ausgangszustände simulieren zu können und dem Benutzer mehr Kontrolle über die Simulationsparameter zu geben.
+- **Option A**: Simulation startet immer mit leerem Parkhaus
+- **Option B (gewählt)**: Benutzer kann eine Startvorbelegung konfigurieren
+
+#### Berechnung von total_parking_time
+- **Option A**: Ausschließlich Parkdauern regulär ausgefahrener Fahrzeuge summieren
+- **Option B (gewählt)**: Zusätzlich die tatsächlich verbrachte Zeit der beim Simulationsende noch geparkten Fahrzeuge einbeziehen
 
 #### Ausgabe (Output-Datei)
-Bei der Handhabung der Ausgabedatei stand zur Diskussion, ob bei einer bereits existierenden Datei mit gleichem Namen der neue Inhalt angehängt oder die Datei überschrieben werden soll. Die Entscheidung fiel auf das Überschreiben, da angehängte Daten mehrerer Simulationsläufe die Datei schnell unübersichtlich und schwer auswertbar machen würden. Da jede Simulation über einen konfigurierbaren Seed reproduzierbar ist, kann ein bestimmtes Szenario bei Bedarf jederzeit erneut ausgeführt werden und liefert dabei denselben Output.
+- **Option A**: Neuen Inhalt an bestehende Datei anhängen
+- **Option B (gewählt)**: Bestehende Datei überschreiben
+
+#### Dynamische Speicherverwaltung
+- **Option A**: Statische Arrays mit fester Größe 
+- **Option B (gewählt):** Dynamische Speicherallokation zur Laufzeit
+
+#### Benutzeroberfläche (UI)
+- **Option A**: Einfache Konsolenausgabe mit printf
+- **Option B (gewählt):** Erweiterte UI mit Benutzerführung, strukturierter Eingabe, Echtzeitanzeige und klarer Ergebnisdarstellung  
+
+#### Konfigurationspersistenz
+- **Option A**: Keine Speicherung, erneute Eingabe bei jedem Start erforderlich  
+- **Option B (gewählt):** Speicherung in Datei, Laden von Konfigurationen
 
 ---
 
 ## 3. Warum haben wir uns für die gewählte Variante entschieden?
 
-- **Stack für freie Plätze**: Die Laufzeitverbesserung von O(Decks * Spots) auf O(Decks) ist bei großen Parkhäusern erheblich. Der Mehraufwand beim Initialisieren ist vernachlässigbar.
+### Datenstruktur für freie Parkplätze
+Zunächst wurde die Suche nach einem freien Parkplatz so implementiert, dass das gesamte Parkhaus durchsucht wird. Um diese Suche zu vermeiden, wurde pro Deck ein Stack eingeführt, der Pointer auf alle freien Spots hält. Beim Initialisieren des Parkhauses wird jeder Spot auf den Stack seines Decks gelegt. Fährt ein Fahrzeug ein, wird der oberste Eintrag des Stacks gepoppt und das Fahrzeug diesem zugewiesen. Fährt ein Fahrzeug aus, wird der freigewordene Spot wieder oben auf den Stack gelegt. Da nur noch über die Decks iteriert wird bis eines mit freien Spots gefunden wird, verbessert sich die Laufzeit auf O(Decks). Die Laufzeitverbesserung von O(Decks × Spots) auf O(Decks) ist bei großen Parkhäusern erheblich.
 
-- **Separates Array für geparkte Fahrzeuge**: Vermeidet unnötige Iterationen über leere Parkplätze, was gerade bei einem niedrig ausgelastetem Parkhaus relevant wird.
+### Prüfung auf abgelaufene Parkdauer
+Um festzustellen, ob die Parkdauer eines Fahrzeugs abgelaufen ist, wurde zunächst das gesamte Parkhaus durchlaufen. Um diese Suche zu vermeiden, wurde ein Array eingeführt, das Pointer auf alle aktuell belegten Spots hält. Bei der Überprüfung muss nun nur noch über dieses Array iteriert werden. Verlässt ein Fahrzeug das Parkhaus, wird sein Eintrag aus dem Array entfernt. Um Lücken im Array zu vermeiden, übernimmt das letzte Element des Arrays die Position des entfernten Eintrags. Dies vermeidet unnötige Iterationen über leere Parkplätze, was besonders bei einem niedrig ausgelastetem Parkhaus relevant wird.
 
-- **CSV anstatt plain text**: CSV-Dateien ermöglichen eine strukturierte Darstellung, einfache Filterung und die Erstellung von Diagrammen zur Auswertung der Datensätze. Plain Text hätte eine zusätzliche Konvertierung erfordert, bevor die Daten sinnvoll ausgewertet werden könnten.
+### Einfahrtsbeschränkung
+Bei der Einfahrt wurde bewusst entschieden, dass pro Simulationsschritt maximal ein Fahrzeug aus der Warteschlange ins Parkhaus einfahren kann. Diese Einschränkung spiegelt die Realität einer physischen Schranke wider: Eine Schranke lässt immer nur ein Fahrzeug auf einmal passieren – erst wenn dieses eingefahren ist und die Schranke wieder geschlossen wurde, kann das nächste Fahrzeug den Einfahrtsvorgang starten.
 
-- **Dynamische Speicherverwaltung**: Die Größe des Parkhauses wird erst zur Laufzeit durch die Benutzerkonfiguration festgelegt. Statische Arrays würden entweder Speicher verschwenden oder die maximale Größe des Parkauses künstlich begrenzen. Zusätzlich wird bei Funktionsaufruf ausschließlich der Pointer übergeben, was das Kopieren großer Strukturen vermeidet und den Speicher- sowie Zeitaufwand reduziert.
+Bei der **Ausfahrt** besteht diese Einschränkung nicht. Dort wird stattdessen eine automatische Kennzeichenerkennung angenommen: Das System erfasst das Kennzeichen des ausfahrenden Fahrzeugs und bucht den Parkplatz automatisch frei. Deshalb können mehrere Autos in einem Zeitschritt ausfahren, denn es wird angenommen, dass die Erfassung berührungslos und ohne manuelle Interaktion erfolgt.
 
-- **Erweitertes UI**: Eine intuitive Bedienung steigert die Nutzbarkeit des Programms. Das UI führt den Benutzer durch die Konfiguration, zeigt den Simulationsfortschritt in Echtzeit und stellt die Ergebnisse strukturiert dar.
+### Ausgabeformat
+CSV-Dateien sind mit gängigen Tabellenkalkulationsprogrammen wie Excel kompatibel, was eine übersichtliche Darstellung der Daten ermöglicht, besonders bei großen Datensätzen. Darüber hinaus lassen sich Diagramme direkt aus den importierten Daten erstellen. Plain Text hätte eine zusätzliche Konvertierung erfordert, bevor die Daten sinnvoll ausgewertet werden könnten.
 
-- **Konfigurationspersistenz**: Ohne Persistenz müsste der Benutzer bei jedem Programmstart alle Parameter erneut eingeben. Durch das Speichern der Konfiguration in einer Datei werden häufig verwendete Szenarien direkt beim nächsten Start geladen, was den Workflow bei wiederholter Nutzung erheblich beschleunigt.
+### Queue
+Eine doppelt verkettete Liste wurde zunächst in Betracht gezogen. Im Laufe der Entwicklung stellte sich heraus, dass eine Rückwärtsnavigation nicht benötigt wird, weshalb die Implementierung auf eine einfach verkettete Liste reduziert wurde. Dies vereinfacht die Struktur und vermeidet unnötigen Verwaltungsaufwand.
 
----
+### Vorbelegung (Initial Occupancy)
+Diese Option wurde gewählt, um realistischere Ausgangszustände simulieren zu können und dem Benutzer mehr Kontrolle über die Simulationsparameter zu geben. Ein stets leeres Parkhaus zu Beginn würde die Simulation in den ersten Steps verzerren, da sich die Auslastung erst aufbauen muss.
+
+### Berechnung von total_parking_time
+Die erste Option hätte bei kurzen Simulationen oder hoher Auslastung zu einer stark verfälschten Gesamtdauer geführt, da ein großer Anteil der Fahrzeuge das Parkhaus nie verlässt. Daher fiel die Entscheidung darauf, dass in `free_parking` für jedes noch geparkte Fahrzeug die tatsächlich verbrachte Zeit berechnet und addiert wird, sodass `total_parking_time` die gesamte im Parkhaus verbrachte Zeit aller Fahrzeuge widerspiegelt.
+
+### Ausgabe (Output-Datei)
+Angehängte Daten mehrerer Simulationsläufe würden die Datei schnell unübersichtlich und schwer auswertbar machen. Da jede Simulation über einen konfigurierbaren Seed reproduzierbar ist, kann ein bestimmtes Szenario bei Bedarf jederzeit erneut ausgeführt werden und liefert dabei denselben Output, wodurch Datenverluste ausgeschlossen werden können.
+
+### Dynamische Speicherverwaltung
+Die Größe des Parkhauses wird erst zur Laufzeit durch die Benutzerkonfiguration festgelegt, weshalb statische Arrays keine sinnvolle Option waren, da sie entweder Speicher verschwenden oder die maximale Parkhaus-Größe künstlich begrenzen würden. Dynamische Speicherverwaltung ermöglicht es, beliebig große Parkhäuser ohne Anpassung des Quellcodes zu simulieren. Zusätzlich wird bei Funktionsaufrufen ausschließlich der Pointer übergeben, was das Kopieren großer Strukturen vermeidet und den Speicher- sowie Zeitaufwand reduziert.
+
+### Benutzeroberfläche
+Eine reine Konsolenausgabe mit `printf` hätte die Bedienung und Auswertung erheblich erschwert. Das UI führt den Benutzer durch die Konfiguration, zeigt den Simulationsfortschritt in Echtzeit und stellt die Ergebnisse strukturiert dar.
+
+### Konfigurationspersistenz
+Ohne Persistenz müsste der Benutzer bei jedem Programmstart alle Parameter erneut eingeben. Durch das Speichern der Konfiguration in einer Datei werden häufig verwendete Szenarien direkt beim nächsten Start geladen, was den Workflow bei wiederholter Nutzung erheblich beschleunigt.
 
 ## 4. Gab es Schwierigkeiten bei der Zusammenarbeit?
 
