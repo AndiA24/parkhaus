@@ -142,6 +142,56 @@ Testet `free_vehicle()`.
 
 ---
 
+## Queue
+
+### `test_queue_init_queue.c`
+Testet `init_queue()`.
+- Test 1: Aufruf ohne Argumente – gibt einen gültigen Pointer zurück
+- Test 2: Alle Felder nach Initialisierung – `ptr_head`, `ptr_tail` sind NULL und `size` ist 0
+- Test 3: Zwei unabhängige Aufrufe – gibt zwei verschiedene Pointer zurück
+
+---
+
+### `test_queue_free_queue.c`
+Testet `free_queue()`.
+- Test 1: Argument ist NULL – `free_queue(NULL)` gibt -1 zurück
+- Test 2: Gültige leere Queue – gibt 1 zurück
+
+---
+
+### `test_queue_enqueue.c`
+Testet `enqueue()`.
+- Test 1: Alle Argumente NULL – gibt -1 zurück
+- Test 2: Vehicle-Argument ist NULL – gibt -1 zurück
+- Test 3: Queue-Argument ist NULL – gibt -1 zurück
+- Test 4: Stats-Argument ist NULL – gibt -1 zurück
+- Test 5: Ein Fahrzeug einreihen – prüft `size`, `ptr_head`, `ptr_tail` und Vehicle-Pointer
+- Test 6: Zwei Fahrzeuge einreihen – prüft FIFO-Reihenfolge und Verkettung
+- Test 7: Drei Fahrzeuge einreihen – prüft korrekte Aktualisierung von `ptr_tail`
+
+---
+
+### `test_queue_dequeue.c`
+Testet `dequeue()`.
+- Test 1: Beide Argumente NULL – gibt NULL zurück
+- Test 2: Stats-Argument ist NULL – gibt NULL zurück
+- Test 3: Queue-Argument ist NULL – gibt NULL zurück
+- Test 4: Leere Queue – gibt NULL zurück
+- Test 5: Ein Fahrzeug ausreihen – prüft Rückgabewert, `size`, `ptr_head` und `ptr_tail`
+- Test 6: Statistik nach Ausreihen – prüft `total_queue_time` und `total_queued` anhand der Differenz aus Ein- und Ausreihungsschritt
+
+---
+
+### `test_queue_delete_queue.c`
+Testet `delete_queue()`.
+- Test 1: Beide Argumente NULL – gibt -1 zurück
+- Test 2: Stats-Argument ist NULL – gibt -1 zurück
+- Test 3: Queue-Argument ist NULL – gibt -1 zurück
+- Test 4: Gültige leere Queue – gibt 1 zurück
+- Test 5: Queue mit zwei Fahrzeugen – gibt 1 zurück und gibt den gesamten Speicher frei
+
+---
+
 ## Stats
 
 ### `test_stats_init_stats.c`
