@@ -105,8 +105,14 @@ Testet `free_parking()`.
 
 ### `test_parking_entry_parking.c`
 Testet `entry_parking()`.
-- Test 1: NULL-Schutz – alle NULL-Kombinationen der drei Zeigerargumente geben -1 zurück
-- Test 2: Korrekte Einfahrt – prüft `occupied_count`, Stellplatzzuweisung, Stats (`temp_entries`, `total_entries`) und `vehicle->entry_time`
+- Test 1: Alle Argumente NULL – gibt -1 zurück
+- Test 2: Parking-Argument ist NULL – gibt -1 zurück
+- Test 3: Vehicle-Argument ist NULL – gibt -1 zurück
+- Test 4: Stats-Argument ist NULL – gibt -1 zurück
+- Test 5: Ein Fahrzeug einparken – prüft `occupied_count`, `occupied_count` des Decks und `free_spots`
+- Test 6: Statistik nach Einparken – prüft `temp_entries`, `total_entries` und `entry_time` des Fahrzeugs
+- Test 7: Alle Spots belegen (2 Etagen × 2 Spots) – prüft `occupied_count` und `free_spots` aller Etagen
+- Test 8: Einparken bei vollem Parkhaus – gibt 0 zurück
 
 ---
 
