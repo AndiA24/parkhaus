@@ -396,7 +396,7 @@ void show_results(SimStats *ptr_stats) {
         print_col(11, COL_VALUE, CP_GOOD, A_BOLD, "%u", 0u);
     }
     else {
-        print_col(11, COL_VALUE, CP_GOOD, A_BOLD, "%u", ptr_stats->total_queue_time/ptr_stats->total_queued);
+        print_col(11, COL_VALUE, CP_GOOD, A_BOLD, "%llu", (unsigned long long)ptr_stats->total_queue_time/ptr_stats->total_queued);
     }
 
     print_col(12, COL_TEXT, CP_INFO, 0, "Anteil aller Autos, die in der Warteschlange waren:");
